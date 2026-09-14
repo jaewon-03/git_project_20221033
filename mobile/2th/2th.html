@@ -4,9 +4,244 @@
     <meta charset="UTF-8">    <!-- 문서의 인코딩 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 문서의 인코딩 설정  -->
     <title>Document</title>   <!-- 문서 제목(브라우저 상단에 표시됨) -->
+    <style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: '맑은 고딕', sans-serif;
+    }
+
+    body {
+        padding: 8px;
+        background-color: #f8fafc; /* 전체 연회색 배경 */
+    }
+
+    /* 기존 테이블 이중선 스타일 유지 및 배경색 적용 */
+    .box-table {
+        border-collapse: separate;  /* 선을 합치지 않고 분리 */
+        border-spacing: 2px;        /* 셀과 테두리 사이 간격을 2px로 좁게 설정 */
+        border: 2px outset #808080; /* 바깥 전체를 감싸는 입체 테두리 */
+        background-color: #ffffff;
+    }
+
+    .box-table td {
+        border: 2px inset #808080;  /* 각 셀마다 생기는 안쪽 입체 테두리 */
+        padding: 3px 6px;           /* 셀 내부 여백 */
+        text-align: center;
+        background-color: #fef08a;  /* 셀 내부 부드러운 노랑 */
+    }
+
+    /* 각 시맨틱 태그 기본 테두리 및 여백 */
+    header, nav, section, article, aside, footer {
+        border: 1px solid #7f7f7f;
+        padding: 8px;
+        margin-bottom: 4px;
+    }
+
+    /* 영역별 임의 색상 지정 */
+    header {
+        height: 40px;
+        background-color: #bfdbfe; /* 소프트 블루 */
+    }
+
+    nav {
+        height: 40px;
+        background-color: #c7d2fe; /* 연보라 */
+    }
+
+    /* 메인 콘텐츠(왼쪽)와 Aside(오른쪽)를 감싸는 영역 */
+    .wrap {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 4px;
+        align-items: stretch;
+    }
+
+    /* 왼쪽 영역: Section들과 Article */
+    .left-content {
+        width: 82%;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .left-content section:nth-of-type(1) {
+        margin-bottom: 0;
+        background-color: #bbf7d0; /* 연초록 */
+    }
+
+    .left-content section:nth-of-type(2) {
+        margin-bottom: 0;
+        background-color: #fed7aa; /* 부드러운 오렌지 */
+    }
+
+    .left-content article {
+        margin-bottom: 0;
+        background-color: #fed7e2; /* 소프트 핑크 */
+    }
+
+    /* 오른쪽 보조 영역 */
+    aside {
+        width: 18%;
+        margin-bottom: 0;
+        background-color: #e9d5ff; /* 라벤더 */
+    }
+
+    footer {
+        height: 40px;
+        background-color: #cbd5e1; /* 차분한 그레이 */
+    }
+
+    /* 제목 및 본문 텍스트 서식 */
+    h4 {
+        font-size: 13px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    p {
+        font-size: 12px;
+        line-height: 1.4;
+        letter-spacing: -0.5px;
+        word-break: break-all;
+    }
+</style>
 </head>                       <!-- 머리글의 종료 -->
 <body>                        <!-- 문서 본문 시작 -->
     <h1>HTML이란?</h1>         <!-- 문서 본문(글 제목) -->
     HyperTextMarkup Language의 약어  <!-- 문서 본문(글 내용) -->
+
+    <!-- 헤더 태그 (이미지 내 순서: 헤더1, 헤더2, 헤더3, 헤더6, 헤더5, 헤더4 순으로 표시됨) -->
+    <h1>헤더1</h1>
+    <h2>헤더2</h2>
+    <h3>헤더3</h3>
+    <h6>헤더6</h6>
+    <h5>헤더5</h5>
+    <h4>헤더4</h4>
+
+    <hr>
+
+    <!-- 텍스트 서식 태그 (한 줄에 나열) -->
+    <p>
+        <b>b:굵은글자 태그</b> 
+        <i>i:기울인글자 태그</i> 
+        <small>small:작은글자 태그</small> 
+        <sub>sub:아래첨자 태그</sub> 
+        <sup>sup:윗첨자 태그</sup> 
+        <ins>ins:밑줄글자 태그</ins> 
+        <del>del:취소줄글자 태그</del> 
+        <mark>mark:마크 태그</mark>
+    </p>
+
+    <!-- HTML 설명 부분 -->
+    <p><em>HTML</em></p>
+    <p>
+        <strong>HTML</strong>(Hyper Text Markup Language)은 W3C에서 보급하는 웹을 통해 볼 수 있는 문서를 만들 때 사용하는 
+        마크업 <del>Markup</del> 언어의 한 종류이다. 특히 하이퍼텍스트를 작성하기 위해 개발되었으며, 인터넷에서 웹을 
+        통해 접근되는 대부분의 웹 페이지들은 <strong>HTML</strong>로 작성된다.
+    </p>
+
+    <!-- XML 설명 부분 -->
+    <p><em>XML</em></p>
+    <p>
+        인터넷 웹 페이지를 만드는 <del>HTML</del><ins>SGML</ins>을 개선한 마크업 언어이다. 데이터의 저장 및 변환, 검색기능 등이 향상되었고, 웹 페이지의 관리가 효율적이다.
+    </p>
+
+    <hr>
+
+    <!-- 하단 날짜 및 이메일 링크 -->
+    <p>2014년 9월 30일</p>
+    <p>2014년 11월 5일 오후 10시 15분</p>
+    <p><a href="mailto:leejhl1017@gmail.com">leejhl1017@gmail.com</a></p>
+
+    <!-- 목록 태그 영역 -->
+    <h2>목록 태그</h2>
+    
+    <ul>
+        <li>마크업 언어
+            <ol>
+                <li>HTML</li>
+                <li>XML</li>
+                <li value="10">SGML</li> <!-- 10번부터 시작하도록 지정 -->
+            </ol>
+        </li>
+        <li>웹브라우저
+            <ol type="i"> <!-- 소문자 로마자 형식 (iii, iv, v...) -->
+                <li value="3">인터넷익스플로러</li> <!-- 3(iii)부터 시작하도록 지정 -->
+                <li>크롬</li>
+                <li>사파리</li>
+                <li>파이어폭스</li>
+                <li>오페라</li>
+            </ol>
+        </li>
+    </ul>
+
+    <!-- 테이블 태그 영역 (첫 번째 행 글씨 굵게 적용) -->
+    <h2>테이블 태그</h2>
+
+<table class="box-table" width="300">
+    <tr>
+        <td><b>셀(1,1)</b></td>
+        <td><b>셀(1,2)</b></td>
+        <td><b>셀(1,3)</b></td>
+    </tr>
+    <tr>
+        <td rowspan="3">셀(2,1)</td>
+        <td>셀(2,2)</td>
+        <td>셀(2,3)</td>
+    </tr>
+    <tr>
+        <td colspan="2">셀(3,1)</td>
+    </tr>
+    <tr>
+        <td>셀(4,1)</td>
+        <td>셀(4,2)</td>
+    </tr>
+</table>
+
+    <br>
+
+    <!-- 하단 링크 이동 영역 -->
+    <p>웹 사이트 이동 => <a href="https://www.google.com" target="_blank">구글 사이트</a></p>
+    <p>웹 문서간 이동 => <a href="char-tag.html">html 글자 태그 실습 예제</a></p>
+    <p>문서 내 이동 => <a href="#">목록 태그 예</a></p>
+
+    <header>
+        <h4>Header 영역</h4>
+    </header>
+
+    <nav>
+        <h4>Nav 영역</h4>
+    </nav>
+
+    <div class="wrap">
+        <div class="left-content">
+            <section>
+                <h4>Section1 영역</h4>
+                <p>section 태그는 문서 내에서 하나의 제목 중심의 내용들을 그룹화하기 위해 사용한다. 하나의 섹션은 하나의 주제를 가지며 보통 h1~h6 태그 중 하나만을 사용하는 것이 좋다. 하나의 주제 안에 또 다른 세부 주제가 있다면 섹션 안에 다른 섹션이 포함될 수 있다. section 태그 안에 또 다른 section 태그를 포함한 다양한 태그들이 중첩되어 사용될 수 있다.</p>
+            </section>
+
+            <section>
+                <h4>Section2 영역</h4>
+                <p>내용 구성에 따라 section 태그 안에 article 태그를, 또는 article 태그 안에 section 태그를 포함시킬 수 있다.</p>
+            </section>
+
+            <article>
+                <h4>Article1 영역</h4>
+                <p>article 태그는 웹 페이지 안에서의 개별 내용 단위를 지정한다. 보통 article 태그 안의 내용은 포함된 문서와 분리하여 개별적으로 사용이 가능한 독립적인 내용으로 작성된다. 별도로 배포되거나 재사용될 수 있는 내용에 해당된다. 예를 들면, 블로그나 잡지의 기사, 포스트, 스토리처럼 하나의 독립적인 내용 영역에 해당된다.</p>
+            </article>
+        </div>
+
+        <aside>
+            <h4>Aside 영역</h4>
+            <p>aside 태그는 페이지 영역 중 주된 내용이 아닌 보조적인 내용을 지정한다. 주로 화면 좌우의 사이드바 역할처럼 section이나 article 태그 영역 안의 내용과 관련된 내용을 포함한다. 광고나 즐겨찾기 링크, 관련 이미지 정보 등이 해당된다.</p>
+        </aside>
+    </div>
+
+    <footer>
+        <h4>Footer 영역</h4>
+    </footer>
+
 </body>                       <!-- 문서 본문 종료 -->
 </html>                       <!-- HTML5 문서의 끝 -->
