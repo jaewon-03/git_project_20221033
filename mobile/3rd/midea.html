@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이재원 홈페이지 - 아이디어</title>
+  <link rel="stylesheet" href="css/mportpolio.css">
+</head>
+<body>
+  <div id="container">
+    <header>
+      <h1>이재원 홈페이지</h1>
+    </header>
+
+    <nav>
+      <a href="mintro.html">소개</a>
+      <a href="minfo.html">인적</a>
+      <a href="mstudy.html">학술</a>
+      <a href="mcareer.html">경력</a>
+      <a href="midea.html" class="active">아이디어</a>
+    </nav>
+
+    <main>
+      <!-- 1. 프로젝트 개요 및 기획 방향 -->
+      <div class="section-title">[기획서] 프로젝트 개요 & 방향성</div>
+      <div class="item-group">
+        <ul>
+          <li><strong>서비스명</strong>: 오늘 뭐 먹지? (결정장애 전용 메뉴 큐레이션 & 가이드)</li>
+          <li><strong>기획 배경</strong>: 매일 점심/저녁마다 "아무거나"를 외치며 10분 이상 고민하는 결정 피로를 해결</li>
+          <li><strong>핵심 타겟</strong>: 공강 시간 빠른 점심이 필요한 대학생, 자취생 혼밥러, 주변 밥집을 찾는 동기 모임</li>
+          <li><strong>개발 방향성</strong>: 복잡한 외부 서버나 무거운 프레임워크 없이, <strong>순수 HTML5, CSS3 미디어 쿼리, 기초 JavaScript</strong>만으로 빠르고 가볍게 작동하는 반응형 웹 제작</li>
+        </ul>
+      </div>
+
+      <!-- 2. 전체 5개 탭 화면 구성안 -->
+      <div class="section-title">[화면 설계] 5개 탭 콘텐츠 계획</div>
+      <div class="item-group">
+        <ul>
+          <li><strong>1. 가이드 소개 (mintro)</strong>: 사이트 목적 및 3단계 결정 프로세스(카테고리 선택 &rarr; 예산 체크 &rarr; 메뉴 확정) 안내</li>
+          <li><strong>2. 메뉴 분류표 (minfo)</strong>: 한식/중식/일식/양식/분식별 대표 메뉴, 평균 소요 비용, 추천 시간대 표(Table) 정리</li>
+          <li><strong>3. 상황별 큐레이션 (mstudy)</strong>: 날씨(비/더위), 해장, 혼밥, 월급날/시험 끝난 날 특식 등 테마별 추천 리스트</li>
+          <li><strong>4. 꿀조합 & 절약팁 (mcareer)</strong>: 프랜차이즈 실패 없는 시크릿 꿀조합(서브웨이 등) 및 배달비 절약 팁</li>
+          <li><strong>5. 기능 기획 & 로드맵 (midea)</strong>: 초급/중급 단계별 기능 구현 계획 및 디바이스별 레이아웃 전략 기록</li>
+        </ul>
+      </div>
+
+      <!-- 3. 난이도별 구현 기능 로드맵 -->
+      <div class="section-title">[기능 명세] 구현 가능한 실전 로드맵</div>
+      <div class="item-group">
+        <ul>
+          <li><strong>[기초 구현] 원클릭 랜덤 메뉴 추첨 (JS Math.random)</strong>
+            <p style="margin: 3px 0 6px 0; color: #555; font-size: 11px;">
+              - 버튼 클릭 시 배열에 저장된 메뉴 중 1개를 무작위로 화면에 즉시 띄워주는 경량 기능
+            </p>
+          </li>
+          <li><strong>[기초 구현] 예산/상황별 단순 필터링</strong>
+            <p style="margin: 3px 0 6px 0; color: #555; font-size: 11px;">
+              - '만원 이하', '국물 요리', '초스피드 패스트푸드' 등 선택 버튼 클릭 시 해당 조건의 메뉴만 화면에 표시
+            </p>
+          </li>
+          <li><strong>[편의 기능] 네이버/카카오 지도 검색 원클릭 연동</strong>
+            <p style="margin: 3px 0 6px 0; color: #555; font-size: 11px;">
+              - 복잡한 지도 API 연동 대신, 당첨된 메뉴 이름을 검색어로 담은 지도 링크(`<a>` 태그)로 바로 연결
+            </p>
+          </li>
+          <li><strong>[편의 기능] URL 복사 및 공유</strong>
+            <p style="margin: 3px 0 6px 0; color: #555; font-size: 11px;">
+              - 단톡방 친구들에게 추천 결과를 공유할 수 있도록 '현재 페이지 링크 복사' 클립보드 버튼 지원
+            </p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 4. 반응형 레이아웃 전략 -->
+      <div class="section-title">[UI/UX] PC-모바일 반응형 설계</div>
+      <div class="item-group">
+        <ul>
+          <li><strong>PC 환경 (기본 가로 너비)</strong>: 메뉴 카드와 세부 정보표가 가로로 나란히 배치되는 여유로운 2단 레이아웃</li>
+          <li><strong>모바일 환경 (CSS 미디어 쿼리 768px 이하)</strong>: 한 손 터치 스크롤에 맞춘 1열 수직 카드 스택 및 터치하기 쉬운 큰 버튼 적용</li>
+        </ul>
+      </div>
+
+      <div class="link-box">
+        <div class="section-title">참조링크</div>
+        <div class="link-btn-group">
+          <a href="https://github.com" target="_blank" class="link-btn">GitHub</a>
+          <a href="https://map.kakao.com" target="_blank" class="link-btn">KakaoMap</a>
+          <a href="https://www.naver.com" target="_blank" class="link-btn">NAVER</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      Copyright &copy; 2026 Lee, JaeWon
+    </footer>
+  </div>
+</body>
+</html>
