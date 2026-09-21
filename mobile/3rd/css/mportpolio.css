@@ -1,0 +1,160 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Malgun Gothic', sans-serif;
+}
+
+body {
+  background-color: #f2f4f3;
+  color: #333333;
+}
+
+/* 전체 모바일 컨테이너 */
+#container {
+  max-width: 480px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 짙은 녹색 헤더 */
+header {
+  background-color: #2b612d;
+  color: #ffffff;
+  text-align: center;
+  padding: 16px 10px;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* 상단 탭 내비게이션 */
+nav {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #e5ece5;
+  padding: 6px 10px;
+  gap: 4px;
+}
+
+nav a {
+  text-decoration: none;
+  font-size: 11px;
+  color: #ffffff;
+  background-color: #636b94;
+  padding: 4px 8px;
+  border-radius: 2px;
+}
+
+/* 현재 활성화된 페이지 탭 */
+nav a.active {
+  background-color: #3b3f5c;
+  font-weight: bold;
+}
+
+/* 본문 메인 콘텐츠 영역 */
+main {
+  flex: 1;
+  padding: 15px;
+}
+
+/* 각 항목 소제목 라벨 */
+.section-title {
+  display: inline-block;
+  background-color: #a8d5a2;
+  color: #173814;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 3px 8px;
+  margin-bottom: 12px;
+}
+
+/* 자기소개 사진 및 본문 배치 */
+.profile-box {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.profile-img {
+  width: 90px;
+  height: 115px;
+  background-color: #d1d5db;
+  border: 1px solid #999;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.intro-text {
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: #222222;
+  text-align: justify;
+}
+
+/* 인적사항/학력사항 테이블 */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11.5px;
+  margin-bottom: 16px;
+}
+
+th, td {
+  border: 1px solid #c0c0c0;
+  padding: 6px 8px;
+}
+
+th {
+  background-color: #eaf0ea;
+  text-align: left;
+  font-weight: bold;
+}
+
+/* 학술/경력 목록 영역 */
+.item-group {
+  margin-bottom: 16px;
+}
+
+.item-group ul {
+  padding-left: 20px;
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+
+/* 참조링크 영역 */
+.link-box {
+  margin-top: 15px;
+}
+
+.link-btn-group {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.link-btn {
+  text-decoration: none;
+  font-size: 11px;
+  color: #333;
+  background-color: #e6ede6;
+  border: 1px solid #b8c7b8;
+  padding: 4px 8px;
+}
+
+/* 하단 카피라이트 풋터 */
+footer {
+  background-color: #234724;
+  color: #ffffff;
+  text-align: center;
+  padding: 8px;
+  font-size: 11px;
+}
