@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>이재원 홈페이지 - 자기소개</title>
+  
+  <!-- 32x32 파비콘 연결 -->
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
+  
   <link rel="stylesheet" href="css/mportpolio.css">
 </head>
+
 <body>
   <div id="container">
     <header>
@@ -24,19 +30,57 @@
       <div class="section-title">자기소개</div>
 
       <div class="profile-box">
-        <img src="img/profile.jpg" alt="프로필 사진" class="profile-img" onerror="this.src='https://via.placeholder.com/90x115?text=Profile'">
+        <img src="img/profile.jpg" alt="프로필 사진" class="profile-img"
+          onerror="this.src='https://via.placeholder.com/90x115?text=Profile'">
         <p class="intro-text">
           안녕하세요. 장안대학교 컴퓨터공학과에 재학 중인 이재원입니다.<br><br>
-          웹 및 모바일 서비스 개발에 깊은 관심을 가지고 다양한 프로젝트를 통해 실무 역량을 다져가고 있습니다. 새로운 기술을 탐구하고 코드로 구현하는 과정에서 즐거움을 느끼며, 어떤 환경에서도 꾸준히 배우고 책임감 있게 성장해 나가는 개발자가 되고자 합니다.
+          웹 및 모바일 서비스 개발에 깊은 관심을 가지고 다양한 프로젝트를 통해 실무 역량을 다져가고 있습니다. 새로운 기술을 탐구하고 코드로 구현하는 과정에서 즐거움을 느끼며, 어떤 환경에서도 꾸준히
+          배우고 책임감 있게 성장해 나가는 개발자가 되고자 합니다.
         </p>
       </div>
 
+      <!-- 포트폴리오 섹션 -->
       <div class="link-box">
-        <div class="section-title">참조링크</div>
+        <div class="section-title">포트폴리오</div>
         <div class="link-btn-group">
-          <a href="https://github.com" target="_blank" class="link-btn">GitHub</a>
-          <a href="https://www.naver.com" target="_blank" class="link-btn">NAVER</a>
-          <a href="https://www.google.com" target="_blank" class="link-btn">Google</a>
+          <a href="https://github.com/jaewon-03/git_project_20221033" target="_blank" class="link-btn">📂 GitHub 포트폴리오 저장소 바로가기</a>
+        </div>
+      </div>
+
+      <!-- 참고 사이트 (참조링크) 버튼 3개 구성 -->
+      <div class="link-box">
+        <div class="section-title">참고 사이트</div>
+        <div class="link-btn-group">
+          <a href="https://map.naver.com" target="_blank" class="link-btn">네이버 플레이스 (위치 기반 맛집)</a>
+          <a href="https://www.diningcode.com" target="_blank" class="link-btn">다이닝코드 (빅데이터 필터링)</a>
+          <a href="https://www.pinterest.co.kr" target="_blank" class="link-btn">Pinterest (UI/UX 레퍼런스)</a>
+        </div>
+      </div>
+
+      <!-- 외부 프로그램 링크 (현재 위치, 유튜브, 인스타그램 추가) -->
+      <div class="link-box">
+        <div class="section-title">외부 프로그램 링크</div>
+        <div class="link-btn-group">
+          <a href="mailto:leejhl1017@gmail.com" class="link-btn">이메일 링크</a>
+          <a href="tel:01048518217" target="_blank" class="link-btn">전화번호 링크</a>
+          <a href="sms:01048518217" target="_blank" class="link-btn">SMS 문자 링크</a>
+          <a href="http://maps.google.com/maps?q=37.215000,126.976425&hl=ko" target="_blank" class="link-btn">위성좌표 링크</a>
+          <a href="javascript:void(0);" onclick="openCurrentLocationMap()" class="link-btn">📍 주소 링크 (현재 위치)</a>
+          <a href="https://www.youtube.com" target="_blank" class="link-btn">YouTube</a>
+          <a href="https://www.instagram.com" target="_blank" class="link-btn">Instagram</a>
+        </div>
+      </div>
+
+      <!-- 배경음악 컨트롤 박스 -->
+      <div class="link-box">
+        <div class="section-title">배경음악 (BGM)</div>
+        <audio id="bgmAudio" loop>
+          <source src="audio/bgm.mp3" type="audio/mp3">
+          브라우저가 오디오 태그를 지원하지 않습니다.
+        </audio>
+        <div class="link-btn-group" style="margin-top: 6px;">
+          <button type="button" class="link-btn" onclick="playBgm()">▶ 음악 재생</button>
+          <button type="button" class="link-btn" onclick="stopBgm(event)">⏸ 일시 정지</button>
         </div>
       </div>
     </main>
@@ -45,5 +89,57 @@
       Copyright &copy; 2026 Lee, JaeWon
     </footer>
   </div>
+
+  <script>
+    /* BGM 제어 스크립트 */
+    const bgm = document.getElementById('bgmAudio');
+
+    function playBgm() {
+      bgm.play();
+    }
+
+    function stopBgm(e) {
+      if (e) e.stopPropagation(); // 버튼 클릭이 화면 전체 클릭으로 번지는 것 방지
+      document.removeEventListener('click', startOnFirstClick); // 대기 중인 자동재생 리스너 즉시 제거
+      bgm.pause();
+    }
+
+    function startOnFirstClick() {
+      bgm.play();
+      document.removeEventListener('click', startOnFirstClick);
+    }
+
+    // 접속 시 즉시 자동 재생 시도
+    window.addEventListener('DOMContentLoaded', () => {
+      const playPromise = bgm.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // 브라우저 차단 시 첫 클릭 대기
+          document.addEventListener('click', startOnFirstClick);
+        });
+      }
+    });
+
+    /* 실시간 현재 위치 지도 열기 스크립트 */
+    function openCurrentLocationMap() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            window.open(`https://maps.google.com/maps?q=${lat},${lng}&hl=ko`, '_blank');
+          },
+          (error) => {
+            alert("현재 위치 정보를 가져올 수 없어 기본 주소로 이동합니다.");
+            window.open('https://maps.google.com/maps?q=대한민국+경기도+화성시+와우리&hl=ko', '_blank');
+          }
+        );
+      } else {
+        alert("이 브라우저는 위치 추적 기능을 지원하지 않습니다.");
+        window.open('https://maps.google.com/maps?q=대한민국+경기도+화성시+와우리&hl=ko', '_blank');
+      }
+    }
+  </script>
 </body>
+
 </html>

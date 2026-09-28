@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Malgun Gothic', sans-serif;
+  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
 }
 
 body {
@@ -10,16 +10,18 @@ body {
   color: #333333;
 }
 
-/* 전체 모바일 컨테이너 */
+/* 전체 컨테이너: 480px -> 860px 확장 */
 #container {
-  max-width: 480px;
-  margin: 0 auto;
+  width: 92%;
+  max-width: 860px;
+  margin: 25px auto;
   background-color: #ffffff;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-  min-height: 100vh;
+  border: 1px solid #d0d7d0;
+  border-radius: 6px;
+  min-height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
 }
 
 /* 상단 짙은 녹색 헤더 */
@@ -27,12 +29,15 @@ header {
   background-color: #2b612d;
   color: #ffffff;
   text-align: center;
-  padding: 16px 10px;
+  padding: 22px 16px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 header h1 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
+  letter-spacing: -0.5px;
 }
 
 /* 상단 탭 내비게이션 */
@@ -40,17 +45,22 @@ nav {
   display: flex;
   justify-content: flex-end;
   background-color: #e5ece5;
-  padding: 6px 10px;
-  gap: 4px;
+  padding: 10px 16px;
+  gap: 8px;
 }
 
 nav a {
   text-decoration: none;
-  font-size: 11px;
+  font-size: 13px;
   color: #ffffff;
   background-color: #636b94;
-  padding: 4px 8px;
-  border-radius: 2px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+nav a:hover {
+  background-color: #4d5475;
 }
 
 /* 현재 활성화된 페이지 탭 */
@@ -62,7 +72,7 @@ nav a.active {
 /* 본문 메인 콘텐츠 영역 */
 main {
   flex: 1;
-  padding: 15px;
+  padding: 28px;
 }
 
 /* 각 항목 소제목 라벨 */
@@ -70,84 +80,105 @@ main {
   display: inline-block;
   background-color: #a8d5a2;
   color: #173814;
-  font-size: 12px;
+  font-size: 13.5px;
   font-weight: bold;
-  padding: 3px 8px;
-  margin-bottom: 12px;
+  padding: 5px 12px;
+  border-radius: 3px;
+  margin-bottom: 14px;
 }
 
 /* 자기소개 사진 및 본문 배치 */
 .profile-box {
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 24px;
+  background-color: #fafbfa;
+  padding: 16px;
+  border: 1px solid #e2eae2;
+  border-radius: 4px;
 }
 
 .profile-img {
-  width: 90px;
-  height: 115px;
+  width: 110px;
+  height: 140px;
   background-color: #d1d5db;
-  border: 1px solid #999;
+  border: 1px solid #bbb;
+  border-radius: 4px;
   object-fit: cover;
   flex-shrink: 0;
 }
 
 .intro-text {
-  font-size: 11.5px;
-  line-height: 1.55;
-  color: #222222;
-  text-align: justify;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #2b2b2b;
+  word-break: keep-all;
 }
 
 /* 인적사항/학력사항 테이블 */
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 11.5px;
-  margin-bottom: 16px;
+  font-size: 13.5px;
+  margin-bottom: 22px;
 }
 
 th, td {
   border: 1px solid #c0c0c0;
-  padding: 6px 8px;
+  padding: 10px 12px;
 }
 
 th {
   background-color: #eaf0ea;
   text-align: left;
   font-weight: bold;
+  color: #244123;
 }
 
 /* 학술/경력 목록 영역 */
 .item-group {
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 
 .item-group ul {
-  padding-left: 20px;
-  font-size: 11.5px;
-  line-height: 1.6;
+  padding-left: 24px;
+  font-size: 13.5px;
+  line-height: 1.7;
 }
 
-/* 참조링크 영역 */
+/* 링크 영역 및 BGM 컨트롤 */
 .link-box {
-  margin-top: 15px;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed #d8e2d8;
 }
 
 .link-btn-group {
   display: flex;
-  gap: 6px;
-  margin-top: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
 }
 
+/* a 태그와 button 태그 스타일 공통 적용 */
 .link-btn {
+  display: inline-block;
   text-decoration: none;
-  font-size: 11px;
-  color: #333;
-  background-color: #e6ede6;
+  font-size: 12.5px;
+  color: #2d3b2d;
+  background-color: #edf3ed;
   border: 1px solid #b8c7b8;
-  padding: 4px 8px;
+  padding: 7px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.link-btn:hover {
+  background-color: #dce7dc;
+  border-color: #9cb39c;
 }
 
 /* 하단 카피라이트 풋터 */
@@ -155,6 +186,32 @@ footer {
   background-color: #234724;
   color: #ffffff;
   text-align: center;
-  padding: 8px;
-  font-size: 11px;
+  padding: 14px 10px;
+  font-size: 12px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* 모바일 좁은 화면 최적화 */
+@media (max-width: 650px) {
+  #container {
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    border: none;
+  }
+
+  main {
+    padding: 16px;
+  }
+
+  .profile-box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  nav {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }
