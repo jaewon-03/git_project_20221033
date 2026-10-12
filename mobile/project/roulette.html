@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="오늘 뭐 먹지? 돌림판 - 후보를 직접 넣고 돌려서 메뉴나 식당을 정해 보세요.">
+  <meta name="theme-color" content="#f25c1f">
+  <title>오늘 뭐 먹지? - 돌림판</title>
+
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="inner header-inner">
+      <a href="index.html" class="logo"><img src="img/favicon.svg" alt="" class="logo-icon">오늘 뭐 먹지?</a>
+      <!-- 배경음악 (BGM): 재생/정지 버튼 -->
+      <div class="bgm-control" id="bgmControl">
+        <audio id="bgmAudio" src="audio/bgm.mp3" loop preload="none"></audio>
+        <span class="bgm-label"><span class="bgm-bars" aria-hidden="true"><i></i><i></i><i></i></span>BGM</span>
+        <button type="button" class="bgm-btn" id="bgmPlay" aria-label="배경음악 재생" title="재생">▶</button>
+        <button type="button" class="bgm-btn" id="bgmStop" aria-label="배경음악 정지" title="정지">⏸</button>
+      </div>
+      <!-- 좁은 화면에서만 보이는 햄버거 메뉴 버튼 -->
+      <button type="button" class="menu-toggle" id="menuToggle" aria-controls="mainNav" aria-expanded="false" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="주요 메뉴">
+        <a href="index.html"><span class="nav-icon">🎲</span><span class="nav-label">추첨</span></a>
+        <a href="worldcup.html"><span class="nav-icon">🏆</span><span class="nav-label">월드컵</span></a>
+        <a href="roulette.html" class="active" aria-current="page"><span class="nav-icon">🎡</span><span class="nav-label">돌림판</span></a>
+        <a href="menus.html"><span class="nav-icon">📖</span><span class="nav-label">도감</span></a>
+        <a href="history.html"><span class="nav-icon">📝</span><span class="nav-label">기록</span></a>
+        <a href="split.html"><span class="nav-icon">💸</span><span class="nav-label">N빵</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="inner" data-page="roulette">
+    <section class="intro">
+      <h1>돌림판 🎡</h1>
+      <p>후보를 직접 넣고 돌려 보세요. 학교 앞 단골집, 메뉴, "오늘 누가 계산?"까지 뭐든 정할 수 있어요.</p>
+    </section>
+
+    <div class="roulette-grid">
+      <!-- 왼쪽: 돌림판 -->
+      <section class="panel wheel-panel">
+        <div class="wheel-wrap">
+          <span class="wheel-pointer" aria-hidden="true"></span>
+          <canvas id="wheelCanvas" class="wheel-canvas" width="440" height="440" role="img" aria-label="돌림판"></canvas>
+          <button type="button" id="spinBtn" class="wheel-center">돌리기</button>
+        </div>
+
+        <div class="wheel-result" id="wheelResult" aria-live="polite">
+          <p class="wheel-result-label">결과</p>
+          <!-- 결과가 메뉴 목록에 있는 메뉴면 사진도 보여줌 -->
+          <span class="thumb wheel-result-photo" id="wheelResultPhoto" hidden></span>
+          <strong id="wheelResultText">돌림판을 돌려 보세요!</strong>
+          <div class="wheel-result-actions" id="wheelResultActions" hidden>
+            <a id="wheelMapLink" class="action-btn small" target="_blank" rel="noopener">📍 지도에서 찾기</a>
+            <a id="wheelSmsLink" class="action-btn small">💬 문자</a>
+            <button type="button" id="wheelShareBtn" class="action-btn small">🔗 공유·복사</button>
+            <button type="button" id="wheelRemoveBtn" class="action-btn small">🔄 이거 빼고 다시</button>
+            <button type="button" id="wheelDecideBtn" class="action-btn small primary">✅ 이걸로 결정</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 오른쪽: 후보 편집 -->
+      <section class="panel option-panel">
+        <h2><span class="step">✎</span>후보 정하기 <small id="optionCount" class="option-count"></small></h2>
+
+        <form class="option-form" id="optionForm">
+          <label for="optionInput" class="sr-only">후보 이름</label>
+          <input type="text" id="optionInput" maxlength="16" placeholder="예: 학교 앞 김밥천국" autocomplete="off">
+          <button type="submit" class="action-btn primary-soft">추가</button>
+        </form>
+
+        <ul class="option-list" id="optionList"></ul>
+
+        <div class="option-quick">
+          <p class="option-quick-label">한 번에 채우기</p>
+          <div class="chips">
+            <button type="button" class="chip" data-fill="random">🎲 메뉴 8개 무작위</button>
+            <button type="button" class="chip" data-fill="favorites">⭐ 즐겨찾기 메뉴</button>
+            <button type="button" class="chip" data-fill="people">🙋 누가 계산? (사람 4명)</button>
+            <button type="button" class="chip" data-fill="clear">🧹 모두 지우기</button>
+          </div>
+        </div>
+        <p class="option-tip">후보는 2~12개까지 넣을 수 있어요. 넣은 후보는 이 브라우저에 기억돼요.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner footer-inner">
+      <p class="copyright">© 2026 Lee, JaeWon · 모바일통합구현 프로젝트 · <a href="credits.html">출처·참고 사이트</a> · <a href="plan.html">기획서</a></p>
+      <ul class="sns-links">
+        <li><a href="https://www.instagram.com" class="sns-instagram" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.naver.com" class="sns-naver" target="_blank" rel="noopener" aria-label="NAVER" title="NAVER"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.google.com" class="sns-google" target="_blank" rel="noopener" aria-label="Google" title="Google"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.youtube.com" class="sns-youtube" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><span class="sns-icon"></span></a></li>
+        <li><a href="mailto:leejhl1017@gmail.com" class="sns-mail" aria-label="이메일 보내기" title="이메일 보내기"><span class="sns-icon"></span></a></li>
+        <li><a href="tel:01048518217" class="sns-phone" aria-label="전화 걸기" title="전화 걸기"><span class="sns-icon"></span></a></li>
+        <li><a href="https://github.com/jaewon-03" class="sns-github" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><span class="sns-icon"></span></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- 모든 탭이 같은 스크립트를 씀 (router.js가 탭에 맞는 기능을 실행) -->
+  <script src="js/menus.js"></script>
+  <script src="js/photo-credits.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/worldcup.js"></script>
+  <script src="js/dex.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/roulette.js"></script>
+  <script src="js/split.js"></script>
+  <script src="js/credits.js"></script>
+  <script src="js/router.js"></script>
+</body>
+
+</html>

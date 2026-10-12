@@ -5,150 +5,289 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>이재원 홈페이지 - 경력사항</title>
-  
-  <!-- 32x32 파비콘 연결 -->
+
+  <!-- 파비콘 -->
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon.png">
-  
+
+  <!-- CSS 연결 -->
   <link rel="stylesheet" href="css/mportpolio.css">
 </head>
 
 <body>
   <div id="container">
+
+    <!-- 상단 헤더 -->
     <header>
       <h1>이재원 홈페이지</h1>
     </header>
 
+    <!-- 상단 메뉴 -->
     <nav>
-      <a href="mintro.html">소개</a>
-      <a href="minfo.html">인적</a>
-      <a href="mstudy.html">학술</a>
-      <a href="mcareer.html" class="active">경력</a>
-      <a href="midea.html">아이디어</a>
+      <div class="nav-item">
+        <a href="mintro.html">소개 ▾</a>
+        <div class="dropdown-menu">
+          <a href="mintro.html">자기소개</a>
+          <a href="mintro.html#intro">소개 내용</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="minfo.html">인적 ▾</a>
+        <div class="dropdown-menu">
+          <a href="minfo.html">인적사항</a>
+          <a href="minfo.html#education">학력사항</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="mstudy.html">학술 ▾</a>
+        <div class="dropdown-menu">
+          <a href="mstudy.html">학술 활동</a>
+          <a href="mstudy.html#study">학습 내용</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="mcareer.html" class="active">경력 ▾</a>
+        <div class="dropdown-menu">
+          <a href="mcareer.html">경력사항</a>
+          <a href="mcareer.html#portfolio">포트폴리오</a>
+          <a href="mcareer.html#reference">참고 사이트</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="midea.html">아이디어 ▾</a>
+        <div class="dropdown-menu">
+          <a href="midea.html">아이디어 소개</a>
+        </div>
+      </div>
     </nav>
 
+    <!-- 본문 -->
     <main>
-      <div class="section-title">세미나(연수)</div>
-      <div class="item-group">
-        <ul>
-          <li>업데이트 예정</li>
-          <li>업데이트 예정</li>
-        </ul>
+
+      <div id="career">
+        <div class="section-title">세미나(연수)</div>
+        <div class="item-group">
+          <ul>
+            <li>업데이트 예정</li>
+            <li>업데이트 예정</li>
+          </ul>
+        </div>
+
+        <div class="section-title">인턴쉽</div>
+        <div class="item-group">
+          <ul>
+            <li>업데이트 예정</li>
+          </ul>
+        </div>
+
+        <div class="section-title">봉사</div>
+        <div class="item-group">
+          <ul>
+            <li>업데이트 예정</li>
+            <li>업데이트 예정</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="section-title">인턴쉽</div>
-      <div class="item-group">
-        <ul>
-          <li>업데이트 예정</li>
-        </ul>
-      </div>
-
-      <div class="section-title">봉사</div>
-      <div class="item-group">
-        <ul>
-          <li>업데이트 예정</li>
-          <li>업데이트 예정</li>
-        </ul>
-      </div>
-
-      <!-- 포트폴리오 섹션 -->
-      <div class="link-box">
+      <!-- 포트폴리오 -->
+      <div class="link-box" id="portfolio">
         <div class="section-title">포트폴리오</div>
         <div class="link-btn-group">
-          <a href="https://github.com/jaewon-03/git_project_20221033" target="_blank" class="link-btn">📂 GitHub 포트폴리오 저장소 바로가기</a>
+          <a
+            href="https://github.com/jaewon-03/git_project_20221033"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            📂 GitHub 포트폴리오 저장소 바로가기
+          </a>
         </div>
       </div>
 
-      <!-- 참고 사이트 (참조링크) 버튼 3개 구성 -->
-      <div class="link-box">
+      <!-- 참고 사이트 -->
+      <div class="link-box" id="reference">
         <div class="section-title">참고 사이트</div>
         <div class="link-btn-group">
-          <a href="https://map.naver.com" target="_blank" class="link-btn">네이버 플레이스 (위치 기반 맛집)</a>
-          <a href="https://www.diningcode.com" target="_blank" class="link-btn">다이닝코드 (빅데이터 맛집)</a>
-          <a href="https://www.pinterest.co.kr" target="_blank" class="link-btn">Pinterest (UI/UX 레퍼런스)</a>
+          <a
+            href="https://map.naver.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            네이버 플레이스 (위치 기반 맛집)
+          </a>
+
+          <a
+            href="https://www.diningcode.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            다이닝코드 (빅데이터 맛집)
+          </a>
+
+          <a
+            href="https://www.pinterest.co.kr"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            Pinterest (UI/UX 레퍼런스)
+          </a>
         </div>
       </div>
 
-      <!-- 모바일 외부 프로그램 링크 -->
+      <!-- 외부 프로그램 링크 -->
       <div class="link-box">
         <div class="section-title">외부 프로그램 링크</div>
         <div class="link-btn-group">
-          <a href="mailto:leejhl1017@gmail.com" class="link-btn">이메일 링크</a>
-          <a href="tel:01048518217" target="_blank" class="link-btn">전화번호 링크</a>
-          <a href="sms:01048518217" target="_blank" class="link-btn">SMS 문자 링크</a>
-          <a href="http://maps.google.com/maps?q=37.215000,126.976425&hl=ko" target="_blank" class="link-btn">위성좌표 링크</a>
-          <a href="javascript:void(0);" onclick="openCurrentLocationMap()" class="link-btn">📍 주소 링크 (현재 위치)</a>
-          <a href="https://www.youtube.com" target="_blank" class="link-btn">YouTube</a>
-          <a href="https://www.instagram.com" target="_blank" class="link-btn">Instagram</a>
+          <a href="mailto:leejhl1017@gmail.com" class="link-btn">
+            이메일 링크
+          </a>
+
+          <a href="tel:01048518217" class="link-btn">
+            전화번호 링크
+          </a>
+
+          <a href="sms:01048518217" class="link-btn">
+            SMS 문자 링크
+          </a>
+
+          <a
+            href="https://maps.google.com/maps?q=37.215000,126.976425&hl=ko"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            위성좌표 링크
+          </a>
+
+          <a
+            href="javascript:void(0);"
+            onclick="openCurrentLocationMap()"
+            class="link-btn">
+            📍 주소 링크 (현재 위치)
+          </a>
+
+          <a
+            href="https://www.youtube.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            YouTube
+          </a>
+
+          <a
+            href="https://www.instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn">
+            Instagram
+          </a>
         </div>
       </div>
 
-      <!-- 배경음악 컨트롤 박스 -->
+      <!-- 배경음악 -->
       <div class="link-box">
         <div class="section-title">배경음악 (BGM)</div>
+
         <audio id="bgmAudio" loop>
-          <source src="audio/bgm.mp3" type="audio/mp3">
+          <source src="audio/bgm.mp3" type="audio/mpeg">
           브라우저가 오디오 태그를 지원하지 않습니다.
         </audio>
+
         <div class="link-btn-group" style="margin-top: 6px;">
-          <button type="button" class="link-btn" onclick="playBgm()">▶ 음악 재생</button>
-          <button type="button" class="link-btn" onclick="stopBgm(event)">⏸ 일시 정지</button>
+          <button
+            type="button"
+            class="link-btn"
+            onclick="playBgm()">
+            ▶ 음악 재생
+          </button>
+
+          <button
+            type="button"
+            class="link-btn"
+            onclick="stopBgm(event)">
+            ⏸ 일시 정지
+          </button>
         </div>
       </div>
+
     </main>
 
+    <!-- 하단 푸터 -->
     <footer>
       Copyright &copy; 2026 Lee, JaeWon
     </footer>
+
   </div>
 
+  <!-- BGM 및 현재 위치 지도 스크립트 -->
   <script>
-    /* BGM 제어 스크립트 */
     const bgm = document.getElementById('bgmAudio');
 
+    // 배경음악 재생
     function playBgm() {
-      bgm.play();
+      bgm.play().catch(() => {
+        alert('음악을 재생할 수 없습니다. 오디오 파일 경로를 확인해주세요.');
+      });
     }
 
+    // 배경음악 일시 정지
     function stopBgm(e) {
-      if (e) e.stopPropagation();
+      if (e) {
+        e.stopPropagation();
+      }
+
       document.removeEventListener('click', startOnFirstClick);
       bgm.pause();
     }
 
+    // 브라우저에서 자동 재생을 차단한 경우 첫 클릭 후 재생 시도
     function startOnFirstClick() {
-      bgm.play();
+      bgm.play().catch(() => {});
       document.removeEventListener('click', startOnFirstClick);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      const playPromise = bgm.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          document.addEventListener('click', startOnFirstClick);
-        });
-      }
+      bgm.play().catch(() => {
+        document.addEventListener('click', startOnFirstClick);
+      });
     });
 
-    /* 실시간 현재 위치 지도 열기 스크립트 */
+    // 현재 위치를 Google 지도에서 열기
     function openCurrentLocationMap() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            window.open(`https://maps.google.com/maps?q=${lat},${lng}&hl=ko`, '_blank');
-          },
-          (error) => {
-            alert("현재 위치 정보를 가져올 수 없어 기본 주소로 이동합니다.");
-            window.open('https://maps.google.com/maps?q=대한민국+경기도+화성시+와우리&hl=ko', '_blank');
-          }
+      if (!navigator.geolocation) {
+        alert('이 브라우저는 위치 추적 기능을 지원하지 않습니다.');
+        window.open(
+          'https://maps.google.com/maps?q=대한민국+경기도+화성시+와우리&hl=ko',
+          '_blank'
         );
-      } else {
-        alert("이 브라우저는 위치 추적 기능을 지원하지 않습니다.");
-        window.open('https://maps.google.com/maps?q=대한민국+경기도+화성시+와우리&hl=ko', '_blank');
+        return;
       }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          window.open(
+            `https://maps.google.com/maps?q=${lat},${lng}&hl=ko`,
+            '_blank'
+          );
+        },
+        () => {
+          alert('현재 위치 정보를 가져올 수 없어 기본 주소로 이동합니다.');
+
+          window.open(
+            'https://maps.google.com/maps?q=대한민국+경기도+화성시+와우리&hl=ko',
+            '_blank'
+          );
+        }
+      );
     }
   </script>
-</body>
 
+  <!-- 메뉴 클릭 이벤트 -->
+  <script src="js/mouse_event.js"></script>
+
+</body>
 </html>

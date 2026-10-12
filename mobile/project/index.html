@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="결정장애를 위한 메뉴 추천 웹 - 조건만 고르면 오늘의 메뉴를 골라 드려요.">
+  <meta name="theme-color" content="#f25c1f">
+  <title>오늘 뭐 먹지? - 메뉴 추첨</title>
+
+  <!-- 파비콘 -->
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <!-- 상단 헤더 + 메뉴 -->
+  <header class="site-header">
+    <div class="inner header-inner">
+      <a href="index.html" class="logo"><img src="img/favicon.svg" alt="" class="logo-icon">오늘 뭐 먹지?</a>
+      <!-- 배경음악 (BGM): 재생/정지 버튼 -->
+      <div class="bgm-control" id="bgmControl">
+        <audio id="bgmAudio" src="audio/bgm.mp3" loop preload="none"></audio>
+        <span class="bgm-label"><span class="bgm-bars" aria-hidden="true"><i></i><i></i><i></i></span>BGM</span>
+        <button type="button" class="bgm-btn" id="bgmPlay" aria-label="배경음악 재생" title="재생">▶</button>
+        <button type="button" class="bgm-btn" id="bgmStop" aria-label="배경음악 정지" title="정지">⏸</button>
+      </div>
+      <!-- 좁은 화면에서만 보이는 햄버거 메뉴 버튼 -->
+      <button type="button" class="menu-toggle" id="menuToggle" aria-controls="mainNav" aria-expanded="false" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="주요 메뉴">
+        <a href="index.html" class="active" aria-current="page"><span class="nav-icon">🎲</span><span class="nav-label">추첨</span></a>
+        <a href="worldcup.html"><span class="nav-icon">🏆</span><span class="nav-label">월드컵</span></a>
+        <a href="roulette.html"><span class="nav-icon">🎡</span><span class="nav-label">돌림판</span></a>
+        <a href="menus.html"><span class="nav-icon">📖</span><span class="nav-label">도감</span></a>
+        <a href="history.html"><span class="nav-icon">📝</span><span class="nav-label">기록</span></a>
+        <a href="split.html"><span class="nav-icon">💸</span><span class="nav-label">N빵</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="inner" data-page="home">
+    <!-- 시간대별 인사 -->
+    <section class="intro">
+      <h1 id="greetingTitle">점심 뭐 먹지? 🍽️</h1>
+      <p id="greetingSub">고민은 3초면 충분해요. 조건만 고르면 나머지는 운에 맡겨요.</p>
+    </section>
+
+    <!-- 날씨 맞춤 추천 (js/weather.js가 내용을 채움) -->
+    <section class="weather-box" id="weatherBox" aria-live="polite"></section>
+
+    <!-- 테마 바로가기 -->
+    <section class="themes" aria-label="테마 바로가기">
+      <div class="theme-list" id="themeList"></div>
+    </section>
+
+    <div class="home-grid">
+      <!-- 왼쪽: 조건 고르기 -->
+      <section class="panel filter-panel">
+        <h2><span class="step">1</span>조건 고르기</h2>
+
+        <div class="filter-group">
+          <h3>종류 <small>여러 개 선택 가능</small></h3>
+          <div class="chips" id="categoryChips"></div>
+        </div>
+
+        <div class="filter-group">
+          <h3>예산 <small>1인분 · 전국 기준 대략적인 가격</small></h3>
+          <div class="chips" id="budgetChips"></div>
+        </div>
+
+        <div class="filter-group">
+          <h3>상황 <small>모두 만족하는 메뉴만</small></h3>
+          <div class="chips" id="tagChips"></div>
+        </div>
+
+        <label class="switch-row">
+          <input type="checkbox" id="excludeRecent">
+          <span class="switch" aria-hidden="true"></span>
+          <span>최근 3일 동안 먹은 메뉴는 빼기</span>
+        </label>
+
+        <div class="filter-footer">
+          <div>
+            <p id="candidateCount" class="candidate-count"></p>
+            <p id="exclusionNote" class="exclusion-note" hidden></p>
+          </div>
+          <button type="button" id="resetFilters" class="text-btn">조건 초기화</button>
+        </div>
+      </section>
+
+      <!-- 오른쪽: 추첨 결과 -->
+      <section class="panel draw-panel">
+        <h2><span class="step">2</span>추첨하기</h2>
+
+        <div class="result-card" id="resultCard" aria-live="polite">
+          <div class="result-photo placeholder" id="resultPhoto"><span>?</span></div>
+          <div class="result-name" id="resultName">오늘의 메뉴는?</div>
+          <div class="result-meta" id="resultMeta">아래 버튼을 눌러 추첨을 시작하세요</div>
+          <div class="result-tags" id="resultTags"></div>
+        </div>
+
+        <button type="button" id="drawBtn" class="draw-btn">🎲 메뉴 추첨하기</button>
+
+        <div class="result-actions" id="resultActions" hidden>
+          <div class="action-group">
+            <span class="action-label">🗺️ 식당 찾기</span>
+            <div class="action-row four">
+              <a data-link="naver" class="action-btn small" target="_blank" rel="noopener">네이버 지도</a>
+              <a data-link="kakao" class="action-btn small" target="_blank" rel="noopener">카카오맵</a>
+              <button type="button" data-action="near" class="action-btn small">📍 내 주변</button>
+              <a data-link="school" class="action-btn small" target="_blank" rel="noopener">🏫 장안대 근처</a>
+            </div>
+          </div>
+          <div class="action-group">
+            <span class="action-label">📤 친구에게 알리기</span>
+            <div class="action-row three">
+              <a data-link="sms" class="action-btn small">💬 문자</a>
+              <a data-link="mail" class="action-btn small">✉️ 메일</a>
+              <button type="button" data-action="share" class="action-btn small">🔗 공유·복사</button>
+            </div>
+          </div>
+          <div class="action-row two">
+            <button type="button" id="skipBtn" class="action-btn">🔄 이거 말고</button>
+            <button type="button" id="decideBtn" class="action-btn primary">✅ 이걸로 결정</button>
+          </div>
+        </div>
+
+        <div class="excluded-box" id="excludedBox" hidden>
+          <span class="excluded-label">이번에 뺀 메뉴</span>
+          <span id="excludedList" class="excluded-list"></span>
+          <button type="button" id="clearExcluded" class="text-btn">모두 되돌리기</button>
+        </div>
+      </section>
+    </div>
+    <!-- 폰 화면 전용: 추첨 버튼이 안 보일 때 아래에 뜨는 빠른 추첨 버튼 -->
+    <button type="button" id="quickDrawBtn" class="quick-draw-btn">🎲 메뉴 추첨하기</button>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner footer-inner">
+      <p class="copyright">© 2026 Lee, JaeWon · 모바일통합구현 프로젝트 · <a href="credits.html">출처·참고 사이트</a> · <a href="plan.html">기획서</a></p>
+      <ul class="sns-links">
+        <li><a href="https://www.instagram.com" class="sns-instagram" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.naver.com" class="sns-naver" target="_blank" rel="noopener" aria-label="NAVER" title="NAVER"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.google.com" class="sns-google" target="_blank" rel="noopener" aria-label="Google" title="Google"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.youtube.com" class="sns-youtube" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><span class="sns-icon"></span></a></li>
+        <li><a href="mailto:leejhl1017@gmail.com" class="sns-mail" aria-label="이메일 보내기" title="이메일 보내기"><span class="sns-icon"></span></a></li>
+        <li><a href="tel:01048518217" class="sns-phone" aria-label="전화 걸기" title="전화 걸기"><span class="sns-icon"></span></a></li>
+        <li><a href="https://github.com/jaewon-03" class="sns-github" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><span class="sns-icon"></span></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- 모든 탭이 같은 스크립트를 씀 (router.js가 탭에 맞는 기능을 실행) -->
+  <script src="js/menus.js"></script>
+  <script src="js/photo-credits.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/worldcup.js"></script>
+  <script src="js/dex.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/roulette.js"></script>
+  <script src="js/split.js"></script>
+  <script src="js/credits.js"></script>
+  <script src="js/router.js"></script>
+</body>
+
+</html>

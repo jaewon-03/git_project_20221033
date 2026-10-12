@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="오늘 뭐 먹지? 메뉴 월드컵 - 둘 중 하나를 고르다 보면 오늘의 메뉴가 정해져요.">
+  <meta name="theme-color" content="#f25c1f">
+  <title>오늘 뭐 먹지? - 메뉴 월드컵</title>
+
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="inner header-inner">
+      <a href="index.html" class="logo"><img src="img/favicon.svg" alt="" class="logo-icon">오늘 뭐 먹지?</a>
+      <!-- 배경음악 (BGM): 재생/정지 버튼 -->
+      <div class="bgm-control" id="bgmControl">
+        <audio id="bgmAudio" src="audio/bgm.mp3" loop preload="none"></audio>
+        <span class="bgm-label"><span class="bgm-bars" aria-hidden="true"><i></i><i></i><i></i></span>BGM</span>
+        <button type="button" class="bgm-btn" id="bgmPlay" aria-label="배경음악 재생" title="재생">▶</button>
+        <button type="button" class="bgm-btn" id="bgmStop" aria-label="배경음악 정지" title="정지">⏸</button>
+      </div>
+      <!-- 좁은 화면에서만 보이는 햄버거 메뉴 버튼 -->
+      <button type="button" class="menu-toggle" id="menuToggle" aria-controls="mainNav" aria-expanded="false" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="main-nav" id="mainNav" aria-label="주요 메뉴">
+        <a href="index.html"><span class="nav-icon">🎲</span><span class="nav-label">추첨</span></a>
+        <a href="worldcup.html" class="active" aria-current="page"><span class="nav-icon">🏆</span><span class="nav-label">월드컵</span></a>
+        <a href="roulette.html"><span class="nav-icon">🎡</span><span class="nav-label">돌림판</span></a>
+        <a href="menus.html"><span class="nav-icon">📖</span><span class="nav-label">도감</span></a>
+        <a href="history.html"><span class="nav-icon">📝</span><span class="nav-label">기록</span></a>
+        <a href="split.html"><span class="nav-icon">💸</span><span class="nav-label">N빵</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="inner" data-page="worldcup">
+    <!-- 1. 시작 화면 -->
+    <section id="setupScreen">
+      <div class="intro">
+        <h1>메뉴 월드컵 🏆</h1>
+        <p>둘 중 더 끌리는 메뉴를 고르다 보면 오늘의 메뉴가 정해져요. 후보 수에 맞춰 대진이 자동으로 짜여요.</p>
+      </div>
+
+      <div class="panel setup-panel">
+        <h2>어떤 메뉴로 대결할까요?</h2>
+        <div class="source-list" id="sourceList" role="radiogroup" aria-label="대결할 메뉴"></div>
+        <p class="setup-info" id="setupInfo"></p>
+        <button type="button" id="startBtn" class="draw-btn">🏁 월드컵 시작하기</button>
+      </div>
+    </section>
+
+    <!-- 2. 대결 화면 -->
+    <section id="matchScreen" hidden>
+      <div class="match-head">
+        <h1 id="roundTitle">8강</h1>
+        <p id="roundProgress">1 / 4 경기</p>
+        <div class="progress-track"><span class="progress-fill" id="progressFill"></span></div>
+      </div>
+
+      <div class="match-arena">
+        <button type="button" class="match-card" id="leftCard"></button>
+        <span class="vs-badge" aria-hidden="true">VS</span>
+        <button type="button" class="match-card" id="rightCard"></button>
+      </div>
+
+      <p class="match-tip">더 먹고 싶은 메뉴를 눌러 주세요<span class="kbd-tip"> · 키보드 ← → 로도 고를 수 있어요</span></p>
+      <div class="match-footer">
+        <button type="button" id="quitBtn" class="text-btn">그만하고 처음으로</button>
+      </div>
+    </section>
+
+    <!-- 3. 우승 화면 -->
+    <section id="winnerScreen" hidden>
+      <div class="panel winner-panel">
+        <p class="winner-label">🏆 오늘의 우승 메뉴 🏆</p>
+        <div class="result-card winner-card" id="winnerCard">
+          <div class="result-photo" id="winnerPhoto"></div>
+          <div class="result-name" id="winnerName"></div>
+          <div class="result-meta" id="winnerMeta"></div>
+          <div class="result-tags" id="winnerTags"></div>
+        </div>
+        <p class="winner-path" id="winnerPath"></p>
+
+        <div class="result-actions" id="winnerActions">
+          <div class="action-group">
+            <span class="action-label">🗺️ 식당 찾기</span>
+            <div class="action-row four">
+              <a data-link="naver" class="action-btn small" target="_blank" rel="noopener">네이버 지도</a>
+              <a data-link="kakao" class="action-btn small" target="_blank" rel="noopener">카카오맵</a>
+              <button type="button" data-action="near" class="action-btn small">📍 내 주변</button>
+              <a data-link="school" class="action-btn small" target="_blank" rel="noopener">🏫 장안대 근처</a>
+            </div>
+          </div>
+          <div class="action-group">
+            <span class="action-label">📤 친구에게 알리기</span>
+            <div class="action-row three">
+              <a data-link="sms" class="action-btn small">💬 문자</a>
+              <a data-link="mail" class="action-btn small">✉️ 메일</a>
+              <button type="button" data-action="share" class="action-btn small">🔗 공유·복사</button>
+            </div>
+          </div>
+          <div class="action-row two">
+            <button type="button" id="againBtn" class="action-btn">🔁 다시 하기</button>
+            <button type="button" id="winnerDecide" class="action-btn primary">✅ 이걸로 결정</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner footer-inner">
+      <p class="copyright">© 2026 Lee, JaeWon · 모바일통합구현 프로젝트 · <a href="credits.html">출처·참고 사이트</a> · <a href="plan.html">기획서</a></p>
+      <ul class="sns-links">
+        <li><a href="https://www.instagram.com" class="sns-instagram" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.naver.com" class="sns-naver" target="_blank" rel="noopener" aria-label="NAVER" title="NAVER"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.google.com" class="sns-google" target="_blank" rel="noopener" aria-label="Google" title="Google"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.youtube.com" class="sns-youtube" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><span class="sns-icon"></span></a></li>
+        <li><a href="mailto:leejhl1017@gmail.com" class="sns-mail" aria-label="이메일 보내기" title="이메일 보내기"><span class="sns-icon"></span></a></li>
+        <li><a href="tel:01048518217" class="sns-phone" aria-label="전화 걸기" title="전화 걸기"><span class="sns-icon"></span></a></li>
+        <li><a href="https://github.com/jaewon-03" class="sns-github" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><span class="sns-icon"></span></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- 모든 탭이 같은 스크립트를 씀 (router.js가 탭에 맞는 기능을 실행) -->
+  <script src="js/menus.js"></script>
+  <script src="js/photo-credits.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/worldcup.js"></script>
+  <script src="js/dex.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/roulette.js"></script>
+  <script src="js/split.js"></script>
+  <script src="js/credits.js"></script>
+  <script src="js/router.js"></script>
+</body>
+
+</html>
