@@ -62,19 +62,71 @@ function initHomePage() {
     else set.add(value);
   }
 
+  /* 테마 조건에 맞는 메뉴 하나를 무작위로 (방금 보여준 메뉴는 빼고) */
+  function pickThemeMenu(theme, exceptName) {
+    const blocked = loadData(STORAGE_KEYS.blocked, []); // 안 먹는 메뉴는 예시로도 보여주지 않음
+    const list = MENUS.filter((menu) =>
+      menu.name !== exceptName &&
+      !blocked.includes(menu.name) &&
+      menu.price <= BUDGETS[theme.budgetIndex].max &&
+      theme.tags.every((tag) => menu.tags.includes(tag)));
+    return list.length ? pickRandom(list) : null;
+  }
+
   function renderThemes() {
+    // 마우스가 있는 기기에서만 사진 바꾸기 (폰은 누르는 순간 바로 테마가 적용되므로)
+    const canHover = window.matchMedia('(hover: hover)').matches;
+
     THEMES.forEach((theme, index) => {
       const card = document.createElement('button');
       card.type = 'button';
       card.className = 'theme-card';
       card.setAttribute('aria-pressed', 'false');
       card.innerHTML =
+        '<span class="theme-visual">' +
         '<span class="theme-emoji">' + theme.emoji + '</span>' +
+        '<img class="theme-photo" alt="">' +
+        '</span>' +
         '<span class="theme-title">' + theme.title + '</span>' +
         '<span class="theme-desc">' + theme.desc + '</span>';
       card.addEventListener('click', () => applyTheme(index));
       el.themeList.appendChild(card);
+      if (canHover) setupThemePhoto(card, theme);
     });
+  }
+
+  /* 테마 카드에 마우스를 올리면(mouseover) 이모지가 그 테마에 맞는 메뉴 사진으로 바뀌고,
+     떼면(mouseout) 원래 이모지로 돌아옴. 올릴 때마다 다른 메뉴 사진이 나옴 */
+  function setupThemePhoto(card, theme) {
+    const photo = card.querySelector('.theme-photo');
+    const desc = card.querySelector('.theme-desc');
+    let next = pickThemeMenu(theme, null);
+    if (!next) return;
+
+    // 다음에 보여줄 사진을 미리 받아 둠 (올리자마자 바로 보이게)
+    function preloadNext() {
+      next = pickThemeMenu(theme, photo.dataset.name) || next;
+      preloadMenuImages([next]);
+    }
+    preloadMenuImages([next]);
+
+    card.addEventListener('mouseover', () => {
+      if (card.classList.contains('show-photo')) return; // 카드 안에서 움직일 때는 그대로
+      photo.src = menuImageUrl(next);
+      photo.dataset.name = next.name;
+      desc.textContent = '예: ' + next.name;
+      card.classList.add('show-photo');
+      preloadNext();
+    });
+
+    card.addEventListener('mouseout', (e) => {
+      if (card.contains(e.relatedTarget)) return; // 아직 카드 안
+      card.classList.remove('show-photo');
+      desc.textContent = theme.desc;
+    });
+
+    // 사진을 못 불러오면 이모지 그대로
+    photo.addEventListener('error', () => card.classList.remove('show-photo'));
   }
 
   function renderChips() {
@@ -339,7 +391,8 @@ function initHomePage() {
   const updateMenuActions = setupMenuActions(el.resultActions, '오늘 메뉴는');
   const greeting = getTimeGreeting();
   el.greetingTitle.textContent = greeting.title;
-  el.greetingSub.textContent = greeting.sub;
+  const user = typeof Auth !== 'undefined' ? Auth.getCurrentUser() : null;
+  el.greetingSub.textContent = (user ? user.nickname + '님, ' : '') + greeting.sub;
 
   renderThemes();
   renderChips();

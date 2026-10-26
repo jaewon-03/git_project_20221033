@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="오늘 뭐 먹지? 게시판 - 학교 앞 맛집, 메뉴 고민, 먹는 이야기를 나눠요.">
+  <meta name="theme-color" content="#f25c1f">
+  <title>오늘 뭐 먹지? - 게시판</title>
+
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="inner header-inner">
+      <a href="index.html" class="logo"><img src="img/favicon.svg" alt="" class="logo-icon">오늘 뭐 먹지?</a>
+      <!-- 배경음악 (BGM): 재생/정지 버튼 -->
+      <div class="bgm-control" id="bgmControl">
+        <audio id="bgmAudio" src="audio/bgm.mp3" loop preload="none"></audio>
+        <span class="bgm-label"><span class="bgm-bars" aria-hidden="true"><i></i><i></i><i></i></span>BGM</span>
+        <button type="button" class="bgm-btn" id="bgmPlay" aria-label="배경음악 재생" title="재생">▶</button>
+        <button type="button" class="bgm-btn" id="bgmStop" aria-label="배경음악 정지" title="정지">⏸</button>
+      </div>
+      <!-- 좁은 화면에서만 보이는 햄버거 메뉴 버튼 -->
+      <button type="button" class="menu-toggle" id="menuToggle" aria-controls="mainNav" aria-expanded="false" aria-label="메뉴 열기">
+        <span></span><span></span><span></span>
+      </button>
+      <!-- 메뉴: 마우스를 올리면(PC) 또는 ▾를 누르면(햄버거 메뉴) 하위 메뉴가 열림 -->
+      <nav class="main-nav" id="mainNav" aria-label="주요 메뉴">
+        <!-- 햄버거 메뉴에서만 보이는 로그인/내 계정 (account.js가 채움) -->
+        <div class="nav-account" id="navAccount"></div>
+        <div class="nav-item">
+          <a href="index.html" class="nav-link"><span class="nav-icon">🎲</span><span class="nav-label">추첨</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="추첨 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="index.html#weatherBox">🌤️ 날씨 맞춤 추천</a>
+            <a href="index.html#themes">🏷️ 상황별 테마</a>
+            <a href="index.html#filters">🎯 조건 고르기</a>
+            <a href="index.html#draw">🎲 메뉴 추첨하기</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="worldcup.html" class="nav-link"><span class="nav-icon">🏆</span><span class="nav-label">월드컵</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="월드컵 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="worldcup.html?source=all">🍽️ 전체 메뉴로 대결</a>
+            <a href="worldcup.html?source=filters">🎯 추첨 조건으로 대결</a>
+            <a href="worldcup.html?source=favorites">⭐ 즐겨찾기로 대결</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="roulette.html" class="nav-link"><span class="nav-icon">🎡</span><span class="nav-label">돌림판</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="돌림판 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="roulette.html#wheel">🎡 돌림판 돌리기</a>
+            <a href="roulette.html#options">✏️ 후보 정하기</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="menus.html" class="nav-link"><span class="nav-icon">📖</span><span class="nav-label">도감</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="도감 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="menus.html?cat=전체">📖 전체 메뉴</a>
+            <a href="menus.html?fav=1">⭐ 즐겨찾기 메뉴</a>
+            <a href="menus.html#summary">📊 종류별 요약표</a>
+            <a href="menus.html?cat=한식">🍚 한식</a>
+            <a href="menus.html?cat=중식">🥟 중식</a>
+            <a href="menus.html?cat=일식">🍣 일식</a>
+            <a href="menus.html?cat=양식">🍝 양식</a>
+            <a href="menus.html?cat=분식">🍢 분식</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="history.html" class="nav-link"><span class="nav-icon">📝</span><span class="nav-label">기록</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="기록 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="history.html#stats">📊 한눈에 보기</a>
+            <a href="history.html#top3">🏅 자주 먹은 TOP 3</a>
+            <a href="history.html#records">🗓️ 최근 기록</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="split.html" class="nav-link"><span class="nav-icon">💸</span><span class="nav-label">N빵</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="N빵 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="split.html#calc">🧮 금액 나누기</a>
+            <a href="split.html#result">🧾 한 사람당 결과</a>
+          </div>
+        </div>
+        <div class="nav-item">
+          <a href="board.html" class="nav-link active" aria-current="page"><span class="nav-icon">📋</span><span class="nav-label">게시판</span><span class="nav-caret" aria-hidden="true">▾</span></a>
+          <button type="button" class="sub-toggle" aria-expanded="false" aria-label="게시판 하위 메뉴">▾</button>
+          <div class="dropdown-menu">
+            <a href="board.html">📋 전체 글</a>
+            <a href="board.html?cat=food">🍜 맛집 추천</a>
+            <a href="board.html?cat=pick">🤔 메뉴 고민</a>
+            <a href="board.html?cat=free">💬 자유</a>
+            <a href="board-write.html">✏️ 글쓰기</a>
+          </div>
+        </div>
+      </nav>
+      <!-- PC에서 보이는 로그인 버튼 / 내 계정 메뉴 (account.js가 채움) -->
+      <div class="account-box" id="accountBox"></div>
+    </div>
+  </header>
+
+  <main class="inner" data-page="board">
+    <section class="intro board-intro">
+      <div>
+        <h1>맛집·메뉴 게시판 📋</h1>
+        <p>학교 앞 맛집, 메뉴 고민, 먹는 이야기를 나눠요.</p>
+      </div>
+      <a href="board-write.html" class="draw-btn board-write-btn" id="writeBtn">✏️ 글쓰기</a>
+    </section>
+
+    <section class="panel board-panel">
+      <div class="board-toolbar">
+        <nav class="chips board-tabs" id="boardTabs" aria-label="말머리"></nav>
+        <form class="board-search" id="boardSearch" role="search">
+          <select id="searchField" class="select" aria-label="검색 범위">
+            <option value="title">제목</option>
+            <option value="all">제목+내용</option>
+            <option value="author">작성자</option>
+          </select>
+          <input type="search" id="searchQuery" maxlength="30" placeholder="검색어" aria-label="검색어">
+          <button type="submit" class="action-btn small">검색</button>
+        </form>
+      </div>
+
+      <p class="board-summary" id="boardSummary" aria-live="polite"></p>
+
+      <div class="board-table-wrap" id="boardTableWrap">
+        <table class="board-table">
+          <caption class="sr-only">게시글 목록</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-no">번호</th>
+              <th scope="col" class="col-cat">말머리</th>
+              <th scope="col" class="col-title">제목</th>
+              <th scope="col" class="col-author">작성자</th>
+              <th scope="col" class="col-date">날짜</th>
+              <th scope="col" class="col-num">조회</th>
+              <th scope="col" class="col-num">추천</th>
+            </tr>
+          </thead>
+          <tbody id="boardBody"></tbody>
+        </table>
+      </div>
+
+      <div class="empty-state board-empty" id="boardEmpty" hidden>
+        <span class="empty-emoji" aria-hidden="true">📝</span>
+        <strong id="boardEmptyTitle">아직 글이 없어요</strong>
+        <p id="boardEmptyDesc">첫 글을 남겨서 게시판을 열어 주세요!</p>
+      </div>
+
+      <nav class="pagination" id="boardPages" aria-label="페이지"></nav>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner footer-inner">
+      <p class="copyright">© 2026 Lee, JaeWon · 모바일통합구현 프로젝트 · <a href="credits.html">출처·참고 사이트</a> · <a href="plan.html">기획서</a></p>
+      <ul class="sns-links">
+        <li><a href="https://www.instagram.com" class="sns-instagram" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.naver.com" class="sns-naver" target="_blank" rel="noopener" aria-label="NAVER" title="NAVER"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.google.com" class="sns-google" target="_blank" rel="noopener" aria-label="Google" title="Google"><span class="sns-icon"></span></a></li>
+        <li><a href="https://www.youtube.com" class="sns-youtube" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube"><span class="sns-icon"></span></a></li>
+        <li><a href="mailto:leejhl1017@gmail.com" class="sns-mail" aria-label="이메일 보내기" title="이메일 보내기"><span class="sns-icon"></span></a></li>
+        <li><a href="tel:01048518217" class="sns-phone" aria-label="전화 걸기" title="전화 걸기"><span class="sns-icon"></span></a></li>
+        <li><a href="https://github.com/jaewon-03" class="sns-github" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><span class="sns-icon"></span></a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- 모든 탭이 같은 스크립트를 씀 (router.js가 탭에 맞는 기능을 실행) -->
+  <script src="js/menus.js"></script>
+  <script src="js/photo-credits.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/board-store.js"></script>
+  <script src="js/weather.js"></script>
+  <script src="js/home.js"></script>
+  <script src="js/worldcup.js"></script>
+  <script src="js/dex.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/roulette.js"></script>
+  <script src="js/split.js"></script>
+  <script src="js/credits.js"></script>
+  <script src="js/account.js"></script>
+  <script src="js/board.js"></script>
+  <script src="js/router.js"></script>
+</body>
+
+</html>

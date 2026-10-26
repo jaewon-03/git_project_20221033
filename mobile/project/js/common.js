@@ -1,21 +1,41 @@
 /* 여러 페이지에서 같이 쓰는 기능 모음 */
 
 /* ---------- localStorage 저장/불러오기 ----------
-   시크릿 창 등 저장소를 못 쓰는 환경에서도 오류 없이 동작하도록 try/catch로 감쌉니다. */
+   시크릿 창 등 저장소를 못 쓰는 환경에서도 오류 없이 동작하도록 try/catch로 감쌉니다.
+   로그인하면 회원마다 따로 저장합니다. (예: wte-history@jaewon) 로그인 전에는 이 브라우저 공용 저장 */
 const STORAGE_KEYS = {
   history: 'wte-history',     // 결정한 메뉴 기록
   favorites: 'wte-favorites', // 즐겨찾기
   blocked: 'wte-blocked',     // 안 먹는 메뉴
   filters: 'wte-filters',     // 추첨 화면에서 고른 조건 (월드컵에서도 사용)
-  settings: 'wte-settings'    // 설정 (최근 먹은 메뉴 빼기, 날씨 지역 등)
+  settings: 'wte-settings',   // 설정 (최근 먹은 메뉴 빼기, 날씨 지역 등)
+  roulette: 'wte-roulette'    // 돌림판 후보
 };
 
 const RECENT_DAYS = 3; // '최근 먹은 메뉴'로 볼 기간(일)
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/* 지금 로그인한 회원의 저장 이름 */
+function userStorageKey(key, userId) {
+  const id = userId !== undefined ? userId : (typeof Auth !== 'undefined' && Auth.getCurrentUser() || {}).id;
+  return id ? key + '@' + id : key;
+}
+
+/* 회원가입할 때: 로그인 전에 쓰던 기록·즐겨찾기를 새 계정으로 옮김 (로그인 전 저장 칸은 비움) */
+function moveGuestDataTo(userId) {
+  Object.values(STORAGE_KEYS).forEach((key) => {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw === null) return;
+      localStorage.setItem(userStorageKey(key, userId), raw);
+      localStorage.removeItem(key);
+    } catch (e) { /* 옮기지 못해도 가입은 됨 */ }
+  });
+}
+
 function loadData(key, fallback) {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = localStorage.getItem(userStorageKey(key));
     return raw ? JSON.parse(raw) : fallback;
   } catch (e) {
     return fallback;
@@ -24,7 +44,7 @@ function loadData(key, fallback) {
 
 function saveData(key, value) {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(userStorageKey(key), JSON.stringify(value));
     return true;
   } catch (e) {
     return false;
@@ -39,6 +59,11 @@ function updateSettings(changes) {
   saveData(STORAGE_KEYS.settings, Object.assign(getSettings(), changes));
 }
 
+/* 사용자가 입력한 글자를 화면에 넣기 전에 HTML 기호를 바꿔서 안전하게 (닉네임, 게시글 등) */
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+}
+
 /* ---------- 메뉴 관련 ---------- */
 function findMenu(name) {
   return MENUS.find((menu) => menu.name === name);
@@ -51,7 +76,7 @@ function menuImageUrl(menu) {
 
 /* 메뉴 사진 <img> 태그. lazy: 화면에 보일 때 불러오기 (목록처럼 사진이 많을 때) */
 function menuPhotoHtml(menu, lazy) {
-  return '<img class="menu-photo" src="' + menuImageUrl(menu) + '" alt="' + menu.name + '"' +
+  return '<img class="menu-photo" src="' + menuImageUrl(menu) + '" alt="' + menu.name + '" data-emoji="' + menu.emoji + '"' +
     (lazy ? ' loading="lazy"' : '') + ' decoding="async">';
 }
 
@@ -63,9 +88,20 @@ function preloadMenuImages(menus) {
   });
 }
 
-/* 사진을 못 불러오면 깨진 아이콘 대신 빈 배경만 보이게 */
+/* 사진을 못 불러오면(onerror) 깨진 아이콘 대신 그 메뉴의 이모지를 대체 이미지로 보여줌 */
 document.addEventListener('error', (e) => {
-  if (e.target.classList && e.target.classList.contains('menu-photo')) e.target.classList.add('broken');
+  const img = e.target;
+  if (!(img instanceof HTMLImageElement) || !img.classList.contains('menu-photo')) return;
+  if (!img.dataset.emoji) {
+    img.classList.add('broken'); // 이모지 정보가 없으면 빈 배경만
+    return;
+  }
+  const fallback = document.createElement('span');
+  fallback.className = 'menu-photo menu-photo-fallback';
+  fallback.setAttribute('role', 'img');
+  fallback.setAttribute('aria-label', img.alt);
+  fallback.innerHTML = '<span>' + img.dataset.emoji + '</span>';
+  img.replaceWith(fallback);
 }, true);
 
 /* 즐겨찾기/안 먹는 메뉴 목록에 넣었다 뺐다 하기. 넣었으면 true를 돌려줌 */
@@ -392,6 +428,93 @@ function initMenuToggle() {
 }
 
 document.addEventListener('DOMContentLoaded', initMenuToggle);
+
+/* ---------- 메뉴 드롭다운 (하위 메뉴) ----------
+   - PC: 메뉴에 마우스를 올리면(mouseover) 배경색이 바뀌고 하위 메뉴가 열림, 떼면(mouseout) 닫힘
+   - 햄버거 메뉴(1023px 이하): 메뉴 옆 ▾ 버튼을 누르면 하위 메뉴가 펼쳐짐
+   - 탭을 옮기면 메뉴가 새것으로 바뀌므로, 버튼마다가 아니라 document에 이벤트를 걸어 둠 */
+function initNavDropdown() {
+  const wideScreen = window.matchMedia('(min-width: 1024px)');
+  const wideMouse = window.matchMedia('(min-width: 1024px) and (hover: hover)');
+  let closeTimer = null;
+  let skipFocusOpen = false;
+
+  function setItemOpen(item, open) {
+    item.classList.toggle('open', open);
+    const toggle = item.querySelector('.sub-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  // except만 남기고 열린 하위 메뉴 모두 닫기
+  function closeAll(except) {
+    document.querySelectorAll('.main-nav .nav-item.open').forEach((item) => {
+      if (item !== except) setItemOpen(item, false);
+    });
+  }
+
+  // 마우스를 올렸을 때: 배경색 바꾸고 하위 메뉴 열기
+  document.addEventListener('mouseover', (e) => {
+    if (!wideMouse.matches) return;
+    const item = e.target.closest('.main-nav .nav-item');
+    if (!item) return;
+    clearTimeout(closeTimer);
+    closeAll(item);
+    item.classList.add('hover');
+    setItemOpen(item, true);
+  });
+
+  // 마우스를 뗐을 때: 배경색 되돌리고 하위 메뉴 닫기 (하위 메뉴로 옮겨 가는 동안은 유지)
+  document.addEventListener('mouseout', (e) => {
+    if (!wideMouse.matches) return;
+    const item = e.target.closest('.main-nav .nav-item');
+    if (!item || item.contains(e.relatedTarget)) return;
+    item.classList.remove('hover');
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => setItemOpen(item, false), 150);
+  });
+
+  document.addEventListener('click', (e) => {
+    // ▾ 버튼: 하위 메뉴 열기/닫기 (다른 하위 메뉴는 닫음)
+    const toggle = e.target.closest('.main-nav .sub-toggle');
+    if (toggle) {
+      const item = toggle.closest('.nav-item');
+      const open = !item.classList.contains('open');
+      closeAll(item);
+      setItemOpen(item, open);
+      return;
+    }
+    // 하위 메뉴를 골랐거나 메뉴 바깥을 누르면 닫기
+    if (e.target.closest('.main-nav .dropdown-menu a') || !e.target.closest('.main-nav .nav-item')) closeAll(null);
+  });
+
+  // 키보드(Tab)로 메뉴에 들어가면 PC에서도 하위 메뉴가 열림
+  document.addEventListener('focusin', (e) => {
+    if (!wideScreen.matches || skipFocusOpen) return;
+    const item = e.target.closest('.main-nav .nav-item');
+    closeAll(item);
+    if (item) setItemOpen(item, true);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const openItem = document.querySelector('.main-nav .nav-item.open');
+    if (!openItem) return;
+    closeAll(null);
+    if (wideScreen.matches && openItem.contains(document.activeElement)) {
+      skipFocusOpen = true; // 메뉴로 초점을 되돌릴 때 하위 메뉴가 다시 열리지 않게
+      openItem.querySelector('.nav-link').focus();
+      skipFocusOpen = false;
+    }
+  });
+
+  // PC ↔ 햄버거 메뉴로 바뀌면 열려 있던 하위 메뉴는 닫아 둠
+  wideScreen.addEventListener('change', () => {
+    closeAll(null);
+    document.querySelectorAll('.main-nav .nav-item.hover').forEach((item) => item.classList.remove('hover'));
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initNavDropdown);
 
 /* ---------- 화면 아래 잠깐 뜨는 알림(토스트) ---------- */
 let toastTimer = null;

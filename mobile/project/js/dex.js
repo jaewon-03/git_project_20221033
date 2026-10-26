@@ -172,6 +172,15 @@ function initDexPage() {
   }
 
   /* ---------- 시작 ---------- */
+  // 위쪽 하위 메뉴에서 들어온 경우 (menus.html?cat=중식, menus.html?fav=1)
+  const params = new URLSearchParams(location.search);
+  const startCategory = params.get('cat');
+  if (startCategory && (startCategory === '전체' || CATEGORIES.includes(startCategory))) dexState.category = startCategory;
+  if (params.get('fav') === '1') {
+    dexState.favOnly = true;
+    dexEl.favOnly.checked = true;
+  }
+
   renderCategoryTabs();
   renderCategoryTable();
   renderDex();

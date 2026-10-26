@@ -2,7 +2,7 @@
 
 /* 탭을 열 때마다 router.js가 실행합니다. 돌려주는 함수는 다른 탭으로 갈 때 정리용으로 실행됩니다. */
 function initRoulettePage() {
-  const STORE_KEY = 'wte-roulette';
+  const STORE_KEY = STORAGE_KEYS.roulette;
   const MIN = 2;
   const MAX = 12;
   const COLORS = ['#ffd6c2', '#ffe9a8', '#ffcfd8', '#d9f0d2', '#d6e6fb', '#ffe1bd', '#eadcf8', '#fff1c9'];

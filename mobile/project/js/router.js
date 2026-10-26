@@ -11,10 +11,16 @@ const PAGE_INITS = {
   history: initHistoryPage,
   roulette: initRoulettePage,
   split: initSplitPage,
-  credits: initCreditsPage
+  credits: initCreditsPage,
+  login: initLoginPage,
+  signup: initSignupPage,
+  board: initBoardPage,
+  'board-write': initBoardWritePage,
+  'board-view': initBoardViewPage
 };
 
 let pageCleanup = null;     // 지금 탭을 떠날 때 실행할 정리 함수
+let currentDoc = location.pathname + location.search; // 지금 보고 있는 페이지 (#구역은 빼고)
 const pageCache = new Map(); // 한 번 불러온 페이지는 기억해서 다음엔 바로 보여줌
 
 /* 지금 <main>에 맞는 페이지 기능 실행 */
@@ -24,6 +30,30 @@ function startPage() {
   const main = document.querySelector('main[data-page]');
   const init = main && PAGE_INITS[main.dataset.page];
   if (init) pageCleanup = init() || null;
+  if (typeof renderAccountUI === 'function') renderAccountUI(); // 새 메뉴 판에도 로그인 상태 표시
+}
+
+/* 다른 기능에서 페이지를 옮길 때 (예: 로그인 후 원래 보던 페이지로) */
+function navigateTo(url) {
+  const target = new URL(url, location.href).href;
+  if (location.protocol === 'file:') window.location.href = target;
+  else goTo(target, true);
+}
+
+/* 지금 페이지를 처음 상태로 다시 보여줌 (예: 로그인/로그아웃 후 그 계정의 기록으로) */
+function reloadCurrentPage() {
+  if (location.protocol === 'file:') window.location.reload();
+  else goTo(location.href, false);
+}
+
+/* 주소의 #구역으로 스크롤 (하위 메뉴에서 페이지 안 구역으로 갈 때). 구역이 없거나 숨겨져 있으면 false */
+function scrollToHash(hash, smooth) {
+  if (!hash || hash === '#') return false;
+  const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+  if (!target || target.closest('[hidden]')) return false;
+  if (target.tagName === 'DETAILS') target.open = true; // 접혀 있는 표는 펼쳐서 보여줌
+  target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+  return true;
 }
 
 /* 이 사이트 안의 다른 탭으로 가는 링크인지 */
@@ -35,6 +65,7 @@ function getInternalUrl(link) {
 }
 
 function fetchPage(url) {
+  url = url.split('#')[0]; // #구역만 다른 주소는 같은 페이지
   if (!pageCache.has(url)) {
     pageCache.set(url, fetch(url).then((res) => {
       if (!res.ok) throw new Error('page ' + res.status);
@@ -61,8 +92,10 @@ async function goTo(url, addToHistory) {
     document.title = doc.title;
 
     if (addToHistory) history.pushState({}, '', url);
+    currentDoc = location.pathname + location.search;
     window.scrollTo(0, 0);
     startPage();
+    scrollToHash(new URL(url).hash, false);
 
     // 화면 낭독기 사용자를 위해 새 내용으로 초점 이동
     newMain.setAttribute('tabindex', '-1');
@@ -74,6 +107,7 @@ async function goTo(url, addToHistory) {
 
 document.addEventListener('DOMContentLoaded', () => {
   startPage();
+  scrollToHash(location.hash, false); // 내용을 다 그린 다음 #구역으로
 
   // 파일을 직접 연 경우는 브라우저가 내용 불러오기를 막아서 평소처럼 이동
   if (location.protocol === 'file:') return;
@@ -83,6 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = getInternalUrl(e.target.closest('a[href]'));
     if (!url) return;
     e.preventDefault();
+    // 같은 페이지 안의 #구역이면 새로 불러오지 않고 그 구역으로 스크롤만
+    if (url.hash && url.pathname + url.search === currentDoc) {
+      if (url.hash !== location.hash) history.pushState({}, '', url.href);
+      if (!scrollToHash(url.hash, true)) window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     if (url.href === location.href) {
       window.scrollTo({ top: 0, behavior: 'smooth' }); // 지금 탭을 다시 누르면 맨 위로
       return;
@@ -99,5 +139,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // 뒤로가기 / 앞으로가기
-  window.addEventListener('popstate', () => goTo(location.href, false));
+  window.addEventListener('popstate', () => {
+    // #구역만 바뀐 경우는 스크롤만 (추첨 결과 같은 화면 상태를 그대로 둠)
+    if (location.pathname + location.search === currentDoc) {
+      if (!scrollToHash(location.hash, true)) window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    goTo(location.href, false);
+  });
 });

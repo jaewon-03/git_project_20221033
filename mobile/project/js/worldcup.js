@@ -206,7 +206,14 @@ function initWorldcupPage() {
 
   /* ---------- 시작 ---------- */
   const updateWinnerActions = setupMenuActions(wcEl.winnerActions, '메뉴 월드컵 우승은');
+
+  // 위쪽 하위 메뉴에서 들어온 경우 그 후보를 골라 둠 (worldcup.html?source=favorites)
+  const startSource = new URLSearchParams(location.search).get('source');
+  if (getSources().some((s) => s.id === startSource)) wc.source = startSource;
   renderSetup();
+  if (startSource && startSource !== 'all' && wc.source === 'all') {
+    showToast('후보가 4개보다 적어서 전체 메뉴로 골라 뒀어요.');
+  }
 
   wcEl.startBtn.addEventListener('click', startWorldcup);
   wcEl.leftCard.addEventListener('click', () => choose('left'));

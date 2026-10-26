@@ -99,9 +99,13 @@ function initWeather(box, onApply) {
       '<a class="weather-credit" href="https://open-meteo.com/" target="_blank" rel="noopener">Weather data by Open-Meteo.com</a></div>' +
       '<div class="weather-actions">' +
       (info.tags.length ? '<button type="button" class="weather-btn primary" data-action="apply">#' + info.tags.join(' #') + ' 메뉴 보기</button>' : '') +
+      // 지역 날씨를 보고 있을 때도 언제든 내 위치로 돌아갈 수 있게
+      (regionName ? '<button type="button" class="weather-btn" data-action="locate">📍 내 위치로</button>' : '') +
       regionSelect() + '</div>';
     const applyBtn = box.querySelector('[data-action="apply"]');
     if (applyBtn) applyBtn.addEventListener('click', () => onApply(info.tags));
+    const locateBtn = box.querySelector('[data-action="locate"]');
+    if (locateBtn) locateBtn.addEventListener('click', loadCurrent);
     bindSelect(regionName);
   }
 
@@ -110,8 +114,10 @@ function initWeather(box, onApply) {
     box.innerHTML =
       '<span class="weather-icon">🙈</span>' +
       '<div class="weather-text"><strong>날씨를 불러오지 못했어요</strong><span>인터넷 연결을 확인하거나 다른 지역을 골라 보세요</span></div>' +
-      '<div class="weather-actions"><button type="button" class="weather-btn" data-action="retry">다시 시도</button>' + regionSelect() + '</div>';
+      '<div class="weather-actions"><button type="button" class="weather-btn" data-action="retry">다시 시도</button>' +
+      '<button type="button" class="weather-btn" data-action="locate">📍 내 위치로</button>' + regionSelect() + '</div>';
     box.querySelector('[data-action="retry"]').addEventListener('click', start);
+    box.querySelector('[data-action="locate"]').addEventListener('click', loadCurrent);
     bindSelect();
   }
 
