@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="오늘 뭐 먹지? 게시판 글 보기">
   <meta name="theme-color" content="#f25c1f">
+  <!-- 다크 모드: 화면을 그리기 전에 저장된 테마를 먼저 적용 (깜빡임 방지) -->
+  <script>try { if (localStorage.getItem('wte-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}</script>
   <title>오늘 뭐 먹지? - 게시판</title>
 
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
@@ -28,6 +30,8 @@
         <button type="button" class="bgm-btn" id="bgmPlay" aria-label="배경음악 재생" title="재생">▶</button>
         <button type="button" class="bgm-btn" id="bgmStop" aria-label="배경음악 정지" title="정지">⏸</button>
       </div>
+      <!-- 다크 모드 버튼 (768px 이상, 폰은 ☰ 메뉴 판 안에 있음) -->
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="다크 모드" title="다크 모드로 바꾸기"><span class="theme-icon" aria-hidden="true">🌙</span></button>
       <!-- 좁은 화면에서만 보이는 햄버거 메뉴 버튼 -->
       <button type="button" class="menu-toggle" id="menuToggle" aria-controls="mainNav" aria-expanded="false" aria-label="메뉴 열기">
         <span></span><span></span><span></span>
@@ -36,6 +40,10 @@
       <nav class="main-nav" id="mainNav" aria-label="주요 메뉴">
         <!-- 햄버거 메뉴에서만 보이는 로그인/내 계정 (account.js가 채움) -->
         <div class="nav-account" id="navAccount"></div>
+        <!-- 폰(767px 이하) 메뉴 판의 다크 모드 버튼 -->
+        <div class="nav-theme">
+          <button type="button" class="nav-theme-btn" data-theme-toggle aria-pressed="false"><span class="theme-icon" aria-hidden="true">🌙</span>다크 모드<span class="theme-state">꺼짐</span></button>
+        </div>
         <div class="nav-item">
           <a href="index.html" class="nav-link"><span class="nav-icon">🎲</span><span class="nav-label">추첨</span><span class="nav-caret" aria-hidden="true">▾</span></a>
           <button type="button" class="sub-toggle" aria-expanded="false" aria-label="추첨 하위 메뉴">▾</button>

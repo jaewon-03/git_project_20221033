@@ -31,6 +31,7 @@ function startPage() {
   const init = main && PAGE_INITS[main.dataset.page];
   if (init) pageCleanup = init() || null;
   if (typeof renderAccountUI === 'function') renderAccountUI(); // 새 메뉴 판에도 로그인 상태 표시
+  if (typeof syncThemeToggles === 'function') syncThemeToggles(); // 새 메뉴 판의 다크 모드 버튼도 지금 테마로
 }
 
 /* 다른 기능에서 페이지를 옮길 때 (예: 로그인 후 원래 보던 페이지로) */

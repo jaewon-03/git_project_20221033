@@ -433,6 +433,50 @@ function initVisitCount() {
 
 document.addEventListener('DOMContentLoaded', initVisitCount);
 
+/* ---------- 다크 모드 ----------
+   - 헤더의 🌙 버튼(768px 이상)이나 ☰ 메뉴 판의 "다크 모드" 버튼(767px 이하)으로 라이트/다크를 바꿉니다.
+   - <html data-theme="dark">를 붙이면 style.css의 색 변수가 다크용으로 바뀝니다.
+   - 고른 테마는 localStorage에 기억하고, 각 페이지 <head>의 짧은 스크립트가 화면을 그리기 전에 먼저 적용합니다(깜빡임 방지).
+   - 회원마다 나누지 않는 이 브라우저 설정이라 STORAGE_KEYS에는 넣지 않습니다. */
+const THEME_KEY = 'wte-theme';
+const THEME_COLORS = { light: '#f25c1f', dark: '#221a16' }; // 폰 주소창 색 (meta theme-color)
+
+function isDarkTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark';
+}
+
+/* 버튼 모양(🌙/☀️, 켜짐/꺼짐)과 폰 주소창 색을 지금 테마에 맞춤 (탭을 옮기면 메뉴 판이 바뀌므로 router.js에서도 부름) */
+function syncThemeToggles() {
+  const dark = isDarkTheme();
+  document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    btn.title = dark ? '라이트 모드로 바꾸기' : '다크 모드로 바꾸기';
+    const icon = btn.querySelector('.theme-icon');
+    if (icon) icon.textContent = dark ? '☀️' : '🌙';
+    const state = btn.querySelector('.theme-state');
+    if (state) state.textContent = dark ? '켜짐' : '꺼짐';
+  });
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', dark ? THEME_COLORS.dark : THEME_COLORS.light);
+}
+
+function setTheme(dark) {
+  if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+  else document.documentElement.removeAttribute('data-theme');
+  try { localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light'); } catch (e) { /* 기억은 못 해도 지금 화면은 바뀜 */ }
+  syncThemeToggles();
+}
+
+function initThemeToggle() {
+  // 메뉴 판은 탭을 옮길 때 새로 바뀌므로 document에 위임
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('[data-theme-toggle]')) setTheme(!isDarkTheme());
+  });
+  syncThemeToggles();
+}
+
+document.addEventListener('DOMContentLoaded', initThemeToggle);
+
 /* ---------- 햄버거 메뉴 (좁은 화면) ----------
    ☰ 버튼을 누르면 메뉴가 펼쳐지고, 메뉴를 고르거나 바깥을 누르거나 Esc를 누르면 닫힙니다. */
 function initMenuToggle() {

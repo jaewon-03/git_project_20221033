@@ -25,6 +25,28 @@
   --success: #2e7d32;
   --radius: 16px;
   --shadow: 0 6px 24px rgba(120, 70, 30, 0.08);
+
+  /* 흰 글씨가 올라가는 진한 바탕 (다크 모드에서도 흰 글씨가 잘 보이도록 글자색과 따로 둠) */
+  --primary-fill: #c2410c;
+  --ink: #2a1e17;
+}
+
+/* 다크 모드: <html data-theme="dark">일 때 색 변수만 바꿈 (js/common.js의 다크 모드 버튼) */
+:root[data-theme="dark"] {
+  --bg: #17120f;
+  --surface: #221a16;
+  --text: #f3e9e1;
+  --text-sub: #b9a89b;
+  --line: #3a2e27;
+  --primary: #f26a2e;
+  --primary-hover: #ff8048;
+  --primary-strong: #ff9a66;
+  --primary-soft: #3b2418;
+  --danger: #ff7070;
+  --success: #74cf84;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  --ink: #4a3a31;
+  color-scheme: dark;
 }
 
 * {
@@ -109,7 +131,7 @@ button {
 }
 
 .main-nav .nav-link.active {
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -233,7 +255,7 @@ main {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
   font-size: 14px;
 }
@@ -279,8 +301,8 @@ main {
 }
 
 .chip[aria-pressed="true"] {
-  background-color: var(--primary-strong);
-  border-color: var(--primary-strong);
+  background-color: var(--primary-fill);
+  border-color: var(--primary-fill);
   color: #ffffff;
   font-weight: 700;
 }
@@ -326,7 +348,7 @@ main {
 }
 
 .switch-row input:checked + .switch {
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
 }
 
 .switch-row input:checked + .switch::after {
@@ -548,8 +570,8 @@ main {
 
 .action-btn.primary {
   grid-column: 1 / -1;
-  background-color: var(--text);
-  border-color: var(--text);
+  background-color: var(--ink);
+  border-color: var(--ink);
   color: #ffffff;
 }
 
@@ -679,7 +701,7 @@ main {
   max-width: 90%;
   padding: 13px 22px;
   border-radius: 999px;
-  background-color: var(--text);
+  background-color: var(--ink);
   color: #ffffff;
   font-size: 15px;
   opacity: 0;
@@ -872,8 +894,8 @@ a:focus-visible {
 }
 
 .weather-btn.primary {
-  background-color: var(--primary-strong);
-  border-color: var(--primary-strong);
+  background-color: var(--primary-fill);
+  border-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -991,7 +1013,7 @@ a:focus-visible {
   left: 10px;
   padding: 3px 9px;
   border-radius: 999px;
-  background-color: var(--text);
+  background-color: var(--ink);
   color: #ffffff;
   font-size: 12px;
   font-weight: 600;
@@ -1384,7 +1406,7 @@ a:focus-visible {
   width: 58px;
   height: 58px;
   border-radius: 50%;
-  background-color: var(--text);
+  background-color: var(--ink);
   color: #ffffff;
   font-size: 18px;
   font-weight: 900;
@@ -1901,7 +1923,7 @@ a:focus-visible {
 
 /* 지금 상태에 해당하는 버튼 강조 (재생 중이면 ▶, 멈춤이면 ⏸) */
 .bgm-btn[aria-pressed="true"] {
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -2532,8 +2554,8 @@ main:focus {
 
 .action-btn.primary-soft {
   padding: 12px 18px;
-  background-color: var(--primary-strong);
-  border-color: var(--primary-strong);
+  background-color: var(--primary-fill);
+  border-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -2991,7 +3013,7 @@ body {
 }
 
 .main-nav .nav-item.hover > .nav-link.active {
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -3248,7 +3270,7 @@ main [id] {
 }
 
 .account-login:hover {
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -3283,7 +3305,7 @@ main [id] {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
   font-size: 14px;
   font-weight: 800;
@@ -3809,8 +3831,8 @@ a.chip {
 }
 
 .chip[aria-current="page"] {
-  background-color: var(--primary-strong);
-  border-color: var(--primary-strong);
+  background-color: var(--primary-fill);
+  border-color: var(--primary-fill);
   color: #ffffff;
   font-weight: 700;
 }
@@ -3937,7 +3959,7 @@ a.chip {
   display: inline-block;
   padding: 2px 8px;
   border-radius: 6px;
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
@@ -4022,7 +4044,7 @@ a.chip {
 }
 
 .pagination .page-current {
-  background-color: var(--primary-strong);
+  background-color: var(--primary-fill);
   color: #ffffff;
 }
 
@@ -4186,8 +4208,8 @@ a.chip {
 }
 
 .chip-radio input:checked + span {
-  background-color: var(--primary-strong);
-  border-color: var(--primary-strong);
+  background-color: var(--primary-fill);
+  border-color: var(--primary-fill);
   color: #ffffff;
   font-weight: 700;
 }
@@ -4605,7 +4627,7 @@ a.chip {
   }
 
   .main-nav .nav-link {
-    padding: 9px 12px;
+    padding: 9px 11px;
   }
 }
 
@@ -4618,3 +4640,164 @@ a.chip {
     padding: 9px 11px;
   }
 }
+
+/* =========================================
+   다크 모드
+   - 색 변수는 맨 위 :root[data-theme="dark"]에서 바꾸고,
+     여기서는 색을 직접 적어 둔 곳만 다크용으로 덮어씀
+   - 버튼: 768px 이상은 헤더(BGM 옆), 767px 이하는 ☰ 메뉴 판 안
+   ========================================= */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--line);
+  border-radius: 50%;
+  background-color: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.theme-toggle:hover {
+  background-color: var(--primary-soft);
+  border-color: var(--primary-soft);
+}
+
+.theme-toggle:focus-visible,
+.nav-theme-btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.nav-theme {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .theme-toggle {
+    display: none;
+  }
+
+  .nav-theme {
+    display: block;
+    grid-column: 1 / -1;
+    margin-bottom: 6px;
+  }
+
+  .nav-theme-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    background-color: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .nav-theme-btn .theme-state {
+    margin-left: auto;
+    font-size: 13px;
+    color: var(--text-sub);
+  }
+}
+
+/* 꺼진 스위치 · 누를 수 없는 버튼 */
+:root[data-theme="dark"] .switch,
+:root[data-theme="dark"] .draw-btn:disabled,
+:root[data-theme="dark"] .quick-draw-btn:disabled,
+:root[data-theme="dark"] .wheel-center:disabled {
+  background-color: #4d3f36;
+}
+
+:root[data-theme="dark"] .action-btn:disabled,
+:root[data-theme="dark"] .action-btn.primary:disabled {
+  background-color: var(--line);
+  border-color: var(--line);
+}
+
+:root[data-theme="dark"] .excluded-box,
+:root[data-theme="dark"] .category-table tbody tr:hover {
+  background-color: #2a211c;
+}
+
+:root[data-theme="dark"] .icon-btn.fav[aria-pressed="true"] {
+  background-color: #3d3217;
+}
+
+:root[data-theme="dark"] .icon-btn.block[aria-pressed="true"] {
+  background-color: #422424;
+  border-color: #7a3d3d;
+}
+
+:root[data-theme="dark"] .account-menu .account-withdraw:hover {
+  background-color: #422424;
+}
+
+/* 종류별 파스텔 바탕(--card-bg)은 어둡게 섞어서 밝은 글씨가 잘 보이게 */
+:root[data-theme="dark"] .result-card {
+  background: var(--surface);
+  background: color-mix(in srgb, var(--card-bg, #f25c1f) 20%, var(--surface));
+}
+
+:root[data-theme="dark"] .menu-card-top,
+:root[data-theme="dark"] .thumb,
+:root[data-theme="dark"] .match-card,
+:root[data-theme="dark"] .table-cat-btn,
+:root[data-theme="dark"] .option-item,
+:root[data-theme="dark"] .menu-photo-fallback {
+  background-color: var(--surface);
+  background-color: color-mix(in srgb, var(--card-bg, #f3ece6) 20%, var(--surface));
+}
+
+:root[data-theme="dark"] .wheel-result,
+:root[data-theme="dark"] .split-result {
+  background: linear-gradient(160deg, var(--primary-soft), var(--surface));
+}
+
+/* 사진·태그 뒤의 반투명 흰 바탕 */
+:root[data-theme="dark"] .result-photo,
+:root[data-theme="dark"] .match-photo {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+:root[data-theme="dark"] .tag {
+  background-color: rgba(0, 0, 0, 0.28);
+}
+
+:root[data-theme="dark"] .option-del {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="dark"] .option-del:hover {
+  background-color: var(--surface);
+}
+
+/* 회원가입: Caps Lock 안내, 비밀번호 안전도 '보통' 글자 */
+:root[data-theme="dark"] .caps-hint,
+:root[data-theme="dark"] .pw-strength[data-level="2"] span {
+  color: #f0b54a;
+}
+
+/* 게시판: 공지 줄, 말머리 */
+:root[data-theme="dark"] .board-table tr.is-notice,
+:root[data-theme="dark"] .board-table tr.is-notice td {
+  background-color: #2c1f17;
+}
+
+:root[data-theme="dark"] .new-badge {
+  background-color: var(--primary-fill);
+}
+
+:root[data-theme="dark"] .cat-tag.cat-food { background-color: #3f2619; color: #ffab80; }
+:root[data-theme="dark"] .cat-tag.cat-pick { background-color: #232a46; color: #aab8f2; }
+:root[data-theme="dark"] .cat-tag.cat-free { background-color: #1f3325; color: #8fd29e; }
