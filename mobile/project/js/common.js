@@ -392,6 +392,47 @@ function initBgm() {
 
 document.addEventListener('DOMContentLoaded', initBgm);
 
+/* ---------- 방문자 수 (푸터) ----------
+   서버가 없어서 이 브라우저에서 사이트를 연 횟수를 셉니다. (회원·게시판과 같은 localStorage 방식)
+   탭을 옮기거나 새로고침해도, 브라우저를 열어 둔 동안의 한 번 방문은 1번만 셉니다(sessionStorage).
+   회원마다 나누지 않는 사이트 전체 숫자라서 STORAGE_KEYS에는 넣지 않습니다(가입할 때 옮겨지지 않게).
+   나중에 서버를 쓰게 되면 countVisit() 안쪽만 바꾸면 됩니다. */
+const VISIT_KEY = 'wte-visits';
+const VISIT_SESSION_KEY = 'wte-visit-counted';
+
+function countVisit() {
+  const now = new Date();
+  const today = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate();
+  let saved;
+  try { saved = JSON.parse(localStorage.getItem(VISIT_KEY)) || {}; } catch (e) { saved = {}; }
+  const visits = {
+    total: saved.total || 0,
+    date: today,
+    today: saved.date === today ? saved.today || 0 : 0 // 날짜가 바뀌면 오늘 방문은 0부터
+  };
+
+  let counted = false;
+  try { counted = sessionStorage.getItem(VISIT_SESSION_KEY) === '1'; } catch (e) { /* 못 읽으면 새 방문으로 봄 */ }
+  if (!counted) {
+    visits.total += 1;
+    visits.today += 1;
+    try {
+      localStorage.setItem(VISIT_KEY, JSON.stringify(visits));
+      sessionStorage.setItem(VISIT_SESSION_KEY, '1');
+    } catch (e) { /* 저장 못 해도 화면에는 보여 줌 */ }
+  }
+  return visits;
+}
+
+function initVisitCount() {
+  const box = document.getElementById('visitCount');
+  const visits = countVisit();
+  if (!box) return;
+  box.textContent = '오늘 방문 ' + visits.today.toLocaleString('ko-KR') + ' · 전체 방문 ' + visits.total.toLocaleString('ko-KR');
+}
+
+document.addEventListener('DOMContentLoaded', initVisitCount);
+
 /* ---------- 햄버거 메뉴 (좁은 화면) ----------
    ☰ 버튼을 누르면 메뉴가 펼쳐지고, 메뉴를 고르거나 바깥을 누르거나 Esc를 누르면 닫힙니다. */
 function initMenuToggle() {

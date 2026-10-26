@@ -612,6 +612,22 @@ main {
   gap: 14px;
 }
 
+/* 왼쪽: 저작권 줄 + 방문자 수 */
+.footer-info {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.visit-count {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.visit-count:empty {
+  display: none;
+}
+
 .sns-links {
   display: flex;
   gap: 10px;
