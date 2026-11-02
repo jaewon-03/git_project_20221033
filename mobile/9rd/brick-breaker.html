@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Brick Breaker</title>
+<style>
+  body{margin:0;display:grid;place-items:center;height:100vh;background:#111;color:#fff;font-family:Arial,sans-serif}
+  canvas{background:#000;border:2px solid #fff;box-shadow:0 0 20px rgba(255,255,255,.15)}
+  #hud{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:14px;letter-spacing:1px}
+</style>
+</head>
+<body>
+<div id="hud">SCORE: <span id="score">0</span> | LIFE: <span id="life">3</span></div>
+<canvas id="game" width="420" height="320"></canvas>
+<script>
+  // 게임 캔버스 요소
+  const canvas = document.getElementById('game');
+  // 캔버스 2D 드로잉 컨텍스트
+  const ctx = canvas.getContext('2d');
+  // 점수 표시 영역
+  const scoreEl = document.getElementById('score');
+  // 생명 표시 영역
+  const lifeEl = document.getElementById('life');
+
+  // 게임 상태값
+  const game = { score: 0, life: 3, running: false, over: false };
+  // 패들 정보
+  const paddle = { w: 84, h: 12, x: canvas.width / 2 - 42, y: canvas.height - 18 };
+  // 공 정보
+  const ball = { x: canvas.width / 2, y: canvas.height - 32, r: 7, vx: 4, vy: -4 };
+  // 벽돌 배열
+  const bricks = [];
+
+  // 벽돌 생성
+  for (let y = 0; y < 4; y++) {
+    for (let x = 0; x < 8; x++) {
+      bricks.push({ x: 18 + x * 48, y: 20 + y * 24, w: 38, h: 14, alive: true });
+    }
+  }
+
+  // 공 위치 초기화
+  function resetBall() {
+    ball.x = paddle.x + paddle.w / 2;
+    ball.y = canvas.height - 32;
+    ball.vx = (Math.random() * 2 - 1) * 4;
+    ball.vy = -4;
+  }
+
+  // 화면 그리기
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+    ctx.fill();
+
+    for (let i = 0; i < bricks.length; i++) {
+      const brick = bricks[i];
+      if (!brick.alive) continue;
+      ctx.fillRect(brick.x, brick.y, brick.w, brick.h);
+    }
+
+    if (!game.running && !game.over) {
+      ctx.fillStyle = 'rgba(0,0,0,.45)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = '20px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('CLICK TO START', canvas.width / 2, canvas.height / 2);
+    }
+
+    if (game.over) {
+      ctx.fillStyle = 'rgba(0,0,0,.45)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff';
+      ctx.font = '22px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(game.score === bricks.length ? 'YOU WIN!' : 'GAME OVER', canvas.width / 2, canvas.height / 2);
+    }
+  }
+
+  // 게임 로직 업데이트
+  function update() {
+    if (!game.running || game.over) return;
+
+    paddle.x = Math.min(Math.max(paddle.x, 0), canvas.width - paddle.w);
+    ball.x += ball.vx;
+    ball.y += ball.vy;
+
+    if (ball.x - ball.r < 0 || ball.x + ball.r > canvas.width) ball.vx *= -1;
+    if (ball.y - ball.r < 0) ball.vy *= -1;
+
+    if (ball.y + ball.r > canvas.height) {
+      game.life -= 1;
+      lifeEl.textContent = game.life;
+
+      if (game.life <= 0) {
+        game.over = true;
+        game.running = false;
+      } else {
+        resetBall();
+        game.running = false;
+      }
+      return;
+    }
+
+    if (ball.x > paddle.x && ball.x < paddle.x + paddle.w && ball.y + ball.r > paddle.y && ball.y < paddle.y + paddle.h && ball.vy > 0) {
+      const offset = (ball.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2);
+      ball.vx = offset * 5;
+      ball.vy = -Math.abs(ball.vy);
+    }
+
+    for (let i = 0; i < bricks.length; i++) {
+      const brick = bricks[i];
+      if (!brick.alive) continue;
+      if (ball.x > brick.x && ball.x < brick.x + brick.w && ball.y > brick.y && ball.y < brick.y + brick.h) {
+        brick.alive = false;
+        game.score += 1;
+        scoreEl.textContent = game.score;
+        ball.vy *= -1;
+
+        if (game.score === bricks.length) {
+          game.over = true;
+          game.running = false;
+        }
+        return;
+      }
+    }
+  }
+
+  // 반복 실행 루프
+  function loop() {
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  // 마우스 이동으로 패들 위치 조정
+  function movePaddle(event) {
+    const rect = canvas.getBoundingClientRect();
+    paddle.x = event.clientX - rect.left - paddle.w / 2;
+  }
+
+  // 게임 시작 처리
+  function startGame() {
+    if (game.running || game.over) return;
+    game.running = true;
+    if (game.score === 0 && game.life === 3) resetBall();
+  }
+
+  canvas.addEventListener('mousemove', movePaddle);
+  canvas.addEventListener('click', startGame);
+
+  scoreEl.textContent = game.score;
+  lifeEl.textContent = game.life;
+  resetBall();
+  requestAnimationFrame(loop);
+</script>
+</body>
+</html>

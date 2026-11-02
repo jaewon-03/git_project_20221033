@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로또 번호 생성기</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>로또 번호 생성기</h1>
+
+    <section class="lotto-area" aria-live="polite">
+      <div id="lotto-balls" class="lotto-balls"></div>
+    </section>
+
+    <section class="control-area">
+      <button id="generate-btn" type="button">자동 뽑기</button>
+      <button id="five-btn" type="button">5회 연속 뽑기</button>
+      <button id="manual-btn" type="button">직접 고르기</button>
+      <button id="reset-btn" type="button" class="reset-btn">초기화</button>
+    </section>
+
+    <section id="manual-picker" class="manual-picker" aria-live="polite">
+      <div class="manual-header">번호를 선택하세요 (최대 6개)</div>
+      <div id="manual-buttons" class="manual-buttons"></div>
+      <div class="manual-actions">
+        <button id="confirm-manual-btn" type="button">선택 완료</button>
+        <button id="cancel-manual-btn" type="button" class="reset-btn">취소</button>
+      </div>
+    </section>
+
+    <section class="count-area">
+      <span>생성 횟수</span>
+      <strong id="count">0</strong>
+    </section>
+
+    <section class="analysis-panel">
+      <h2>최근 100회 + 최신 회차 분석</h2>
+      <div id="latest-draw" class="latest-draw"></div>
+      <div class="chart-wrap">
+        <p>당첨번호 빈도 막대그래프</p>
+        <div id="frequency-chart" class="frequency-chart"></div>
+      </div>
+      <div id="top-numbers" class="top-numbers"></div>
+      <div class="recommend-wrap">
+        <p>당첨확률 높은 번호</p>
+        <div id="recommended-numbers" class="recommended-numbers"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/lotto.js"></script>
+</body>
+</html>
