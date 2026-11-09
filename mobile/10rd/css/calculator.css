@@ -1,0 +1,81 @@
+/* 간단 계산기 스타일: 계산기 화면에 필요한 스타일을 정의합니다. (계산기.html에서 분리) */
+/* 쿠로미 느낌 색 조합: 검정 #2b2233, 진보라 #3b2a4f, 연보라 #d8c6f0, 핑크 #f9a8d4, 진핑크 #ff8fbf, 흰색 (캐릭터는 그리지 않고 분위기만 냅니다) */
+* { box-sizing: border-box; } /* 패딩과 테두리를 너비 계산에 포함합니다. */
+body { /* 화면 전체의 기본 모양을 지정합니다. */
+  display: grid; /* 계산기를 화면 가운데에 배치합니다. */
+  min-height: 100vh; /* 화면 높이를 최소한 꽉 채웁니다. */
+  margin: 0; /* 브라우저 기본 바깥 여백을 없앱니다. */
+  place-items: center; /* 계산기를 가로와 세로 가운데에 놓습니다. */
+  background: #3b2a4f; /* 배경 그림이 안 열릴 때 보일 진한 보라색입니다. */
+  background-image: url("../images/dark-cute-pattern.svg"); /* 핑크 해골·하트·별·박쥐 무늬 그림을 배경에 깔아 줍니다. */
+  background-size: 120px 120px; /* 무늬 한 칸의 크기를 정하고, 화면을 채울 때까지 반복합니다. */
+  font-family: Arial, sans-serif; /* 읽기 쉬운 기본 글꼴을 지정합니다. */
+  color: #2b2233; /* 계산기 안 글자는 검정에 가까운 색으로 해서 잘 보이게 합니다. */
+} /* 화면 기본 스타일을 마칩니다. */
+.calculator { /* 계산기 본체의 모양을 지정합니다. */
+  position: relative; /* 두건 귀를 본체 위쪽에 붙일 때 기준이 되게 합니다. */
+  width: min(320px, calc(100vw - 32px)); /* 작은 화면에서도 넘치지 않게 너비를 정합니다. */
+  margin-top: 56px; /* 위쪽에 두건 귀가 들어갈 자리를 남겨 둡니다. */
+  padding: 20px; /* 본체 안쪽에 여백을 둡니다. */
+  border: 4px solid #2b2233; /* 검은 두건처럼 진한 테두리를 둘러 줍니다. */
+  border-radius: 28px; /* 본체 모서리를 둥글게 만듭니다. */
+  background: #fbf7ff; /* 본체 배경을 아주 연한 보라빛 흰색으로 지정합니다. */
+  box-shadow: 0 10px 28px #00000059; /* 진한 배경 위에서 계산기가 떠 보이게 그림자를 넣습니다. */
+} /* 계산기 본체 스타일을 마칩니다. */
+.calculator::before, .calculator::after { /* 본체 위에 붙는 검은 두건 귀 두 개의 공통 모양입니다. */
+  content: ""; /* 글자 없이 모양만 있는 장식으로 만듭니다. */
+  position: absolute; /* 본체를 기준으로 위치를 정합니다. */
+  top: -58px; /* 귀를 본체 위쪽 바깥에 놓습니다. */
+  width: 48px; /* 귀의 너비를 정합니다. */
+  height: 70px; /* 귀를 길쭉하게 만듭니다. */
+  background: #2b2233; /* 테두리와 같은 검정으로 칠합니다. */
+  border-radius: 50% 50% 12px 12px / 70% 70% 12px 12px; /* 끝은 둥글고 아래는 넓은 두건 귀 모양으로 만듭니다. */
+  transform-origin: bottom center; /* 귀 아래쪽을 기준으로 기울입니다. */
+} /* 두건 귀 공통 스타일을 마칩니다. */
+.calculator::before { left: 26px; transform: rotate(-16deg); } /* 왼쪽 귀를 바깥쪽으로 살짝 기울여 놓습니다. */
+.calculator::after { right: 26px; transform: rotate(16deg); } /* 오른쪽 귀를 바깥쪽으로 살짝 기울여 놓습니다. */
+h1 { /* 계산기 제목의 모양을 지정합니다. */
+  display: flex; /* 해골 그림과 글자를 한 줄로 나란히 놓습니다. */
+  align-items: center; /* 그림과 글자를 세로 가운데에 맞춥니다. */
+  justify-content: center; /* 제목 전체를 가운데에 놓습니다. */
+  gap: 8px; /* 그림과 글자 사이를 띄웁니다. */
+  margin: 0 0 16px; /* 제목 아래에 여백을 둡니다. */
+  font-size: 24px; /* 제목 글자 크기를 지정합니다. */
+  color: #4a2c6b; /* 제목을 진한 보라색으로 표시합니다. */
+} /* 제목 스타일을 마칩니다. */
+h1::before { /* 제목 앞에 핑크 해골 그림을 붙입니다. */
+  content: ""; /* 글자 없이 그림만 넣는 장식으로 만듭니다. */
+  width: 36px; /* 그림의 너비를 정합니다. */
+  height: 36px; /* 그림의 높이를 정합니다. */
+  background: url("../images/skull-icon.svg") center / contain no-repeat; /* 해골 그림을 크기에 맞춰 한 번만 넣습니다. */
+} /* 제목 그림 스타일을 마칩니다. */
+#display { /* 계산 결과 표시 영역의 모양을 지정합니다. */
+  display: flex; /* 표시 영역을 블록 요소로 만들어 너비와 높이를 안정적으로 적용합니다. */
+  align-items: center; /* 표시 숫자를 세로 가운데에 정렬합니다. */
+  justify-content: flex-end; /* 표시 숫자를 오른쪽 끝에 정렬합니다. */
+  width: 100%; /* 계산기 안쪽 너비에 맞춥니다. */
+  min-height: 64px; /* 표시 영역의 높이를 확보합니다. */
+  margin-bottom: 12px; /* 버튼과의 간격을 둡니다. */
+  padding: 16px 12px; /* 표시 영역 안쪽에 여백을 둡니다. */
+  overflow-x: auto; /* 긴 숫자는 줄바꿈 대신 가로로 확인할 수 있게 합니다. */
+  white-space: nowrap; /* 숫자가 두 줄로 나뉘어 표시되지 않게 합니다. */
+  border-radius: 14px; /* 표시 영역 모서리를 둥글게 만듭니다. */
+  background: #2b2233; /* 표시 영역을 검정 화면으로 만듭니다. */
+  color: #ffd1e6; /* 검정 화면 위 숫자는 밝은 핑크로 표시합니다. */
+  font-size: clamp(18px, 7vw, 24px); /* 작은 화면에서는 글자를 줄여 비율을 맞춥니다. */
+} /* 표시 영역 스타일을 마칩니다. */
+.buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; } /* 버튼을 네 칸 격자로 배치합니다. */
+button { /* 모든 버튼의 공통 모양을 지정합니다. */
+  min-height: 52px; /* 누르기 편하도록 버튼 높이를 정합니다. */
+  border: 0; /* 기본 테두리를 없앱니다. */
+  border-radius: 14px; /* 버튼 모서리를 둥글게 만듭니다. */
+  background: #ffffff; /* 버튼 기본 배경을 흰색으로 지정합니다. */
+  color: #2b2233; /* 버튼 글자를 검정에 가까운 색으로 지정합니다. */
+  font-size: 20px; /* 버튼 글자 크기를 지정합니다. */
+  cursor: pointer; /* 마우스 포인터를 손가락 모양으로 표시합니다. */
+} /* 공통 버튼 스타일을 마칩니다. */
+button.number { box-shadow: inset 0 0 0 2px #2b2233; } /* 숫자 버튼에 검정 테두리를 그려 줍니다. */
+button.number:hover { background: #f3e8ff; } /* 숫자 버튼에 마우스를 올리면 연보라색으로 바뀝니다. */
+button.operator { background: #d8c6f0; } /* 연산자 버튼은 연보라색으로 표시합니다. */
+button.clear { background: #ffb3d1; } /* 초기화 버튼은 핑크색으로 표시합니다. */
+button.equals { grid-column: span 4; background: #2b2233; color: #ffffff; } /* 결과 버튼은 검정 바탕에 흰 글자로 한 줄 너비에 표시합니다. */
