@@ -12,6 +12,7 @@ function initRoulettePage() {
     spinBtn: document.getElementById('spinBtn'),
     resultText: document.getElementById('wheelResultText'),
     resultActions: document.getElementById('wheelResultActions'),
+    nearbyBtn: document.getElementById('wheelNearbyBtn'),
     mapLink: document.getElementById('wheelMapLink'),
     smsLink: document.getElementById('wheelSmsLink'),
     shareBtn: document.getElementById('wheelShareBtn'),
@@ -187,7 +188,8 @@ function initRoulettePage() {
     rEl.resultPhoto.innerHTML = menu ? menuPhotoHtml(menu, false) : '';
     if (menu) rEl.resultPhoto.style.setProperty('--card-bg', CATEGORY_COLORS[menu.category]);
 
-    // '누가 계산?' 모드에서는 지도 버튼이 필요 없음
+    // '누가 계산?' 모드에서는 지도·주변 가게 버튼이 필요 없음
+    rEl.nearbyBtn.hidden = wheel.peopleMode;
     rEl.mapLink.hidden = wheel.peopleMode;
     rEl.mapLink.href = naverMapUrl(text);
     rEl.smsLink.href = smsUrl(resultShareText(text));
@@ -311,6 +313,10 @@ function initRoulettePage() {
   rEl.fillButtons.forEach((btn) => btn.addEventListener('click', () => fill(btn.dataset.fill)));
   rEl.shareBtn.addEventListener('click', () => {
     if (wheel.result) shareRawText(resultShareText(wheel.result));
+  });
+  // ⭐ 주변 가게 · 별점 (메뉴가 아닌 '학교 앞 김밥천국' 같은 후보도 그 이름으로 찾음)
+  rEl.nearbyBtn.addEventListener('click', () => {
+    if (wheel.result && !wheel.peopleMode) openNearby(nearbyTargetFromText(wheel.result), rEl.nearbyBtn);
   });
   rEl.decideBtn.addEventListener('click', () => {
     if (!wheel.resultMenu || rEl.decideBtn.disabled) return;

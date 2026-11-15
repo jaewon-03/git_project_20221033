@@ -25,6 +25,7 @@ const pageCache = new Map(); // 한 번 불러온 페이지는 기억해서 다�
 
 /* 지금 <main>에 맞는 페이지 기능 실행 */
 function startPage() {
+  if (typeof closeNearby === 'function') closeNearby(); // 다른 탭으로 가면 '내 주변 가게' 창은 닫음
   if (typeof pageCleanup === 'function') pageCleanup();
   pageCleanup = null;
   const main = document.querySelector('main[data-page]');

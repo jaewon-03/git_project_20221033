@@ -274,28 +274,15 @@ function requestPosition(callback, onError) {
   );
 }
 
-/* 📍 내 주변에서 찾기
-   위치 허용 창이 지금 화면에 보이도록, 위치를 먼저 받고 나서 지도를 새 탭으로 엽니다. */
-function openNearMe(keyword) {
-  if (!getCachedPosition()) showToast('📍 현재 위치를 확인하는 중이에요…');
-  requestPosition(
-    (p) => {
-      const win = window.open(googleMapsNearUrl(keyword, p.lat, p.lng), '_blank');
-      // 위치를 묻는 사이에 시간이 지나 브라우저가 팝업을 막은 경우
-      if (!win) showToast('위치를 확인했어요! 📍 내 주변을 한 번 더 누르면 지도가 열려요.');
-    },
-    (message) => showToast(message)
-  );
-}
-
 /* 결과 카드의 '식당 찾기 / 친구에게 알리기' 버튼 묶음
    container 안의 [data-link], [data-action] 버튼을 지금 메뉴에 맞게 채웁니다.
    돌려주는 함수에 메뉴를 넘기면 링크가 바뀝니다. */
 function setupMenuActions(container, shareIntro) {
   let current = null;
 
-  container.querySelector('[data-action="near"]').addEventListener('click', () => {
-    if (current) openNearMe(current.name);
+  // ⭐ 내 주변 가게 · 별점 (nearby.js)
+  container.querySelector('[data-action="near"]').addEventListener('click', (e) => {
+    if (current) openNearby(nearbyTargetFromMenu(current), e.currentTarget);
   });
   container.querySelector('[data-action="share"]').addEventListener('click', () => {
     if (current) shareMenu(current, shareIntro);
