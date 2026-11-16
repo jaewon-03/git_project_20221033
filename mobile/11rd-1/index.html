@@ -3,96 +3,118 @@
 <head> <!-- 문서 설정과 파일 연결을 시작합니다. -->
 <meta charset="utf-8"> <!-- 한글이 깨지지 않도록 문자 인코딩을 지정합니다. -->
 <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- 휴대폰 화면 너비에 맞춰 페이지를 보여 줍니다. (반응형 필수) -->
-<title>별빛시네마 | 영화 예매</title> <!-- 브라우저 탭에 보일 제목입니다. -->
+<meta name="description" content="지금 상영 중인 영화와 개봉 예정작, 박스오피스 순위를 한눈에 보는 영화 정보 사이트"> <!-- 검색 결과에 보일 페이지 설명입니다. -->
+<title>별빛무비 | 영화 정보</title> <!-- 브라우저 탭에 보일 제목입니다. -->
 <link rel="stylesheet" href="css/cinema.css"> <!-- 화면 디자인 CSS 파일을 연결합니다. -->
 <script src="js/cinema.js" defer></script> <!-- 기능 JS 파일을 연결합니다. (defer: 화면을 다 읽은 뒤 실행) -->
 </head> <!-- 문서 설정을 마칩니다. -->
 <body> <!-- 실제로 보이는 화면을 시작합니다. -->
 <header class="site-header"> <!-- 맨 위 로고와 메뉴 줄입니다. -->
 <div class="header-inner"> <!-- 머리글 내용을 가운데 폭에 맞춥니다. -->
-<a class="logo" href="#top">별빛<span>시네마</span></a> <!-- 사이트 로고입니다. 누르면 맨 위로 갑니다. -->
+<a class="logo" href="#top">별빛<span>무비</span></a> <!-- 사이트 로고입니다. 누르면 맨 위로 갑니다. -->
 <button class="menu-button" id="menuButton" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainMenu">☰</button> <!-- 태블릿·폰에서만 보이는 햄버거 메뉴 버튼입니다. -->
 <nav class="main-menu" id="mainMenu"> <!-- 주요 메뉴 목록입니다. -->
-<a href="#movies">영화</a> <!-- 영화 목록으로 이동합니다. -->
-<a href="#booking">예매</a> <!-- 예매 영역으로 이동합니다. -->
-<a href="#theaters">극장</a> <!-- 극장 목록으로 이동합니다. -->
-<a href="#events">이벤트</a> <!-- 이벤트 영역으로 이동합니다. -->
+<a href="#chart">무비차트</a> <!-- 현재 상영작·상영 예정작 목록으로 이동합니다. -->
+<a href="#boxoffice">박스오피스</a> <!-- 어제 관객 수 순위 표로 이동합니다. -->
+<a href="#booking">예매 바로가기</a> <!-- CGV·메가박스 예매 링크로 이동합니다. -->
 </nav> <!-- 주요 메뉴를 마칩니다. -->
 </div> <!-- 머리글 안쪽을 마칩니다. -->
 </header> <!-- 머리글을 마칩니다. -->
 <main id="top"> <!-- 페이지의 주요 내용을 시작합니다. -->
-<section class="hero" aria-label="추천 영화 배너"> <!-- 큰 영화 배너(슬라이드) 영역입니다. -->
-<div class="hero-slides" id="heroSlides"></div> <!-- 배너 슬라이드를 JS가 채웁니다. -->
+<section class="hero" aria-label="예매율 상위 영화 배너"> <!-- 큰 영화 배너(슬라이드) 영역입니다. -->
+<div class="hero-slides" id="heroSlides"></div> <!-- 예매율 1~3위 영화 배너를 JS가 채웁니다. -->
 <button class="hero-arrow prev" id="heroPrev" type="button" aria-label="이전 배너">‹</button> <!-- 이전 배너로 넘깁니다. -->
 <button class="hero-arrow next" id="heroNext" type="button" aria-label="다음 배너">›</button> <!-- 다음 배너로 넘깁니다. -->
 <div class="hero-dots" id="heroDots"></div> <!-- 몇 번째 배너인지 알려 주는 점을 JS가 채웁니다. -->
 </section> <!-- 배너 영역을 마칩니다. -->
-<section class="section" id="movies"> <!-- 영화 목록 영역입니다. -->
+<section class="section" id="chart"> <!-- 무비차트(영화 목록) 영역입니다. -->
 <div class="section-head"> <!-- 제목과 탭을 한 줄에 놓습니다. -->
+<div> <!-- 제목과 기준 날짜를 묶습니다. -->
 <h2>무비차트</h2> <!-- 영화 목록 제목입니다. -->
-<div class="tabs" role="tablist"> <!-- 현재 상영작 / 상영 예정작 탭입니다. -->
-<button class="tab active" type="button" role="tab" aria-selected="true" data-status="now">현재 상영작</button> <!-- 현재 상영 중인 영화를 보여 줍니다. -->
+<p class="data-date" id="chartDate"></p> <!-- 자료 기준 날짜를 JS가 씁니다. -->
+</div> <!-- 제목 묶음을 마칩니다. -->
+<div class="tabs" role="tablist" aria-label="영화 목록 종류"> <!-- 현재 상영작 / 상영 예정작 탭입니다. -->
+<button class="tab active" type="button" role="tab" aria-selected="true" data-status="now">현재 상영작</button> <!-- 지금 상영 중인 영화를 보여 줍니다. -->
 <button class="tab" type="button" role="tab" aria-selected="false" data-status="soon">상영 예정작</button> <!-- 곧 개봉할 영화를 보여 줍니다. -->
+<button class="tab" type="button" role="tab" aria-selected="false" data-status="recent">최근 개봉작</button> <!-- 최근 3개월 동안 개봉한 영화를 관객 순으로 보여 줍니다. -->
 </div> <!-- 탭을 마칩니다. -->
 </div> <!-- 제목 줄을 마칩니다. -->
+<div class="toolbar"> <!-- 검색, 정렬, 등급 거르기를 한 줄에 놓습니다. -->
+<label class="search-box"> <!-- 영화 이름 검색칸입니다. (label로 감싸서 글자를 눌러도 입력칸이 선택됩니다) -->
+<span aria-hidden="true">⌕</span> <!-- 장식용 돋보기 아이콘입니다. -->
+<span class="visually-hidden">영화 이름 검색</span> <!-- 스크린 리더에 입력칸 이름을 알려 줍니다. -->
+<input id="movieSearch" type="search" placeholder="영화 이름 검색" autocomplete="off"> <!-- 글자를 넣으면 바로 목록을 걸러 줍니다. -->
+</label> <!-- 검색칸을 마칩니다. -->
+<select id="sortSelect" aria-label="정렬 순서"> <!-- 목록 정렬 순서를 고릅니다. -->
+<option value="rate">예매율순</option> <!-- 예매율이 높은 순서입니다. -->
+<option value="audience">누적관객순</option> <!-- 누적 관객이 많은 순서입니다. -->
+<option value="date">개봉일순</option> <!-- 최근(또는 가까운) 개봉일 순서입니다. -->
+<option value="name">가나다순</option> <!-- 이름 순서입니다. -->
+</select> <!-- 정렬 선택을 마칩니다. -->
+<select id="periodSelect" aria-label="개봉 시기"> <!-- 개봉 시기로 목록을 거릅니다. -->
+<option value="0">개봉 시기 전체</option> <!-- 기간 상관없이 모두 보여 줍니다. -->
+<option value="30">최근 1개월</option> <!-- 최근 30일 안에 개봉한 영화만 보여 줍니다. -->
+<option value="90">최근 3개월</option> <!-- 최근 90일 안에 개봉한 영화만 보여 줍니다. -->
+</select> <!-- 개봉 시기 선택을 마칩니다. -->
+<div class="age-filter" id="ageFilter" aria-label="관람 등급 거르기"> <!-- 관람 등급 거르기 버튼들입니다. -->
+<button class="chip active" type="button" data-age="all">전체</button> <!-- 모든 등급을 보여 줍니다. -->
+<button class="chip" type="button" data-age="ALL">전체관람가</button> <!-- 전체 관람가만 보여 줍니다. -->
+<button class="chip" type="button" data-age="12">12세</button> <!-- 12세 관람가만 보여 줍니다. -->
+<button class="chip" type="button" data-age="15">15세</button> <!-- 15세 관람가만 보여 줍니다. -->
+<button class="chip" type="button" data-age="19">청불</button> <!-- 청소년 관람불가만 보여 줍니다. -->
+</div> <!-- 등급 거르기를 마칩니다. -->
+</div> <!-- 도구 줄을 마칩니다. -->
+<p class="result-count" id="resultCount" aria-live="polite"></p> <!-- 몇 편이 보이는지 JS가 씁니다. -->
 <div class="movie-list" id="movieList"></div> <!-- 영화 카드들을 JS가 채웁니다. -->
-</section> <!-- 영화 목록 영역을 마칩니다. -->
-<section class="section" id="booking"> <!-- 빠른 예매 영역입니다. -->
-<div class="section-head"><h2>빠른 예매</h2></div> <!-- 예매 영역 제목입니다. -->
-<div class="booking-box"> <!-- 예매 단계들을 담는 상자입니다. -->
-<div class="booking-step"> <!-- 1단계: 영화 고르기 -->
-<h3>1. 영화</h3> <!-- 단계 제목입니다. -->
-<select id="movieSelect" aria-label="예매할 영화"></select> <!-- 예매할 영화를 고르는 목록을 JS가 채웁니다. -->
-</div> <!-- 1단계를 마칩니다. -->
-<div class="booking-step"> <!-- 2단계: 날짜 고르기 -->
-<h3>2. 날짜</h3> <!-- 단계 제목입니다. -->
-<div class="choice-list" id="dateList"></div> <!-- 오늘부터 7일 날짜 버튼을 JS가 채웁니다. -->
-</div> <!-- 2단계를 마칩니다. -->
-<div class="booking-step"> <!-- 3단계: 시간 고르기 -->
-<h3>3. 시간</h3> <!-- 단계 제목입니다. -->
-<div class="choice-list" id="timeList"></div> <!-- 상영 시간 버튼을 JS가 채웁니다. -->
-</div> <!-- 3단계를 마칩니다. -->
-<div class="booking-step seat-step"> <!-- 4단계: 좌석 고르기 -->
-<h3>4. 좌석</h3> <!-- 단계 제목입니다. -->
-<div class="screen">SCREEN</div> <!-- 스크린 위치를 보여 줍니다. -->
-<div class="seat-map" id="seatMap"></div> <!-- 좌석 버튼을 JS가 채웁니다. -->
-<p class="seat-legend"><span class="legend-box"></span>선택 가능 <span class="legend-box picked"></span>선택 <span class="legend-box taken"></span>예매 완료</p> <!-- 좌석 색의 뜻을 알려 줍니다. -->
-</div> <!-- 4단계를 마칩니다. -->
-<div class="booking-summary"> <!-- 고른 내용과 금액을 보여 줍니다. -->
-<p id="summaryText">영화, 날짜, 시간, 좌석을 골라 주세요.</p> <!-- 고른 내용을 JS가 바꿔 씁니다. -->
-<p class="price">총 <strong id="totalPrice">0</strong>원</p> <!-- 총 금액을 JS가 바꿔 씁니다. -->
-<button class="book-button" id="bookButton" type="button" disabled>예매하기</button> <!-- 다 고르면 눌러서 예매를 끝냅니다. -->
-</div> <!-- 예매 요약을 마칩니다. -->
-</div> <!-- 예매 상자를 마칩니다. -->
-</section> <!-- 빠른 예매 영역을 마칩니다. -->
-<section class="section" id="theaters"> <!-- 극장 안내 영역입니다. -->
-<div class="section-head"><h2>극장 안내</h2></div> <!-- 극장 안내 제목입니다. -->
-<table class="theater-table"> <!-- 극장 목록 표입니다. -->
+</section> <!-- 무비차트 영역을 마칩니다. -->
+<section class="section" id="boxoffice"> <!-- 박스오피스 순위 영역입니다. -->
+<div class="section-head"> <!-- 제목 줄입니다. -->
+<div> <!-- 제목과 기준 날짜를 묶습니다. -->
+<h2>일별 박스오피스</h2> <!-- 박스오피스 제목입니다. -->
+<p class="data-date" id="boxOfficeDate"></p> <!-- 자료 기준 날짜를 JS가 씁니다. -->
+</div> <!-- 제목 묶음을 마칩니다. -->
+</div> <!-- 제목 줄을 마칩니다. -->
+<table class="box-table"> <!-- 박스오피스 순위 표입니다. -->
 <thead> <!-- 표의 제목 줄을 시작합니다. -->
-<tr><th>지역</th><th>극장</th><th>상영관</th><th>전화</th></tr> <!-- 표의 칸 이름입니다. -->
+<tr><th>순위</th><th>영화</th><th>관객 수</th><th>매출 점유율</th><th>누적 관객</th></tr> <!-- 표의 칸 이름입니다. -->
 </thead> <!-- 표의 제목 줄을 마칩니다. -->
-<tbody> <!-- 표의 내용을 시작합니다. -->
-<tr><td data-label="지역">서울</td><td data-label="극장">별빛시네마 강남</td><td data-label="상영관">8관</td><td data-label="전화"><a href="tel:0212345678">02-1234-5678</a></td></tr> <!-- 서울 극장 정보입니다. -->
-<tr><td data-label="지역">경기</td><td data-label="극장">별빛시네마 수원</td><td data-label="상영관">6관</td><td data-label="전화"><a href="tel:0312345678">031-234-5678</a></td></tr> <!-- 경기 극장 정보입니다. -->
-<tr><td data-label="지역">부산</td><td data-label="극장">별빛시네마 해운대</td><td data-label="상영관">7관</td><td data-label="전화"><a href="tel:0512345678">051-234-5678</a></td></tr> <!-- 부산 극장 정보입니다. -->
-<tr><td data-label="지역">제주</td><td data-label="극장">별빛시네마 제주</td><td data-label="상영관">4관</td><td data-label="전화"><a href="tel:0642345678">064-234-5678</a></td></tr> <!-- 제주 극장 정보입니다. -->
-</tbody> <!-- 표의 내용을 마칩니다. -->
-</table> <!-- 극장 목록 표를 마칩니다. -->
-</section> <!-- 극장 안내 영역을 마칩니다. -->
-<section class="section" id="events"> <!-- 이벤트 영역입니다. -->
-<div class="section-head"><h2>이벤트</h2></div> <!-- 이벤트 제목입니다. -->
-<div class="event-list"> <!-- 이벤트 카드 목록입니다. -->
-<article class="event-card event-1"><p class="event-tag">할인</p><h3>화요일은 반값 데이</h3><p>매주 화요일 모든 2D 영화 7,000원</p></article> <!-- 첫 번째 이벤트 카드입니다. -->
-<article class="event-card event-2"><p class="event-tag">선물</p><h3>팝콘 무료 업그레이드</h3><p>2인 이상 예매 시 라지 사이즈로</p></article> <!-- 두 번째 이벤트 카드입니다. -->
-<article class="event-card event-3"><p class="event-tag">학생</p><h3>대학생 시험 끝 응원</h3><p>학생증 확인 시 3,000원 할인</p></article> <!-- 세 번째 이벤트 카드입니다. -->
-</div> <!-- 이벤트 카드 목록을 마칩니다. -->
-</section> <!-- 이벤트 영역을 마칩니다. -->
+<tbody id="boxOfficeBody"></tbody> <!-- 순위 줄들을 JS가 채웁니다. -->
+</table> <!-- 박스오피스 표를 마칩니다. -->
+</section> <!-- 박스오피스 영역을 마칩니다. -->
+<section class="section" id="booking"> <!-- 예매 바로가기 영역입니다. -->
+<div class="section-head"><h2>예매 바로가기</h2></div> <!-- 예매 바로가기 제목입니다. -->
+<div class="booking-links"> <!-- 극장 예매 링크 카드 두 개입니다. -->
+<a class="booking-card cgv" href="https://cgv.co.kr/cnm/cgvChart/movieChart" target="_blank" rel="noopener"> <!-- CGV 무비차트(예매 버튼이 있는 곳)로 새 탭에서 엽니다. -->
+<strong>CGV에서 예매하기</strong> <!-- 링크 제목입니다. -->
+<span>CGV 무비차트에서 영화를 골라 예매해요 ↗</span> <!-- 링크 설명입니다. -->
+</a> <!-- CGV 링크를 마칩니다. -->
+<a class="booking-card megabox" href="https://www.megabox.co.kr/booking" target="_blank" rel="noopener"> <!-- 메가박스 빠른예매 화면을 새 탭에서 엽니다. -->
+<strong>메가박스에서 예매하기</strong> <!-- 링크 제목입니다. -->
+<span>메가박스 빠른예매로 바로 가요 ↗</span> <!-- 링크 설명입니다. -->
+</a> <!-- 메가박스 링크를 마칩니다. -->
+</div> <!-- 링크 카드들을 마칩니다. -->
+<p class="note">예매는 각 극장 사이트에서 진행됩니다. 이 사이트는 영화 정보만 보여 줍니다.</p> <!-- 예매는 외부 사이트에서 한다는 안내입니다. -->
+</section> <!-- 예매 바로가기 영역을 마칩니다. -->
 </main> <!-- 주요 내용을 마칩니다. -->
-<footer class="site-footer"> <!-- 맨 아래 정보 영역입니다. -->
-<p class="footer-logo">별빛시네마</p> <!-- 바닥 로고입니다. -->
-<p>고객센터 <a href="tel:15441234">1544-1234</a> · <a href="mailto:help@example.com">help@example.com</a></p> <!-- 연락처입니다. (예시 주소) -->
-<p>© 2026 별빛시네마. 수업 실습용으로 만든 가상의 영화관입니다.</p> <!-- 저작권과 실습용 안내입니다. -->
-</footer> <!-- 바닥 정보 영역을 마칩니다. -->
-<div class="toast" id="toast" role="status" aria-live="polite"></div> <!-- 예매 완료 같은 짧은 알림을 띄우는 곳입니다. -->
+<dialog class="movie-dialog" id="movieDialog" aria-labelledby="dialogTitle"> <!-- 영화를 누르면 뜨는 상세 정보 창입니다. -->
+<button class="dialog-close" id="dialogClose" type="button" aria-label="닫기">✕</button> <!-- 상세 창을 닫는 버튼입니다. -->
+<div class="dialog-body"> <!-- 포스터와 정보를 나란히 놓습니다. -->
+<div class="poster dialog-poster" id="dialogPoster"></div> <!-- 영화 포스터(색과 글자로 만든 그림)를 JS가 채웁니다. -->
+<div class="dialog-info"> <!-- 영화 정보 글 영역입니다. -->
+<p id="dialogBadge"></p> <!-- 관람 등급과 상영 상태를 JS가 씁니다. -->
+<h2 id="dialogTitle">영화 제목</h2> <!-- 영화 제목을 JS가 씁니다. -->
+<table class="info-table" id="dialogTable"></table> <!-- 개봉일·예매율·누적 관객 표를 JS가 채웁니다. -->
+<h3>영화 소개</h3> <!-- 위키백과 소개 제목입니다. -->
+<p class="wiki-text" id="wikiText"></p> <!-- 위키백과 공개 API에서 불러온 소개 글을 JS가 씁니다. -->
+<div class="dialog-links" id="dialogLinks"></div> <!-- CGV·메가박스 예매 링크를 JS가 채웁니다. -->
+</div> <!-- 영화 정보 글 영역을 마칩니다. -->
+</div> <!-- 상세 창 내용을 마칩니다. -->
+</dialog> <!-- 상세 정보 창을 마칩니다. -->
+<footer class="site-footer"> <!-- 맨 아래 출처와 안내 영역입니다. -->
+<p class="footer-logo">별빛무비</p> <!-- 바닥 로고입니다. -->
+<p>박스오피스 <a href="https://www.kobis.or.kr" target="_blank" rel="noopener">영화진흥위원회 통합전산망(KOBIS)</a> · 예매율·관람 등급 <a href="https://cgv.co.kr/cnm/cgvChart/movieChart" target="_blank" rel="noopener">CGV 무비차트</a> 참고</p> <!-- 숫자 자료의 출처입니다. -->
+<p>영화 소개 <a href="https://ko.wikipedia.org" target="_blank" rel="noopener">위키백과</a> (CC BY-SA 4.0) · 포스터 사진은 한국어·영어 위키백과에 있는 영화만 불러오고, 없는 영화는 색과 글자로 그렸습니다.</p> <!-- 소개 글의 출처와 라이선스, 포스터 사진 안내입니다. -->
+<p>수업 실습용 사이트이며 CGV·메가박스와 관련이 없습니다.</p> <!-- 실습용이며 극장과 무관하다는 안내입니다. -->
+</footer> <!-- 바닥 영역을 마칩니다. -->
 </body> <!-- 보이는 화면을 마칩니다. -->
 </html> <!-- HTML 문서를 마칩니다. -->

@@ -1,4 +1,4 @@
-/* 별빛시네마 디자인: 어두운 영화관 분위기 + 코랄 빨강 강조색, PC → 태블릿(1023px 이하) → 폰(767px 이하) 반응형 */
+/* 별빛무비 디자인: 어두운 영화관 분위기 + 코랄 빨강 강조색, PC → 태블릿(1023px 이하) → 폰(767px 이하) 반응형 */
 :root { /* 여러 곳에서 함께 쓰는 색을 변수로 정합니다. */
   --bg: #0e0e12; /* 페이지 배경(거의 검정)입니다. */
   --panel: #18181f; /* 카드·상자 배경입니다. */
@@ -18,9 +18,10 @@ body { /* 페이지 전체 기본 모양입니다. */
   word-break: keep-all; /* 한국어가 단어 중간에서 끊기지 않게 합니다. */
 } /* 기본 모양을 마칩니다. */
 a { color: inherit; } /* 링크는 주변 글자색을 그대로 씁니다. */
-button, select { font: inherit; color: inherit; } /* 버튼과 선택 목록도 페이지 글꼴을 씁니다. */
+button, select, input { font: inherit; color: inherit; } /* 버튼, 선택 목록, 입력칸도 페이지 글꼴을 씁니다. */
 button { cursor: pointer; } /* 버튼 위에서는 손가락 모양 마우스를 보여 줍니다. */
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; } /* 키보드로 이동할 때 현재 위치를 빨간 테두리로 보여 줍니다. */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* 화면에서는 숨기고 스크린 리더만 읽게 합니다. */
 
 /* ----- 머리글 ----- */
 .site-header { /* 맨 위 메뉴 줄입니다. */
@@ -40,29 +41,35 @@ button { cursor: pointer; } /* 버튼 위에서는 손가락 모양 마우스를
   padding: 0 24px; /* 양옆 여백입니다. */
 } /* 머리글 안쪽을 마칩니다. */
 .logo { font-size: 22px; font-weight: 900; text-decoration: none; letter-spacing: -0.03em; } /* 로고를 크고 굵게 보여 줍니다. */
-.logo span { color: var(--accent); } /* 로고의 '시네마'를 강조색으로 칠합니다. */
+.logo span { color: var(--accent); } /* 로고의 '무비'를 강조색으로 칠합니다. */
 .main-menu { display: flex; gap: 28px; } /* PC에서는 메뉴를 가로로 늘어놓습니다. */
 .main-menu a { color: var(--muted); font-weight: 600; text-decoration: none; } /* 메뉴 글자를 회색으로 보여 줍니다. */
 .main-menu a:hover { color: var(--text); } /* 마우스를 올리면 메뉴 글자를 밝게 합니다. */
 .menu-button { display: none; } /* 햄버거 버튼은 PC에서 숨깁니다. */
 
 /* ----- 배너(슬라이드) ----- */
-.hero { position: relative; height: 440px; overflow: hidden; } /* 배너 영역 크기를 정하고 넘치는 슬라이드를 감춥니다. */
+.hero { position: relative; height: 460px; overflow: hidden; } /* 배너 영역 크기를 정하고 넘치는 슬라이드를 감춥니다. */
 .hero-slide { /* 배너 한 장입니다. */
   position: absolute; /* 슬라이드를 같은 자리에 겹쳐 놓습니다. */
   inset: 0; /* 배너 영역을 꽉 채웁니다. */
-  display: flex; /* 글자를 아래쪽에 놓기 위해 씁니다. */
-  align-items: flex-end; /* 글자를 아래쪽에 붙입니다. */
-  padding: 0 max(80px, calc((100% - 1152px) / 2)) 64px; /* 글자 왼쪽 시작을 본문 폭에 맞추고, 좁을 때도 화살표와 겹치지 않게 80px은 띄웁니다. */
-  background: linear-gradient(to top, var(--bg) 0%, transparent 60%), linear-gradient(120deg, var(--color1), var(--color2)); /* 영화 색으로 칠하고 아래쪽을 배경색으로 흐리게 이어 줍니다. */
+  display: flex; /* 글자와 포스터를 가로로 놓습니다. */
+  align-items: flex-end; /* 내용을 아래쪽에 붙입니다. */
+  justify-content: space-between; /* 글자는 왼쪽, 포스터는 오른쪽에 둡니다. */
+  gap: 32px; /* 글자와 포스터 사이를 띄웁니다. */
+  padding: 0 max(80px, calc((100% - 1152px) / 2)) 64px; /* 본문 폭에 맞추고, 좁을 때도 화살표와 겹치지 않게 80px은 띄웁니다. */
+  background: linear-gradient(to top, var(--bg) 0%, transparent 65%), linear-gradient(120deg, var(--color1), var(--color2)); /* 영화 색으로 칠하고 아래쪽을 배경색으로 흐리게 이어 줍니다. */
   opacity: 0; /* 기본은 안 보이게 합니다. */
-  transition: opacity 0.6s; /* 바뀔 때 부드럽게 나타나고 사라집니다. */
+  visibility: hidden; /* 안 보이는 배너의 버튼이 눌리지 않게 합니다. */
+  transition: opacity 0.6s, visibility 0.6s; /* 바뀔 때 부드럽게 나타나고 사라집니다. */
 } /* 배너 한 장을 마칩니다. */
-.hero-slide.active { opacity: 1; } /* 지금 순서의 배너만 보이게 합니다. */
-.hero-text { max-width: 560px; } /* 배너 글자가 너무 길게 퍼지지 않게 합니다. */
-.hero-text .badge { margin-bottom: 8px; } /* 관람 등급 표시 아래를 띄웁니다. */
-.hero-text h2 { margin: 0 0 8px; font-size: clamp(30px, 5vw, 48px); line-height: 1.2; } /* 영화 제목을 크게 보여 줍니다. */
-.hero-text p { margin: 0 0 20px; color: #e4e4ea; } /* 영화 소개 글입니다. */
+.hero-slide.active { opacity: 1; visibility: visible; } /* 지금 순서의 배너만 보이게 합니다. */
+.hero-text { max-width: 600px; } /* 배너 글자가 너무 길게 퍼지지 않게 합니다. */
+.hero-rank { margin: 0 0 6px; color: var(--accent); font-weight: 800; } /* '예매율 1위' 같은 작은 제목입니다. */
+.hero-text h2 { margin: 6px 0 10px; font-size: clamp(28px, 5vw, 48px); line-height: 1.2; } /* 영화 제목을 크게 보여 줍니다. */
+.hero-stats { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; } /* 예매율·누적관객·개봉일을 알약 모양으로 늘어놓습니다. */
+.hero-stats li { padding: 4px 12px; border-radius: 999px; background: #ffffff1f; font-size: 14px; } /* 알약 하나의 모양입니다. */
+.hero-buttons { display: flex; flex-wrap: wrap; gap: 8px; } /* 배너 버튼들을 나란히 놓습니다. */
+.hero-poster { flex: 0 0 200px; } /* 배너 오른쪽 포스터 너비입니다. */
 .hero-arrow { /* 이전·다음 화살표 버튼입니다. */
   position: absolute; /* 배너 위에 띄웁니다. */
   top: 50%; /* 세로 가운데에 놓습니다. */
@@ -80,10 +87,11 @@ button { cursor: pointer; } /* 버튼 위에서는 손가락 모양 마우스를
 .hero-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 4px; background: #ffffff66; transition: width 0.3s; } /* 작은 점 버튼입니다. */
 .hero-dot.active { width: 24px; background: var(--accent); } /* 지금 배너의 점은 길고 빨갛게 보여 줍니다. */
 
-/* ----- 공통 영역 ----- */
-.section { max-width: 1200px; margin: 0 auto; padding: 48px 24px 0; } /* 각 영역의 폭과 여백을 맞춥니다. */
-.section-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; } /* 제목과 탭을 한 줄에 놓고, 좁으면 줄을 바꿉니다. */
+/* ----- 공통 ----- */
+.section { max-width: 1200px; margin: 0 auto; padding: 56px 24px 0; } /* 각 영역의 폭과 여백을 맞춥니다. */
+.section-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 20px; } /* 제목과 탭을 한 줄에 놓고, 좁으면 줄을 바꿉니다. */
 .section-head h2 { margin: 0; font-size: 26px; } /* 영역 제목입니다. */
+.data-date { margin: 2px 0 0; color: var(--muted); font-size: 13px; } /* 자료 기준 날짜 글자입니다. */
 .badge { /* 관람 등급 표시(ALL, 12, 15, 19)입니다. */
   display: inline-grid; /* 글자를 가운데에 놓습니다. */
   place-items: center; /* 가로·세로 가운데입니다. */
@@ -94,27 +102,43 @@ button { cursor: pointer; } /* 버튼 위에서는 손가락 모양 마우스를
   font-size: 12px; /* 작은 글자입니다. */
   font-weight: 800; /* 굵은 글자입니다. */
   color: #ffffff; /* 흰 글자입니다. */
+  vertical-align: middle; /* 옆 글자와 세로 가운데를 맞춥니다. */
 } /* 관람 등급 표시를 마칩니다. */
 .age-all { background: #1f9d55; } /* 전체 관람가는 초록색입니다. */
 .age-12 { background: #2f80ed; } /* 12세 관람가는 파란색입니다. */
-.age-15 { background: #e8a317; } /* 15세 관람가는 노란색입니다. */
+.age-15 { background: #c98a0c; } /* 15세 관람가는 노란색입니다. */
 .age-19 { background: #d63031; } /* 청소년 관람불가는 빨간색입니다. */
-.primary-button, .book-button { /* 빨간 주요 버튼(예매하기)입니다. */
-  padding: 12px 28px; /* 버튼 안쪽 여백입니다. */
-  border: 0; /* 테두리를 없앱니다. */
+.button { /* 버튼처럼 보이는 링크·버튼 공통 모양입니다. */
+  display: inline-flex; /* 글자를 가운데에 놓습니다. */
+  align-items: center; /* 세로 가운데입니다. */
+  justify-content: center; /* 가로 가운데입니다. */
+  padding: 10px 20px; /* 안쪽 여백입니다. */
+  border: 1px solid #ffffff40; /* 흐린 흰 테두리입니다. */
   border-radius: 999px; /* 알약 모양입니다. */
-  background: var(--accent); /* 강조색 배경입니다. */
-  color: #ffffff; /* 흰 글자입니다. */
-  font-weight: 800; /* 굵은 글자입니다. */
-} /* 주요 버튼을 마칩니다. */
-.primary-button:hover, .book-button:hover:not(:disabled) { filter: brightness(1.1); } /* 마우스를 올리면 살짝 밝게 합니다. */
+  background: none; /* 배경 없이 테두리만 보입니다. */
+  font-weight: 700; /* 굵은 글자입니다. */
+  text-decoration: none; /* 링크 밑줄을 없앱니다. */
+} /* 버튼 공통 모양을 마칩니다. */
+.button:hover { border-color: var(--text); } /* 마우스를 올리면 테두리를 밝게 합니다. */
+.button.primary { border-color: var(--accent); background: var(--accent); color: #ffffff; } /* 주요 버튼은 빨간 바탕입니다. */
+.button.primary:hover { filter: brightness(1.1); } /* 주요 버튼에 마우스를 올리면 살짝 밝게 합니다. */
 
-/* ----- 탭과 영화 카드 ----- */
+/* ----- 무비차트 ----- */
 .tabs { display: flex; gap: 6px; padding: 4px; border-radius: 999px; background: var(--panel); } /* 탭 두 개를 둥근 상자에 담습니다. */
 .tab { padding: 8px 16px; border: 0; border-radius: 999px; background: none; color: var(--muted); font-weight: 700; } /* 탭 버튼 기본 모양입니다. */
 .tab.active { background: var(--text); color: var(--bg); } /* 고른 탭은 흰 바탕에 검정 글자로 보여 줍니다. */
-.movie-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; } /* PC에서는 영화를 다섯 칸씩 놓습니다. */
-.movie-card { display: grid; gap: 8px; } /* 포스터와 글자를 세로로 놓습니다. */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; } /* 검색·정렬·등급 거르기를 한 줄에 놓고 좁으면 줄을 바꿉니다. */
+.search-box { display: flex; align-items: center; gap: 6px; flex: 1 1 220px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--muted); } /* 둥근 검색칸입니다. */
+.search-box:focus-within { border-color: var(--accent); } /* 입력 중에는 검색칸 테두리를 빨갛게 합니다. */
+.search-box input { flex: 1; min-width: 0; height: 40px; border: 0; outline: 0; background: none; color: var(--text); font-size: 16px; } /* 검색 입력칸입니다. (16px: 아이폰 자동 확대 방지) */
+#sortSelect, #periodSelect { height: 42px; padding: 0 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); } /* 정렬 선택 목록입니다. */
+.age-filter { display: flex; flex-wrap: wrap; gap: 6px; } /* 등급 거르기 버튼들을 늘어놓습니다. */
+.chip { padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--muted); font-size: 14px; } /* 등급 거르기 버튼 모양입니다. */
+.chip.active { border-color: var(--accent); color: var(--text); background: #ff4d5a26; } /* 고른 등급 버튼은 빨간 테두리로 강조합니다. */
+.result-count { margin: 14px 0; color: var(--muted); font-size: 14px; } /* '13편' 같은 개수 글자입니다. */
+.movie-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px 20px; } /* PC에서는 영화를 다섯 칸씩 놓습니다. */
+.movie-card { display: flex; flex-direction: column; gap: 6px; min-width: 0; } /* 포스터와 글자를 세로로 놓고, 긴 이름 때문에 칸이 넓어지지 않게 합니다. */
+.poster-button { display: block; width: 100%; padding: 0; border: 0; background: none; text-align: left; } /* 포스터를 누를 수 있는 버튼으로 만듭니다. */
 .poster { /* 영화 포스터(그림 대신 색과 글자로 만듭니다)입니다. */
   position: relative; /* 순위 숫자를 포스터 위에 놓는 기준입니다. */
   display: flex; /* 제목을 아래에 놓기 위해 씁니다. */
@@ -122,95 +146,82 @@ button { cursor: pointer; } /* 버튼 위에서는 손가락 모양 마우스를
   aspect-ratio: 2 / 3; /* 실제 포스터처럼 세로로 긴 비율입니다. */
   padding: 14px; /* 안쪽 여백입니다. */
   border-radius: 12px; /* 모서리를 둥글게 합니다. */
-  background: linear-gradient(160deg, var(--color1), var(--color2)); /* 영화마다 다른 두 색으로 칠합니다. */
+  background: radial-gradient(circle at 70% 20%, #ffffff26, transparent 45%), linear-gradient(160deg, var(--color1), var(--color2)); /* 영화마다 다른 두 색에 빛이 비치는 느낌을 더합니다. */
   overflow: hidden; /* 넘치는 부분을 감춥니다. */
+  transition: transform 0.25s; /* 마우스를 올릴 때 부드럽게 움직입니다. */
 } /* 포스터를 마칩니다. */
-.poster-icon { position: absolute; top: 18%; left: 50%; font-size: 56px; transform: translateX(-50%); } /* 포스터 가운데 위에 영화 그림 아이콘을 놓습니다. */
-.poster-title { font-size: 18px; font-weight: 900; line-height: 1.25; text-shadow: 0 2px 8px #00000080; } /* 포스터 위 제목입니다. */
-.rank { position: absolute; top: 8px; left: 12px; font-size: 34px; font-weight: 900; font-style: italic; text-shadow: 0 2px 8px #00000080; } /* 왼쪽 위 순위 숫자입니다. */
-.movie-name { display: flex; align-items: center; gap: 6px; margin: 4px 0 0; font-weight: 700; } /* 등급 표시와 영화 이름 줄입니다. */
-.movie-info { margin: 0; color: var(--muted); font-size: 14px; } /* 예매율·평점 같은 정보 줄입니다. */
-.card-button { padding: 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); font-weight: 700; } /* 카드 아래 예매 버튼입니다. */
-.card-button:hover { border-color: var(--accent); color: var(--accent); } /* 마우스를 올리면 빨갛게 바뀝니다. */
+.poster.has-image { background: linear-gradient(to top, #000000d9, transparent 45%), var(--image) center / cover no-repeat, var(--color2); } /* 위키백과 사진이 있으면 사진을 꽉 채우고 아래를 어둡게 해 제목이 잘 보이게 합니다. */
+.poster.has-image .poster-icon { display: none; } /* 사진 포스터에서는 아이콘을 숨깁니다. */
+.poster-button:hover .poster { transform: translateY(-4px); } /* 마우스를 올리면 포스터가 살짝 떠오릅니다. */
+.poster-icon { position: absolute; top: 20%; left: 50%; font-size: clamp(40px, 6vw, 60px); transform: translateX(-50%); } /* 포스터 가운데 위에 분위기 아이콘을 놓습니다. */
+.poster-title { position: relative; font-size: 17px; font-weight: 900; line-height: 1.25; text-shadow: 0 2px 8px #00000099; } /* 포스터 위 제목입니다. */
+.rank { position: absolute; top: 6px; left: 12px; font-size: 36px; font-weight: 900; font-style: italic; text-shadow: 0 2px 8px #00000080; } /* 왼쪽 위 순위 숫자입니다. */
+.movie-name { display: flex; align-items: center; gap: 6px; margin: 6px 0 0; font-weight: 700; } /* 등급 표시와 영화 이름 줄입니다. */
+.movie-name span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* 긴 이름은 한 줄에서 …으로 줄입니다. */
+.movie-info { margin: 0; color: var(--muted); font-size: 14px; } /* 예매율·누적 관객 같은 정보 줄입니다. */
+.movie-info strong { color: var(--text); } /* 정보 줄의 숫자를 밝게 보여 줍니다. */
+.dday { color: var(--accent); font-weight: 800; } /* 개봉 D-day 글자를 빨갛게 보여 줍니다. */
+.card-links { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: auto; padding-top: 6px; } /* 카드 아래 CGV·메가박스 버튼 두 개입니다. */
+.card-links a { padding: 7px 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); font-size: 13px; font-weight: 700; text-align: center; text-decoration: none; } /* 카드 아래 예매 링크 모양입니다. */
+.card-links a:hover { border-color: var(--accent); color: var(--accent); } /* 마우스를 올리면 빨갛게 바뀝니다. */
+.empty-message { grid-column: 1 / -1; padding: 48px 0; color: var(--muted); text-align: center; } /* 검색 결과가 없을 때 안내 글입니다. */
 
-/* ----- 빠른 예매 ----- */
-.booking-box { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; } /* PC에서는 영화·날짜·시간을 세 칸으로 놓습니다. */
-.booking-step, .booking-summary { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); } /* 각 단계 상자 모양입니다. */
-.booking-step h3 { margin: 0 0 12px; font-size: 16px; } /* 단계 제목입니다. */
-.seat-step, .booking-summary { grid-column: 1 / -1; } /* 좌석과 요약은 한 줄 전체를 씁니다. */
-#movieSelect { width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); } /* 영화 선택 목록 모양입니다. */
-.choice-list { display: flex; flex-wrap: wrap; gap: 8px; } /* 날짜·시간 버튼을 여러 줄로 늘어놓습니다. */
-.choice { padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); font-size: 14px; } /* 날짜·시간 버튼 기본 모양입니다. */
-.choice.selected { border-color: var(--accent); background: var(--accent); color: #ffffff; font-weight: 700; } /* 고른 버튼은 빨갛게 칠합니다. */
-.choice:disabled { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; } /* 이미 지난 상영 시간은 흐리게 줄을 그어 누를 수 없게 보여 줍니다. */
-.choice.sunday { color: #ff8a8a; } /* 일요일 날짜는 빨간 글자로 보여 줍니다. */
-.choice.saturday { color: #8ab4ff; } /* 토요일 날짜는 파란 글자로 보여 줍니다. */
-.choice.selected.sunday, .choice.selected.saturday { color: #ffffff; } /* 고른 주말 날짜도 흰 글자로 맞춥니다. */
-.screen { /* 스크린 위치 표시입니다. */
-  max-width: 420px; /* 너무 넓지 않게 합니다. */
-  margin: 0 auto 16px; /* 가운데에 놓고 아래를 띄웁니다. */
-  padding: 4px; /* 안쪽 여백입니다. */
-  border-radius: 0 0 50% 50% / 0 0 100% 100%; /* 아래가 둥근 스크린 모양입니다. */
-  background: linear-gradient(#ffffff40, transparent); /* 빛이 퍼지는 느낌의 흰 그라데이션입니다. */
-  color: var(--muted); /* 회색 글자입니다. */
-  font-size: 12px; /* 작은 글자입니다. */
-  letter-spacing: 0.4em; /* 글자 사이를 넓게 합니다. */
-  text-align: center; /* 가운데 정렬입니다. */
-} /* 스크린 표시를 마칩니다. */
-.seat-map { display: grid; grid-template-columns: repeat(11, minmax(0, 32px)); justify-content: center; gap: 4px; } /* 줄 이름 1칸 + 좌석 10칸 격자입니다. 좁으면 좌석이 작아집니다. */
-.row-name { display: grid; place-items: center; color: var(--muted); font-size: 12px; font-weight: 700; } /* 왼쪽 줄 이름(A~H)입니다. */
-.seat { aspect-ratio: 1; padding: 0; border: 0; border-radius: 6px 6px 3px 3px; background: #3a3a48; font-size: 11px; } /* 좌석 버튼 기본 모양입니다. */
-.seat:hover:not(:disabled) { background: #55556a; } /* 마우스를 올리면 살짝 밝게 합니다. */
-.seat.picked { background: var(--accent); color: #ffffff; } /* 고른 좌석은 빨간색입니다. */
-.seat:disabled { background: #22222b; color: #44444f; cursor: not-allowed; } /* 이미 예매된 좌석은 어둡게 하고 누를 수 없게 합니다. */
-.seat-legend { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 14px; margin: 16px 0 0; color: var(--muted); font-size: 13px; } /* 좌석 색 설명 줄입니다. */
-.legend-box { display: inline-block; width: 14px; height: 14px; margin-right: -8px; border-radius: 4px; background: #3a3a48; vertical-align: middle; } /* 색 설명용 작은 네모입니다. */
-.legend-box.picked { background: var(--accent); } /* 선택 색 네모입니다. */
-.legend-box.taken { background: #22222b; border: 1px solid #44444f; } /* 예매 완료 색 네모입니다. */
-.booking-summary { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; } /* 요약 글, 금액, 버튼을 한 줄에 놓고 좁으면 줄을 바꿉니다. */
-#summaryText { flex: 1 1 260px; margin: 0; color: var(--muted); } /* 고른 내용 글이 남는 너비를 씁니다. */
-.price { margin: 0; font-size: 18px; } /* 총 금액 줄입니다. */
-.price strong { color: var(--accent); font-size: 24px; } /* 금액 숫자를 크게 빨갛게 보여 줍니다. */
-.book-button:disabled { background: #44444f; color: #8a8a99; cursor: not-allowed; } /* 다 고르기 전에는 회색으로 눌리지 않게 합니다. */
+/* ----- 박스오피스 표 ----- */
+.box-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; background: var(--panel); } /* 박스오피스 표 전체 모양입니다. */
+.box-table th, .box-table td { padding: 12px 16px; border-bottom: 1px solid var(--line); text-align: left; } /* 표 칸 여백과 줄입니다. */
+.box-table th { color: var(--muted); font-size: 13px; font-weight: 600; } /* 제목 칸은 회색 작은 글자입니다. */
+.box-table tbody tr:last-child td { border-bottom: 0; } /* 마지막 줄 아래 선은 없앱니다. */
+.box-table tbody tr:hover { background: #ffffff08; } /* 마우스를 올린 줄을 살짝 밝게 합니다. */
+.box-rank { width: 72px; font-size: 20px; font-weight: 900; } /* 순위 숫자 칸입니다. */
+.change { display: block; font-size: 12px; font-weight: 700; } /* 순위 변동(▲▼) 글자입니다. */
+.change.up { color: #ff6b6b; } /* 순위가 오르면 빨간색입니다. */
+.change.down { color: #6ba8ff; } /* 순위가 내리면 파란색입니다. */
+.change.same { color: var(--muted); } /* 그대로면 회색입니다. */
+.box-title { padding: 0; border: 0; background: none; font-weight: 700; text-align: left; } /* 표 안의 영화 이름 버튼입니다. */
+.box-title:hover { color: var(--accent); text-decoration: underline; } /* 이름 버튼에 마우스를 올리면 빨갛게 밑줄을 긋습니다. */
+.box-open { display: block; color: var(--muted); font-size: 12px; } /* 이름 아래 개봉일 글자입니다. */
+.share { display: flex; align-items: center; gap: 8px; min-width: 140px; } /* 점유율 막대와 숫자를 나란히 놓습니다. */
+.share-bar { flex: 1; height: 8px; border-radius: 4px; background: #ffffff14; overflow: hidden; } /* 점유율 막대의 빈 바탕입니다. */
+.share-bar span { display: block; height: 100%; border-radius: 4px; background: var(--accent); } /* 점유율만큼 빨갛게 채운 막대입니다. (너비는 JS가 정합니다) */
 
-/* ----- 극장 표 ----- */
-.theater-table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 14px; background: var(--panel); } /* 극장 표 전체 모양입니다. */
-.theater-table th, .theater-table td { padding: 14px 16px; border-bottom: 1px solid var(--line); text-align: left; } /* 표 칸 여백과 줄입니다. */
-.theater-table th { color: var(--muted); font-size: 14px; } /* 제목 칸은 회색 작은 글자입니다. */
-.theater-table tbody tr:last-child td { border-bottom: 0; } /* 마지막 줄 아래 선은 없앱니다. */
-.theater-table a { color: var(--accent); text-decoration: none; } /* 전화 링크는 빨간 글자로 보여 줍니다. */
+/* ----- 예매 바로가기 ----- */
+.booking-links { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } /* 링크 카드 두 개를 나란히 놓습니다. */
+.booking-card { display: grid; gap: 6px; padding: 28px; border-radius: 16px; text-decoration: none; transition: transform 0.2s; } /* 큰 링크 카드 모양입니다. */
+.booking-card:hover { transform: translateY(-3px); } /* 마우스를 올리면 살짝 떠오릅니다. */
+.booking-card strong { font-size: 22px; } /* 링크 카드 제목입니다. */
+.booking-card span { opacity: 0.85; } /* 링크 카드 설명입니다. */
+.booking-card.cgv { background: linear-gradient(135deg, #c62835, #6e1119); } /* CGV 카드는 빨간 계열입니다. */
+.booking-card.megabox { background: linear-gradient(135deg, #5b3fb6, #2a1a63); } /* 메가박스 카드는 보라 계열입니다. */
+.note { margin: 12px 0 0; color: var(--muted); font-size: 13px; } /* 작은 안내 글입니다. */
 
-/* ----- 이벤트 ----- */
-.event-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; } /* PC에서는 이벤트를 세 칸으로 놓습니다. */
-.event-card { min-height: 160px; padding: 22px; border-radius: 14px; } /* 이벤트 카드 모양입니다. */
-.event-card h3 { margin: 6px 0; font-size: 20px; } /* 이벤트 제목입니다. */
-.event-card p { margin: 0; } /* 이벤트 글 기본 여백을 없앱니다. */
-.event-tag { display: inline-block; padding: 2px 10px; border-radius: 999px; background: #00000040; font-size: 13px; font-weight: 700; } /* 이벤트 종류 꼬리표입니다. */
-.event-1 { background: linear-gradient(135deg, #b8323d, #6d1b3a); } /* 첫 번째 이벤트 색입니다. */
-.event-2 { background: linear-gradient(135deg, #b0762a, #6b3d14); } /* 두 번째 이벤트 색입니다. */
-.event-3 { background: linear-gradient(135deg, #3657b8, #1d2a6b); } /* 세 번째 이벤트 색입니다. */
+/* ----- 상세 정보 창 ----- */
+.movie-dialog { /* 영화 상세 정보 창입니다. */
+  width: min(760px, calc(100% - 32px)); /* 화면보다 넓어지지 않게 합니다. */
+  max-height: calc(100% - 32px); /* 화면보다 높아지지 않게 합니다. */
+  padding: 28px; /* 안쪽 여백입니다. */
+  border: 1px solid var(--line); /* 얇은 테두리입니다. */
+  border-radius: 18px; /* 모서리를 둥글게 합니다. */
+  background: var(--panel); /* 카드 배경색입니다. */
+  color: var(--text); /* 밝은 글자입니다. */
+} /* 상세 정보 창을 마칩니다. */
+.movie-dialog::backdrop { background: rgba(0, 0, 0, 0.7); } /* 창 뒤 화면을 어둡게 가립니다. */
+.dialog-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: #ffffff14; font-size: 16px; } /* 오른쪽 위 닫기 버튼입니다. */
+.dialog-body { display: grid; grid-template-columns: 200px 1fr; gap: 28px; } /* 포스터와 정보를 두 칸으로 놓습니다. */
+.dialog-info h2 { margin: 6px 0 14px; font-size: 26px; line-height: 1.25; } /* 상세 창의 영화 제목입니다. */
+.dialog-info h3 { margin: 18px 0 6px; font-size: 15px; color: var(--muted); } /* 상세 창의 작은 제목입니다. */
+#dialogBadge { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--muted); font-size: 14px; } /* 등급과 상영 상태 줄입니다. */
+.info-table { border-collapse: collapse; font-size: 14px; } /* 개봉일·예매율 등 정보 표입니다. */
+.info-table th { padding: 3px 16px 3px 0; color: var(--muted); font-weight: 400; text-align: left; white-space: nowrap; } /* 정보 이름 칸입니다. */
+.info-table td { padding: 3px 0; } /* 정보 값 칸입니다. */
+.wiki-text { margin: 0; color: #d6d6de; font-size: 15px; } /* 위키백과 소개 글입니다. */
+.wiki-text a { color: var(--accent); } /* 소개 글 안의 '더 보기' 링크입니다. */
+.dialog-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; } /* 상세 창 아래 예매 링크들입니다. */
 
-/* ----- 바닥글과 알림 ----- */
-.site-footer { margin-top: 64px; padding: 32px 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: center; } /* 바닥 정보 영역입니다. */
+/* ----- 바닥글 ----- */
+.site-footer { margin-top: 72px; padding: 32px 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; text-align: center; } /* 바닥 정보 영역입니다. */
 .site-footer p { margin: 4px 0; } /* 바닥 줄 사이 여백입니다. */
+.site-footer a { color: var(--text); } /* 출처 링크를 밝게 보여 줍니다. */
 .footer-logo { color: var(--text); font-size: 16px; font-weight: 900; } /* 바닥 로고입니다. */
-.toast { /* 화면 아래에 잠깐 뜨는 알림입니다. */
-  position: fixed; /* 화면에 고정합니다. */
-  left: 50%; /* 가로 가운데 기준입니다. */
-  bottom: 24px; /* 아래에서 띄웁니다. */
-  z-index: 20; /* 가장 위에 보이게 합니다. */
-  max-width: calc(100% - 32px); /* 좁은 화면에서 넘치지 않게 합니다. */
-  padding: 12px 20px; /* 안쪽 여백입니다. */
-  border-radius: 12px; /* 모서리를 둥글게 합니다. */
-  background: var(--text); /* 흰 배경입니다. */
-  color: var(--bg); /* 검정 글자입니다. */
-  font-weight: 700; /* 굵은 글자입니다. */
-  opacity: 0; /* 평소에는 안 보이게 합니다. */
-  pointer-events: none; /* 안 보일 때 눌리지 않게 합니다. */
-  transform: translate(-50%, 20px); /* 가운데에 맞추고 살짝 아래에 둡니다. */
-  transition: opacity 0.3s, transform 0.3s; /* 나타날 때 부드럽게 올라옵니다. */
-} /* 알림을 마칩니다. */
-.toast.show { opacity: 1; transform: translate(-50%, 0); } /* show가 붙으면 알림이 보입니다. */
 
 /* ----- 태블릿 (1023px 이하): 햄버거 메뉴 ----- */
 @media (max-width: 1023px) { /* 화면 폭이 1023px 이하일 때만 적용합니다. */
@@ -230,29 +241,33 @@ button { cursor: pointer; } /* 버튼 위에서는 손가락 모양 마우스를
   .main-menu.open { display: grid; } /* open이 붙으면 메뉴 판을 보여 줍니다. */
   .main-menu a { padding: 16px 24px; border-top: 1px solid var(--line); } /* 메뉴 한 줄을 누르기 편하게 넓힙니다. */
   .movie-list { grid-template-columns: repeat(3, 1fr); } /* 영화를 세 칸씩 놓습니다. */
-  .hero { height: 380px; } /* 배너 높이를 줄입니다. */
+  .hero { height: 400px; } /* 배너 높이를 줄입니다. */
+  .hero-poster { display: none; } /* 배너 오른쪽 포스터는 숨겨 글자 자리를 넓힙니다. */
 } /* 태블릿 스타일을 마칩니다. */
 
 /* ----- 폰 (767px 이하) ----- */
 @media (max-width: 767px) { /* 화면 폭이 767px 이하일 때만 적용합니다. */
   .header-inner, .section { padding-left: 16px; padding-right: 16px; } /* 양옆 여백을 16px로 줄입니다. */
-  .section { padding-top: 36px; } /* 영역 사이 여백을 줄입니다. */
+  .section { padding-top: 40px; } /* 영역 사이 여백을 줄입니다. */
   .section-head h2 { font-size: 22px; } /* 영역 제목을 줄입니다. */
   .main-menu { grid-template-columns: 1fr; } /* 폰에서는 메뉴를 한 칸으로 놓습니다. */
-  .hero { height: 340px; } /* 배너 높이를 더 줄입니다. */
+  .hero { height: 380px; } /* 배너 높이를 맞춥니다. */
   .hero-slide { padding: 0 16px 56px; } /* 배너 글자 여백을 줄입니다. */
   .hero-arrow { display: none; } /* 폰에서는 화살표 대신 점과 자동 넘김을 씁니다. */
-  .movie-list { grid-template-columns: repeat(2, 1fr); gap: 14px; } /* 영화를 두 칸씩 놓습니다. */
+  .hero-stats li { font-size: 13px; } /* 배너 알약 글자를 줄입니다. */
+  .search-box { flex-basis: 100%; } /* 검색칸을 한 줄 전체로 넓힙니다. */
+  .movie-list { grid-template-columns: repeat(2, 1fr); gap: 24px 12px; } /* 영화를 두 칸씩 놓습니다. */
   .poster-title { font-size: 15px; } /* 포스터 제목을 줄입니다. */
-  .booking-box { grid-template-columns: 1fr; } /* 예매 단계를 한 줄씩 쌓습니다. */
-  .booking-step, .booking-summary { padding: 16px 12px; } /* 상자 여백을 줄입니다. */
-  .seat-map { gap: 3px; } /* 좌석 사이를 줄여 320px에서도 들어가게 합니다. */
-  .seat { font-size: 9px; } /* 좌석 번호 글자를 줄입니다. */
-  .book-button { width: 100%; } /* 예매 버튼을 한 줄 전체로 넓힙니다. */
-  .event-list { grid-template-columns: 1fr; } /* 이벤트를 한 줄씩 쌓습니다. */
-  .theater-table thead { display: none; } /* 폰에서는 표 제목 줄을 숨깁니다. */
-  .theater-table tr { display: block; padding: 12px 16px; border-bottom: 1px solid var(--line); } /* 표의 한 줄을 카드처럼 바꿉니다. */
-  .theater-table tbody tr:last-child { border-bottom: 0; } /* 마지막 카드 아래 선은 없앱니다. */
-  .theater-table td { display: flex; justify-content: space-between; padding: 4px 0; border: 0; } /* 칸을 '이름 … 값' 한 줄로 바꿉니다. */
-  .theater-table td::before { content: attr(data-label); color: var(--muted); } /* 숨긴 제목 대신 칸 이름(data-label)을 앞에 보여 줍니다. */
+  .box-table thead { display: none; } /* 폰에서는 표 제목 줄을 숨깁니다. */
+  .box-table tr { display: grid; grid-template-columns: 52px 1fr; gap: 2px 8px; padding: 12px 14px; border-bottom: 1px solid var(--line); } /* 표의 한 줄을 '순위 | 내용' 카드로 바꿉니다. */
+  .box-table tbody tr:last-child { border-bottom: 0; } /* 마지막 카드 아래 선은 없앱니다. */
+  .box-table td { padding: 0; border: 0; } /* 칸 여백과 줄을 없앱니다. */
+  .box-table .box-rank { grid-row: span 4; width: auto; } /* 순위 칸은 왼쪽 세로 한 줄을 다 씁니다. */
+  .box-table td[data-label]::before { content: attr(data-label) " "; color: var(--muted); font-size: 13px; } /* 숨긴 제목 대신 칸 이름(data-label)을 앞에 보여 줍니다. */
+  .share { min-width: 0; } /* 점유율 막대가 좁은 화면에 맞게 줄어들게 합니다. */
+  .booking-links { grid-template-columns: 1fr; } /* 예매 링크 카드를 한 줄씩 쌓습니다. */
+  .booking-card { padding: 22px; } /* 링크 카드 여백을 줄입니다. */
+  .movie-dialog { padding: 20px 16px; } /* 상세 창 여백을 줄입니다. */
+  .dialog-body { grid-template-columns: 1fr; gap: 16px; } /* 포스터와 정보를 위아래로 쌓습니다. */
+  .dialog-poster { width: 140px; } /* 상세 창 포스터를 작게 합니다. */
 } /* 폰 스타일을 마칩니다. */
