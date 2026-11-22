@@ -70,8 +70,13 @@ function initDexPage() {
       '<div class="menu-card-actions">' +
       '  <button type="button" class="icon-btn fav" aria-pressed="' + isFav + '" title="즐겨찾기">' + (isFav ? '⭐' : '☆') + '<span class="sr-only">즐겨찾기</span></button>' +
       '  <button type="button" class="icon-btn block" aria-pressed="' + isBlocked + '" title="안 먹는 메뉴">🚫<span class="sr-only">안 먹는 메뉴</span></button>' +
-      '  <a class="icon-btn map" href="' + naverMapUrl(menu.name) + '" target="_blank" rel="noopener" title="네이버 지도에서 찾기">📍<span class="sr-only">지도에서 찾기</span></a>' +
+      '  <button type="button" class="icon-btn map" title="내 주변 가게 · 별점">📍<span class="sr-only">' + menu.name + ' 파는 내 주변 가게 · 별점 보기</span></button>' +
       '</div>';
+
+    // 📍: 이 메뉴를 파는 내 주변 가게 목록 + 가게별 별점·리뷰 (nearby.js)
+    card.querySelector('.map').addEventListener('click', (e) => {
+      openNearby(nearbyTargetFromMenu(menu), e.currentTarget);
+    });
 
     card.querySelector('.fav').addEventListener('click', () => {
       const added = toggleListItem(STORAGE_KEYS.favorites, menu.name);
