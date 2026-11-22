@@ -247,6 +247,14 @@ function getCachedPosition() {
   return null;
 }
 
+/* 위치를 못 받았을 때 보여 줄 안내 문구 (날씨, 내 주변 가게가 같이 씀) */
+function positionErrorMessage(err) {
+  // 파일을 더블클릭해서 연 경우(file://)는 브라우저가 위치 기능을 막는 경우가 많음
+  if (location.protocol === 'file:') return '파일을 직접 열면 위치 기능이 막힐 수 있어요. VS Code의 Live Server로 열어 주세요.';
+  if (err && err.code === 1) return '위치 권한이 꺼져 있어요. 주소창 왼쪽 아이콘을 눌러 위치를 허용해 주세요.';
+  return '위치를 찾지 못했어요. PC라면 Windows 설정의 위치 서비스가 켜져 있는지 확인해 주세요.';
+}
+
 /* 위치를 받아서 callback({lat, lng})을 실행. 실패하면 onError(안내 문구) */
 function requestPosition(callback, onError) {
   const cached = getCachedPosition();
@@ -264,12 +272,7 @@ function requestPosition(callback, onError) {
       try { sessionStorage.setItem(POSITION_KEY, JSON.stringify(p)); } catch (e) { /* 기억 못 해도 사용은 가능 */ }
       callback(p);
     },
-    (err) => {
-      // 파일을 더블클릭해서 연 경우(file://)는 브라우저가 위치 기능을 막는 경우가 많음
-      if (location.protocol === 'file:') onError('파일을 직접 열면 위치 기능이 막힐 수 있어요. VS Code의 Live Server로 열어 주세요.');
-      else if (err.code === 1) onError('위치 권한이 꺼져 있어요. 주소창 왼쪽 아이콘을 눌러 위치를 허용해 주세요.');
-      else onError('위치를 찾지 못했어요. PC라면 Windows 설정의 위치 서비스가 켜져 있는지 확인해 주세요.');
-    },
+    (err) => onError(positionErrorMessage(err)),
     { timeout: 10000, maximumAge: POSITION_MAX_AGE }
   );
 }
