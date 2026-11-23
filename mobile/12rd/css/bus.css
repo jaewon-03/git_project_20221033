@@ -1,0 +1,529 @@
+/* ===== 색과 기본값: 여러 곳에서 같이 쓰는 색을 변수로 모아 둡니다. ===== */
+:root { /* 밝은 화면에서 쓰는 변수입니다. */
+  --bg: #f3f5f9; /* 페이지 바탕색(아주 옅은 회색)입니다. */
+  --card: #ffffff; /* 카드 바탕색입니다. */
+  --field: #f7f9fc; /* 입력칸 바탕색입니다. */
+  --hover: #f5f8ff; /* 버튼에 마우스를 올렸을 때 바탕색입니다. */
+  --ink: #18202c; /* 기본 글자색(진한 남색)입니다. */
+  --muted: #667085; /* 보조 글자색(회색)입니다. */
+  --line: #e4e8ef; /* 테두리·구분선 색입니다. */
+  --brand: #1a5df0; /* 대표색(파랑)입니다. */
+  --brand-dark: #134bd0; /* 대표색을 진하게 한 색(버튼 마우스 올림)입니다. */
+  --brand-soft: #eaf1ff; /* 대표색을 옅게 한 바탕색입니다. */
+  --soon: #e5383b; /* "곧 도착" 강조색(빨강)입니다. */
+  --soon-soft: rgba(229, 56, 59, 0.06); /* 곧 도착 줄의 옅은 빨간 바탕입니다. */
+  --live: #12b76a; /* "실시간" 초록 점 색입니다. */
+  --tag-bg: #f0f2f6; /* 작은 표시 기본 바탕입니다. */
+  --tag-ink: #475467; /* 작은 표시 기본 글자색입니다. */
+  --good-bg: #e7f7ee; --good-ink: #157347; /* 여유(초록) 표시 색입니다. */
+  --normal-bg: #fff4d6; --normal-ink: #8a5a00; /* 보통(노랑) 표시 색입니다. */
+  --busy-bg: #ffe9e9; --busy-ink: #b4232a; /* 혼잡(빨강) 표시 색입니다. */
+  --skeleton-a: #eef1f6; --skeleton-b: #f8fafc; /* 불러오는 중 회색 막대 두 색입니다. */
+  --radius: 18px; /* 카드 모서리 둥글기입니다. */
+  --shadow: 0 1px 2px rgba(24, 32, 44, 0.04), 0 8px 24px rgba(24, 32, 44, 0.06); /* 카드 그림자입니다. */
+  --top-from: #1a5df0; --top-to: #3b82f6; /* 맨 위 파란 띠의 그러데이션 두 색입니다. */
+} /* 밝은 화면 변수를 마칩니다. */
+
+@media (prefers-color-scheme: dark) { /* 운영체제가 다크 모드일 때입니다. */
+  :root { /* 어두운 화면 변수로 바꿉니다. */
+    --bg: #0d1117; /* 페이지 바탕색(아주 어두운 남색)입니다. */
+    --card: #161b24; /* 카드 바탕색입니다. */
+    --field: #1d2330; /* 입력칸 바탕색입니다. */
+    --hover: #1c2433; /* 마우스 올림 바탕색입니다. */
+    --ink: #e8edf5; /* 기본 글자색(밝은 회색)입니다. */
+    --muted: #98a2b3; /* 보조 글자색입니다. */
+    --line: #2a3140; /* 테두리·구분선 색입니다. */
+    --brand: #5b8cff; /* 어두운 바탕에서 잘 보이는 밝은 파랑입니다. */
+    --brand-dark: #7aa2ff; /* 마우스 올림 파랑입니다. */
+    --brand-soft: #1b2741; /* 옅은 파랑 바탕입니다. */
+    --soon: #ff6b6e; /* 밝은 빨강입니다. */
+    --soon-soft: rgba(255, 107, 110, 0.08); /* 곧 도착 줄 바탕입니다. */
+    --tag-bg: #232a37; --tag-ink: #c3cad6; /* 작은 표시 기본 색입니다. */
+    --good-bg: #13301f; --good-ink: #6fdc9b; /* 여유 표시 색입니다. */
+    --normal-bg: #33290f; --normal-ink: #f5c451; /* 보통 표시 색입니다. */
+    --busy-bg: #3a1618; --busy-ink: #ff8f8f; /* 혼잡 표시 색입니다. */
+    --skeleton-a: #1d2330; --skeleton-b: #252c3a; /* 회색 막대 색입니다. */
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25); /* 진한 그림자입니다. */
+    --top-from: #173c9c; --top-to: #2552c4; /* 덜 눈부신 파란 띠입니다. */
+  } /* 어두운 화면 변수를 마칩니다. */
+} /* 다크 모드 설정을 마칩니다. */
+
+* { box-sizing: border-box; } /* 너비에 테두리·안쪽 여백까지 포함해서 계산합니다. */
+[hidden] { display: none !important; } /* hidden이 붙은 것은 어떤 display 설정보다 먼저 숨깁니다. */
+
+body { /* 페이지 전체 글자와 바탕입니다. */
+  margin: 0; /* 브라우저 기본 바깥 여백을 없앱니다. */
+  min-width: 320px; /* 아주 좁은 폰(320px)까지 맞춥니다. */
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; /* 한글 글꼴입니다. (없으면 다음 글꼴) */
+  color: var(--ink); /* 기본 글자색입니다. */
+  background: var(--bg); /* 바탕색입니다. */
+  word-break: keep-all; /* 한국어가 단어 중간에서 끊기지 않게 합니다. */
+  -webkit-font-smoothing: antialiased; /* 맥·아이폰에서 글자를 부드럽게 그립니다. */
+} /* body 설정을 마칩니다. */
+
+button, input { font: inherit; color: inherit; } /* 버튼과 입력칸도 페이지와 같은 글꼴·글자색을 씁니다. */
+a { color: var(--brand); } /* 링크는 대표색입니다. */
+
+.sr-only { /* 화면에는 안 보이고 화면 읽기 프로그램만 읽는 글자입니다. */
+  position: absolute; /* 흐름에서 빼냅니다. */
+  width: 1px; height: 1px; /* 아주 작게 만듭니다. */
+  overflow: hidden; /* 넘친 부분을 숨깁니다. */
+  clip: rect(0 0 0 0); /* 보이는 부분을 없앱니다. */
+  white-space: nowrap; /* 줄바꿈하지 않습니다. */
+} /* 숨김 글자를 마칩니다. */
+
+/* ===== 맨 위 제목 영역 ===== */
+.top-bar { /* 제목 띠입니다. */
+  background: linear-gradient(135deg, var(--top-from) 0%, var(--top-to) 100%); /* 파란색 그러데이션 바탕입니다. */
+  color: #fff; /* 글자는 흰색입니다. */
+  padding: 28px 20px 72px; /* 아래 여백을 크게 줘서 카드가 겹쳐 올라오게 합니다. */
+} /* 제목 띠를 마칩니다. */
+
+.top-inner { /* 제목 내용 상자입니다. */
+  max-width: 1080px; /* 본문과 같은 최대 폭입니다. */
+  margin: 0 auto; /* 가운데 정렬합니다. */
+  display: flex; /* 로고와 글자를 가로로 놓습니다. */
+  align-items: center; /* 세로 가운데를 맞춥니다. */
+  gap: 14px; /* 로고와 글자 사이 간격입니다. */
+} /* 제목 내용 상자를 마칩니다. */
+
+.logo { /* 버스 로고 상자입니다. */
+  flex: none; /* 좁아져도 로고 크기가 줄지 않게 합니다. */
+  width: 48px; height: 48px; /* 로고 크기입니다. */
+  display: grid; place-items: center; /* 그림을 가운데에 둡니다. */
+  border-radius: 14px; /* 모서리를 둥글게 합니다. */
+  background: rgba(255, 255, 255, 0.18); /* 반투명 흰 바탕입니다. */
+} /* 로고 상자를 마칩니다. */
+
+.logo svg { width: 28px; height: 28px; } /* 로고 그림 크기입니다. */
+.top-bar h1 { margin: 0 0 4px; font-size: 24px; letter-spacing: -0.5px; } /* 큰 제목입니다. */
+.top-bar p { margin: 0; font-size: 14px; opacity: 0.85; } /* 제목 아래 설명(살짝 흐리게)입니다. */
+
+/* ===== 본문 배치: PC는 2칸, 폰은 1칸 ===== */
+.layout { /* 본문 상자입니다. */
+  max-width: 1080px; /* 최대 폭입니다. */
+  margin: -48px auto 0; /* 위로 올려서 파란 띠와 겹치게 하고 가운데 정렬합니다. */
+  padding: 0 20px; /* 양옆 여백입니다. */
+  display: grid; /* 칸 나누기에 grid를 씁니다. */
+  grid-template-columns: 340px minmax(0, 1fr); /* 왼쪽 340px, 오른쪽은 남은 폭 전부입니다. */
+  gap: 20px; /* 두 칸 사이 간격입니다. */
+  align-items: start; /* 두 카드 높이를 따로 둡니다. */
+} /* 본문 상자를 마칩니다. */
+
+.panel { /* 카드 공통 모양입니다. */
+  background: var(--card); /* 카드 바탕입니다. */
+  border-radius: var(--radius); /* 모서리를 둥글게 합니다. */
+  box-shadow: var(--shadow); /* 은은한 그림자입니다. */
+  padding: 22px; /* 안쪽 여백입니다. */
+  min-width: 0; /* 긴 글자 때문에 카드가 넘치지 않게 합니다. */
+} /* 카드 공통 모양을 마칩니다. */
+
+.picker { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; } /* PC에서 스크롤해도 정류소 찾기 카드가 따라오고, 길면 카드 안에서 스크롤됩니다. */
+.panel-title { margin: 0 0 14px; font-size: 18px; } /* 카드 제목입니다. */
+.panel-desc { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: var(--muted); } /* 작은 소제목입니다. */
+.list-label { margin-top: 20px; } /* "자주 쓰는 정류소" 제목 위 여백입니다. */
+
+/* ===== 정류소 검색 ===== */
+.search-box { /* 돋보기·입력칸·버튼 묶음입니다. */
+  position: relative; /* 돋보기를 입력칸 안에 겹쳐 놓기 위한 기준입니다. */
+  display: flex; /* 입력칸과 버튼을 가로로 놓습니다. */
+  gap: 8px; /* 사이 간격입니다. */
+} /* 검색 묶음을 마칩니다. */
+
+.search-icon { /* 입력칸 안 돋보기 그림입니다. */
+  position: absolute; /* 입력칸 위에 겹칩니다. */
+  left: 14px; top: 50%; /* 왼쪽 가운데에 둡니다. */
+  width: 18px; height: 18px; /* 크기입니다. */
+  transform: translateY(-50%); /* 정확히 세로 가운데로 맞춥니다. */
+  color: var(--muted); /* 회색입니다. */
+  pointer-events: none; /* 그림을 눌러도 입력칸이 눌리게 합니다. */
+} /* 돋보기를 마칩니다. */
+
+.search-box input, .route-filter input { /* 검색 입력칸과 노선 찾기 입력칸 공통 모양입니다. */
+  flex: 1; /* 남은 폭을 모두 씁니다. */
+  min-width: 0; /* 좁은 화면에서 넘치지 않게 합니다. */
+  width: 100%; /* 폭을 꽉 채웁니다. */
+  height: 46px; /* 높이입니다. */
+  padding: 0 14px 0 40px; /* 왼쪽은 돋보기 자리만큼 띄웁니다. */
+  border: 1px solid var(--line); /* 옅은 테두리입니다. */
+  border-radius: 12px; /* 모서리를 둥글게 합니다. */
+  background: var(--field); /* 입력칸 바탕입니다. */
+  outline: none; /* 브라우저 기본 포커스 선 대신 아래 모양을 씁니다. */
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s; /* 테두리가 부드럽게 바뀌게 합니다. */
+} /* 입력칸 공통 모양을 마칩니다. */
+
+.search-box input::placeholder, .route-filter input::placeholder { color: var(--muted); opacity: 0.8; } /* 안내 글자는 흐린 회색입니다. */
+
+.search-box input:focus, .route-filter input:focus { /* 입력칸을 눌렀을 때입니다. */
+  border-color: var(--brand); /* 파란 테두리입니다. */
+  background: var(--card); /* 카드 바탕색으로 밝힙니다. */
+  box-shadow: 0 0 0 3px rgba(26, 93, 240, 0.15); /* 파란 테두리를 하나 더 그립니다. */
+} /* 포커스 모양을 마칩니다. */
+
+.search-button { /* 검색 버튼입니다. */
+  flex: none; /* 크기가 줄지 않게 합니다. */
+  height: 46px; /* 입력칸과 같은 높이입니다. */
+  padding: 0 18px; /* 좌우 여백입니다. */
+  border: 0; /* 테두리를 없앱니다. */
+  border-radius: 12px; /* 모서리를 둥글게 합니다. */
+  background: var(--brand); /* 파란 바탕입니다. */
+  color: #fff; /* 흰 글자입니다. */
+  font-weight: 700; /* 굵게 합니다. */
+  cursor: pointer; /* 손가락 모양입니다. */
+  transition: background 0.15s; /* 색이 부드럽게 바뀌게 합니다. */
+} /* 검색 버튼을 마칩니다. */
+
+.search-button:hover { background: var(--brand-dark); } /* 마우스를 올리면 색을 바꿉니다. */
+
+.form-message { /* 입력 오류 안내입니다. */
+  min-height: 18px; /* 문구가 없어도 자리를 잡아 화면이 흔들리지 않게 합니다. */
+  margin: 6px 0 4px; /* 위아래 여백입니다. */
+  font-size: 13px; /* 작은 글자입니다. */
+  color: var(--soon); /* 빨간 글자입니다. */
+} /* 오류 안내를 마칩니다. */
+
+.nearby-button { /* 내 주변 정류소 버튼입니다. */
+  width: 100%; /* 카드 폭을 꽉 채웁니다. */
+  height: 44px; /* 높이입니다. */
+  display: flex; align-items: center; justify-content: center; /* 그림과 글자를 가운데에 둡니다. */
+  gap: 6px; /* 그림과 글자 사이 간격입니다. */
+  border: 1px dashed #b9c9f5; /* 점선 테두리입니다. */
+  border-radius: 12px; /* 모서리를 둥글게 합니다. */
+  background: var(--brand-soft); /* 옅은 파란 바탕입니다. */
+  color: var(--brand); /* 파란 글자입니다. */
+  font-size: 14px; font-weight: 700; /* 글자 크기와 굵기입니다. */
+  cursor: pointer; /* 손가락 모양입니다. */
+  transition: background 0.15s, border-color 0.15s; /* 색이 부드럽게 바뀌게 합니다. */
+} /* 내 주변 버튼을 마칩니다. */
+
+.nearby-button svg { width: 18px; height: 18px; } /* 위치 핀 그림 크기입니다. */
+.nearby-button:hover { border-color: var(--brand); } /* 마우스를 올리면 테두리를 진하게 합니다. */
+.nearby-button:disabled { cursor: progress; opacity: 0.6; } /* 찾는 중에는 흐리게 합니다. */
+
+.search-area { /* 검색 결과 자리입니다. */
+  margin-top: 16px; /* 위 여백입니다. */
+  padding-top: 14px; /* 안쪽 위 여백입니다. */
+  border-top: 1px solid var(--line); /* 위쪽 구분선입니다. */
+} /* 검색 결과 자리를 마칩니다. */
+
+.area-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; } /* 결과 제목과 닫기 버튼 줄입니다. */
+
+.text-button { /* 글자만 있는 작은 버튼(닫기)입니다. */
+  flex: none; /* 크기가 줄지 않게 합니다. */
+  padding: 2px 4px; /* 누르기 쉽게 살짝 여백을 줍니다. */
+  border: 0; /* 테두리를 없앱니다. */
+  background: none; /* 바탕을 없앱니다. */
+  color: var(--muted); /* 회색 글자입니다. */
+  font-size: 13px; /* 작은 글자입니다. */
+  cursor: pointer; /* 손가락 모양입니다. */
+} /* 글자 버튼을 마칩니다. */
+
+.text-button:hover { color: var(--ink); text-decoration: underline; } /* 마우스를 올리면 진하게, 밑줄을 긋습니다. */
+
+.notice { /* 검색 안내 문구 상자입니다. */
+  margin: 0 0 10px; /* 아래 여백입니다. */
+  padding: 10px 12px; /* 안쪽 여백입니다. */
+  border-radius: 10px; /* 모서리를 둥글게 합니다. */
+  background: var(--tag-bg); /* 회색 바탕입니다. */
+  color: var(--tag-ink); /* 진한 회색 글자입니다. */
+  font-size: 13px; /* 작은 글자입니다. */
+  line-height: 1.55; /* 줄 간격을 넉넉히 합니다. */
+} /* 안내 문구 상자를 마칩니다. */
+
+/* ===== 정류소 버튼 (검색 결과·자주 쓰는 정류소 공통) ===== */
+.stop-list { display: grid; gap: 8px; } /* 정류소 버튼을 세로로 쌓습니다. */
+
+.stop-button { /* 정류소 버튼 하나입니다. */
+  width: 100%; /* 카드 폭을 꽉 채웁니다. */
+  display: flex; /* 그림·이름·거리를 가로로 놓습니다. */
+  align-items: center; /* 세로 가운데를 맞춥니다. */
+  gap: 12px; /* 안쪽 요소 사이 간격입니다. */
+  padding: 11px 14px; /* 안쪽 여백입니다. */
+  border: 1px solid var(--line); /* 옅은 테두리입니다. */
+  border-radius: 14px; /* 모서리를 둥글게 합니다. */
+  background: var(--card); /* 카드와 같은 바탕입니다. */
+  text-align: left; /* 글자를 왼쪽으로 붙입니다. */
+  cursor: pointer; /* 손가락 모양입니다. */
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s, transform 0.15s; /* 모양이 부드럽게 바뀌게 합니다. */
+} /* 정류소 버튼을 마칩니다. */
+
+.stop-button:hover { border-color: #b9c9f5; background: var(--hover); } /* 마우스를 올리면 테두리를 파랗게 합니다. */
+.stop-button:active { transform: scale(0.99); } /* 누르는 순간 살짝 작아집니다. */
+
+.stop-button.active { /* 지금 고른 정류소 버튼입니다. */
+  border-color: var(--brand); /* 파란 테두리입니다. */
+  background: var(--brand-soft); /* 옅은 파란 바탕입니다. */
+  box-shadow: 0 0 0 3px rgba(26, 93, 240, 0.12); /* 바깥에 옅은 파란 테두리를 더합니다. */
+} /* 고른 정류소 버튼을 마칩니다. */
+
+.stop-pin { /* 버튼 왼쪽 정류소 그림 상자입니다. */
+  flex: none; /* 크기가 줄지 않게 합니다. */
+  width: 36px; height: 36px; /* 크기입니다. */
+  display: grid; place-items: center; /* 그림을 가운데에 둡니다. */
+  border-radius: 10px; /* 모서리를 둥글게 합니다. */
+  background: var(--tag-bg); /* 회색 바탕입니다. */
+  font-size: 18px; /* 이모지 크기입니다. */
+} /* 그림 상자를 마칩니다. */
+
+.stop-button.active .stop-pin { background: var(--card); } /* 고른 버튼에서는 그림 바탕을 카드색으로 합니다. */
+.stop-text { flex: 1; min-width: 0; } /* 이름 부분이 남은 폭을 쓰고, 넘치지 않게 합니다. */
+.stop-name { display: block; font-size: 15px; font-weight: 700; } /* 정류소 이름입니다. */
+.stop-number { margin-left: 5px; font-size: 12px; font-weight: 500; color: var(--muted); } /* 이름 옆 정류소 번호입니다. */
+.stop-way { display: block; margin-top: 2px; font-size: 13px; color: var(--muted); } /* 방면(지역) 설명입니다. */
+.stop-way:empty { display: none; } /* 설명이 없으면 줄을 없앱니다. */
+
+.stop-distance { /* 내 주변 검색의 거리 표시입니다. */
+  flex: none; /* 크기가 줄지 않게 합니다. */
+  padding: 3px 8px; /* 안쪽 여백입니다. */
+  border-radius: 999px; /* 알약 모양입니다. */
+  background: var(--brand-soft); /* 옅은 파란 바탕입니다. */
+  color: var(--brand); /* 파란 글자입니다. */
+  font-size: 12px; font-weight: 700; /* 글자 크기와 굵기입니다. */
+} /* 거리 표시를 마칩니다. */
+
+/* ===== 도착 정보 카드 머리 (스크롤해도 위에 붙어 있음) ===== */
+.board-sticky { /* 머리 부분 묶음입니다. */
+  position: sticky; /* 스크롤해도 위에 붙어 있게 합니다. */
+  top: 0; /* 화면 맨 위에 붙습니다. */
+  z-index: 2; /* 목록보다 위에 그립니다. */
+  margin: -22px -22px 0; /* 카드 여백만큼 바깥으로 늘려서 */
+  padding: 22px 22px 0; /* 같은 만큼 안쪽 여백을 줍니다. (바탕이 카드 끝까지 차게) */
+  border-radius: var(--radius) var(--radius) 0 0; /* 위쪽 모서리만 둥글게 합니다. */
+  background: var(--card); /* 목록이 비치지 않게 카드색으로 칠합니다. */
+} /* 머리 묶음을 마칩니다. */
+
+.board-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; } /* 정류소 이름(왼쪽)과 새로고침 버튼(오른쪽) 줄입니다. */
+.board-title { min-width: 0; } /* 긴 정류소 이름이 넘치지 않게 합니다. */
+.station-name { margin: 0; font-size: 22px; letter-spacing: -0.4px; } /* 정류소 이름입니다. */
+.station-info { margin: 4px 0 0; font-size: 14px; color: var(--muted); } /* 정류소 번호·방면 설명입니다. */
+
+.refresh-button { /* 새로고침 버튼(남은 시간 원 포함)입니다. */
+  position: relative; /* 안쪽 그림을 겹쳐 놓기 위한 기준입니다. */
+  flex: none; /* 크기가 줄지 않게 합니다. */
+  width: 44px; height: 44px; /* 크기입니다. */
+  padding: 0; /* 안쪽 여백을 없앱니다. */
+  border: 0; /* 테두리를 없앱니다. */
+  border-radius: 50%; /* 동그랗게 합니다. */
+  background: var(--brand-soft); /* 옅은 파란 바탕입니다. */
+  color: var(--brand); /* 파란 그림입니다. */
+  cursor: pointer; /* 손가락 모양입니다. */
+  transition: transform 0.15s; /* 크기가 부드럽게 바뀌게 합니다. */
+} /* 새로고침 버튼을 마칩니다. */
+
+.refresh-button:hover:not(:disabled) { transform: scale(1.06); } /* 마우스를 올리면 살짝 커집니다. */
+.refresh-button:disabled { cursor: default; opacity: 0.45; } /* 정류소를 고르기 전에는 흐리게 합니다. */
+.refresh-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); } /* 남은 시간 원을 버튼에 겹치고 12시 방향에서 시작하게 돌립니다. */
+.ring-track, .ring-bar { fill: none; stroke-width: 2.5; } /* 원 안은 비우고 테두리 두께만 정합니다. */
+.ring-track { stroke: rgba(91, 140, 255, 0.18); } /* 바탕 원은 옅은 파랑입니다. */
+
+.ring-bar { /* 줄어드는 원 테두리입니다. */
+  stroke: var(--brand); /* 파란색입니다. */
+  stroke-linecap: round; /* 끝을 둥글게 합니다. */
+  stroke-dasharray: 100.53; /* 원 둘레(2 × 3.1416 × 16)만큼 선 길이를 정합니다. */
+  stroke-dashoffset: 0; /* 처음에는 꽉 찬 원입니다. (JS가 바꿈) */
+  transition: stroke-dashoffset 1s linear; /* 1초마다 부드럽게 줄어듭니다. */
+} /* 줄어드는 테두리를 마칩니다. */
+
+.refresh-icon { position: relative; width: 20px; height: 20px; vertical-align: middle; } /* 가운데 새로고침 화살표입니다. */
+.refresh-button.loading .refresh-icon { animation: spin 0.8s linear infinite; } /* 불러오는 동안 화살표를 돌립니다. */
+@keyframes spin { to { transform: rotate(360deg); } } /* 한 바퀴 도는 움직임입니다. */
+
+.route-filter { position: relative; margin-top: 14px; } /* 노선 찾기 칸입니다. (돋보기를 겹쳐 놓는 기준) */
+.route-filter input { height: 40px; font-size: 14px; } /* 노선 찾기 칸은 검색 칸보다 조금 작게 합니다. */
+
+.board-meta { /* 요약과 갱신 시각 줄입니다. */
+  display: flex; /* 가로로 놓습니다. */
+  flex-wrap: wrap; /* 좁으면 다음 줄로 넘깁니다. */
+  justify-content: space-between; /* 요약은 왼쪽, 시각은 오른쪽입니다. */
+  gap: 4px 12px; /* 줄 간격과 칸 간격입니다. */
+  margin-top: 12px; /* 위 여백입니다. */
+  padding-bottom: 12px; /* 아래 안쪽 여백입니다. */
+  border-bottom: 1px solid var(--line); /* 목록과 선으로 나눕니다. */
+  font-size: 13px; /* 작은 글자입니다. */
+} /* 요약 줄을 마칩니다. */
+
+.board-meta p { margin: 0; } /* 문단 기본 여백을 없앱니다. */
+.summary { font-weight: 600; } /* 요약은 조금 굵게 합니다. */
+.updated { color: var(--muted); } /* 갱신 시각은 회색입니다. */
+
+.live-dot { /* "실시간" 초록 점입니다. */
+  display: inline-block; /* 글자 옆에 놓습니다. */
+  width: 7px; height: 7px; /* 크기입니다. */
+  margin-right: 6px; /* 글자와 띄웁니다. */
+  border-radius: 50%; /* 동그랗게 합니다. */
+  background: var(--live); /* 초록색입니다. */
+  vertical-align: 1px; /* 글자 가운데 높이에 맞춥니다. */
+  box-shadow: 0 0 0 0 rgba(18, 183, 106, 0.5); /* 퍼지는 원의 시작 모양입니다. */
+  animation: pulse 2s ease-out infinite; /* 물결처럼 퍼지는 효과를 반복합니다. */
+} /* 초록 점을 마칩니다. */
+
+@keyframes pulse { to { box-shadow: 0 0 0 7px rgba(18, 183, 106, 0); } } /* 점 둘레가 퍼지면서 사라지는 움직임입니다. */
+
+/* ===== 안내(불러오는 중·오류·결과 없음) ===== */
+.status-box { padding: 48px 16px; text-align: center; color: var(--muted); } /* 안내 상자(가운데 정렬, 넉넉한 여백)입니다. */
+.status-emoji { display: block; font-size: 40px; margin-bottom: 8px; } /* 안내 그림입니다. */
+.status-box p { margin: 0; font-size: 15px; line-height: 1.6; } /* 안내 문구입니다. */
+.status-box.error { color: var(--busy-ink); } /* 오류일 때는 빨간 글자입니다. */
+
+/* ===== 버스 도착 목록 ===== */
+.bus-list { margin: 0; padding: 0; list-style: none; } /* 목록 기본 여백과 점(•)을 없앱니다. */
+
+.bus-item { /* 버스 노선 한 줄입니다. */
+  position: relative; /* 왼쪽 색 막대를 놓기 위한 기준입니다. */
+  display: grid; /* 칸 나누기에 grid를 씁니다. */
+  grid-template-columns: minmax(0, 1fr) auto; /* 왼쪽(노선 정보)은 남은 폭, 오른쪽(도착 시간)은 내용만큼입니다. */
+  align-items: center; /* 세로 가운데를 맞춥니다. */
+  gap: 12px; /* 칸 사이 간격입니다. */
+  padding: 14px 8px 14px 16px; /* 안쪽 여백입니다. (왼쪽은 색 막대 자리) */
+  border-bottom: 1px solid var(--line); /* 줄 사이 구분선입니다. */
+  transition: background 0.3s; /* 곧 도착 바탕색이 부드럽게 바뀌게 합니다. */
+} /* 노선 한 줄을 마칩니다. */
+
+.bus-item::before { /* 줄 왼쪽의 노선 색 막대입니다. */
+  content: ""; /* 빈 상자를 만듭니다. */
+  position: absolute; /* 줄 안 왼쪽에 겹칩니다. */
+  left: 4px; top: 18px; bottom: 18px; /* 위치와 높이입니다. */
+  width: 4px; /* 막대 두께입니다. */
+  border-radius: 4px; /* 끝을 둥글게 합니다. */
+  background: var(--type-color); /* 노선 종류 색입니다. */
+} /* 색 막대를 마칩니다. */
+
+.bus-item:last-child { border-bottom: 0; } /* 마지막 줄은 구분선을 없앱니다. */
+.bus-list.animate .bus-item { animation: rise 0.3s ease both; animation-delay: calc(var(--i) * 25ms); } /* 처음 불러올 때만 줄이 차례로 올라오며 나타납니다. */
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } } /* 아래에서 올라오며 나타나는 움직임입니다. */
+
+.route { min-width: 0; } /* 노선 정보가 넘치지 않게 합니다. */
+.route-top { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; } /* 종류 배지와 노선 번호 줄입니다. */
+
+.route-type { /* 노선 종류 배지(직행좌석·일반 등)입니다. */
+  padding: 3px 7px; /* 안쪽 여백입니다. */
+  border-radius: 6px; /* 모서리를 둥글게 합니다. */
+  background: var(--type-color); /* 노선 종류 색입니다. (JS가 정함) */
+  color: #fff; /* 흰 글자입니다. */
+  font-size: 11px; font-weight: 700; /* 작고 굵은 글자입니다. */
+  white-space: nowrap; /* 줄바꿈하지 않습니다. */
+} /* 배지를 마칩니다. */
+
+.route-name { /* 노선 번호입니다. */
+  font-size: 20px; font-weight: 800; /* 크고 아주 굵게 합니다. */
+  letter-spacing: -0.3px; /* 글자 사이를 살짝 좁힙니다. */
+  color: var(--type-color); /* 노선 종류 색으로 칠합니다. */
+} /* 노선 번호를 마칩니다. */
+
+@media (prefers-color-scheme: dark) { /* 다크 모드에서는 */
+  .route-name { color: color-mix(in srgb, var(--type-color) 62%, white); } /* 노선 번호 색을 밝게 섞어서 어두운 바탕에서도 잘 보이게 합니다. */
+} /* 다크 모드 노선 색을 마칩니다. */
+
+.route-dest { /* 방면 설명입니다. */
+  margin: 4px 0 0; /* 위 여백입니다. */
+  font-size: 13px; /* 작은 글자입니다. */
+  color: var(--muted); /* 회색입니다. */
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; /* 너무 길면 한 줄에서 …으로 자릅니다. */
+} /* 방면 설명을 마칩니다. */
+
+.tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; } /* 빈자리·혼잡도·저상 표시 줄입니다. */
+.tags:empty { display: none; } /* 표시할 것이 없으면 줄을 없앱니다. */
+
+.tag { /* 작은 표시 하나입니다. */
+  padding: 2px 7px; /* 안쪽 여백입니다. */
+  border-radius: 999px; /* 알약 모양입니다. */
+  background: var(--tag-bg); /* 회색 바탕입니다. */
+  color: var(--tag-ink); /* 진한 회색 글자입니다. */
+  font-size: 11px; font-weight: 600; /* 작고 조금 굵은 글자입니다. */
+  white-space: nowrap; /* 줄바꿈하지 않습니다. */
+} /* 표시를 마칩니다. */
+
+.tag.good { background: var(--good-bg); color: var(--good-ink); } /* 여유·빈자리 많음은 초록입니다. */
+.tag.normal { background: var(--normal-bg); color: var(--normal-ink); } /* 보통·빈자리 조금은 노랑입니다. */
+.tag.busy { background: var(--busy-bg); color: var(--busy-ink); } /* 혼잡·만석은 빨강입니다. */
+
+.arrival { text-align: right; } /* 도착 시간 묶음은 오른쪽 정렬입니다. */
+.arrival-time { display: block; font-size: 20px; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; } /* 첫 번째 버스 도착 시간입니다. (숫자 폭을 같게 해서 1초마다 바뀌어도 흔들리지 않게) */
+.arrival-time small { font-size: 14px; font-weight: 700; margin-left: 1px; } /* "분", "초" 글자는 조금 작게 합니다. */
+.arrival-where, .arrival-next { display: block; font-size: 12px; color: var(--muted); white-space: nowrap; } /* 위치·다음 버스 설명입니다. */
+.arrival-where { margin-top: 2px; } /* 위치 설명 위 여백입니다. */
+.arrival-next { margin-top: 6px; } /* 다음 버스 정보 위 여백입니다. */
+.arrival-next b { color: var(--ink); } /* 다음 버스 시간은 진하게 합니다. */
+
+.bus-item.soon { background: var(--soon-soft); border-radius: 12px; } /* 곧 도착하는 줄은 옅은 빨간 바탕입니다. */
+.bus-item.soon .arrival-time { color: var(--soon); } /* 곧 도착하는 버스 시간은 빨갛게 합니다. */
+
+.soon-dot { /* "곧 도착" 앞의 깜빡이는 점입니다. */
+  display: inline-block; /* 글자 옆에 놓습니다. */
+  width: 8px; height: 8px; /* 크기입니다. */
+  margin-right: 6px; /* 글자와 띄웁니다. */
+  border-radius: 50%; /* 동그랗게 합니다. */
+  background: var(--soon); /* 빨간색입니다. */
+  vertical-align: 3px; /* 글자 가운데 높이에 맞춥니다. */
+  animation: blink 1.2s ease-in-out infinite; /* 계속 깜빡입니다. */
+} /* 점을 마칩니다. */
+
+@keyframes blink { 50% { opacity: 0.25; } } /* 반쯤 흐려졌다가 돌아오는 움직임입니다. */
+
+.bus-item.no-info { opacity: 0.6; } /* 도착 정보가 없는 노선은 흐리게 보여 줍니다. */
+.bus-item.no-info .arrival-time { font-size: 14px; font-weight: 600; color: var(--muted); } /* "정보 없음" 글자는 작게 합니다. */
+
+.list-divider { /* "도착 정보 없는 노선" 구분 제목입니다. */
+  padding: 18px 4px 6px; /* 위 여백을 넉넉히 줍니다. */
+  font-size: 12px; font-weight: 700; /* 작고 굵은 글자입니다. */
+  color: var(--muted); /* 회색입니다. */
+  border-bottom: 1px solid var(--line); /* 아래 구분선입니다. */
+} /* 구분 제목을 마칩니다. */
+
+.filter-empty { padding: 36px 8px; text-align: center; font-size: 14px; color: var(--muted); } /* 노선 찾기 결과가 없을 때 안내입니다. */
+
+/* ===== 불러오는 중 뼈대(스켈레톤) ===== */
+.skeleton { /* 회색 막대 하나입니다. */
+  height: 64px; /* 한 줄 높이입니다. */
+  margin: 10px 0; /* 위아래 간격입니다. */
+  border-radius: 12px; /* 모서리를 둥글게 합니다. */
+  background: linear-gradient(90deg, var(--skeleton-a) 25%, var(--skeleton-b) 50%, var(--skeleton-a) 75%); /* 빛이 지나가는 듯한 그러데이션입니다. */
+  background-size: 200% 100%; /* 그러데이션을 두 배로 늘려 움직일 수 있게 합니다. */
+  animation: shimmer 1.2s linear infinite; /* 빛이 계속 지나가게 합니다. */
+} /* 막대를 마칩니다. */
+
+.skeleton.small { height: 58px; margin: 0; } /* 검색 결과 자리의 막대는 버튼 높이에 맞춥니다. */
+@keyframes shimmer { to { background-position: -200% 0; } } /* 그러데이션을 왼쪽으로 옮기는 움직임입니다. */
+
+/* ===== 아래 출처 ===== */
+.footer { /* 출처 영역입니다. */
+  max-width: 1080px; /* 본문과 같은 폭입니다. */
+  margin: 0 auto; /* 가운데 정렬입니다. */
+  padding: 24px 20px 36px; /* 여백입니다. */
+  font-size: 12px; /* 작은 글자입니다. */
+  color: var(--muted); /* 회색입니다. */
+  text-align: center; /* 가운데 정렬입니다. */
+} /* 출처 영역을 마칩니다. */
+
+.footer p { margin: 0; line-height: 1.7; } /* 문단 여백을 없애고 줄 간격을 넉넉히 합니다. */
+
+/* ===== 키보드로 이동할 때 보이는 테두리 ===== */
+button:focus-visible, a:focus-visible { outline: 3px solid rgba(91, 140, 255, 0.55); outline-offset: 2px; } /* 키보드로 버튼·링크에 오면 파란 테두리를 보여 줍니다. */
+
+/* ===== 태블릿·폰(899px 이하): 1칸으로 ===== */
+@media (max-width: 899px) { /* 화면 폭이 899px 이하일 때입니다. */
+  .layout { grid-template-columns: minmax(0, 1fr); } /* 두 카드를 위아래로 쌓습니다. */
+  .picker { position: static; max-height: none; overflow: visible; } /* 따라오는 기능과 카드 안 스크롤을 끕니다. */
+  .stop-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 정류소 버튼을 2열로 놓습니다. */
+  .board { scroll-margin-top: 8px; } /* 도착 정보로 화면을 내릴 때 위에 살짝 여백을 둡니다. */
+} /* 태블릿 설정을 마칩니다. */
+
+/* ===== 폰(559px 이하) ===== */
+@media (max-width: 559px) { /* 화면 폭이 559px 이하일 때입니다. */
+  .top-bar { padding: 22px 16px 64px; } /* 제목 띠 여백을 줄입니다. */
+  .top-bar h1 { font-size: 20px; } /* 제목 글자를 줄입니다. */
+  .logo { width: 42px; height: 42px; } /* 로고를 조금 작게 합니다. */
+  .layout { padding: 0 12px; gap: 12px; } /* 본문 양옆 여백을 줄입니다. */
+  .panel { padding: 18px 16px; } /* 카드 안쪽 여백을 줄입니다. */
+  .board-sticky { margin: -18px -16px 0; padding: 18px 16px 0; } /* 줄어든 카드 여백에 맞춥니다. */
+  .stop-list { grid-template-columns: minmax(0, 1fr); } /* 정류소 버튼을 다시 1열로 놓습니다. */
+  .search-button { padding: 0 14px; } /* 검색 버튼 폭을 줄입니다. */
+  .station-name { font-size: 19px; } /* 정류소 이름 글자를 줄입니다. */
+  .route-name, .arrival-time { font-size: 18px; } /* 노선 번호와 도착 시간 글자를 줄입니다. */
+  .route-dest { white-space: normal; } /* 좁은 화면에서는 방면이 잘리지 않고 다음 줄로 넘어가게 합니다. */
+} /* 폰 설정을 마칩니다. */
+
+/* ===== 움직임 줄이기 설정을 켠 사람에게는 움직임을 없앱니다. ===== */
+@media (prefers-reduced-motion: reduce) { /* 운영체제에서 움직임 줄이기를 켰을 때입니다. */
+  *, *::before, *::after { animation: none !important; transition: none !important; } /* 모든 움직임을 끕니다. */
+} /* 움직임 설정을 마칩니다. */

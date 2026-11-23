@@ -1,0 +1,103 @@
+<!DOCTYPE html> <!-- 이 문서가 HTML5 문서라고 알려 줍니다. -->
+<html lang="ko"> <!-- 페이지 언어를 한국어로 정합니다. -->
+<head> <!-- 페이지 정보(제목, 글꼴, CSS)를 적는 부분입니다. -->
+  <meta charset="UTF-8"> <!-- 한글이 깨지지 않게 UTF-8로 읽습니다. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 휴대폰에서도 화면 폭에 맞게 보이게 합니다. -->
+  <meta name="color-scheme" content="light dark"> <!-- 밝은 화면과 어두운 화면(다크 모드)을 모두 지원한다고 알려 줍니다. -->
+  <meta name="theme-color" content="#1a5df0"> <!-- 폰 브라우저 주소창 색을 파란색으로 맞춥니다. -->
+  <title>경기 버스 도착 정보</title> <!-- 브라우저 탭에 보이는 제목입니다. -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚌</text></svg>"> <!-- 탭 아이콘(파비콘)을 버스 그림으로 정합니다. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"> <!-- 깔끔한 한글 글꼴 Pretendard를 불러옵니다. -->
+  <link rel="stylesheet" href="css/bus.css"> <!-- 이 페이지의 디자인(CSS) 파일을 연결합니다. -->
+</head> <!-- 머리 부분을 마칩니다. -->
+<body> <!-- 화면에 보이는 내용이 시작됩니다. -->
+  <header class="top-bar"> <!-- 맨 위 제목 영역입니다. -->
+    <div class="top-inner"> <!-- 내용 폭을 맞추는 상자입니다. -->
+      <span class="logo" aria-hidden="true"> <!-- 버스 모양 로고입니다. (화면 읽기 프로그램은 건너뜀) -->
+        <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="15" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 11h16M8 21v-3M16 21v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="8" cy="14.5" r="1.2" fill="currentColor"/><circle cx="16" cy="14.5" r="1.2" fill="currentColor"/></svg> <!-- 버스 앞모습 그림입니다. -->
+      </span> <!-- 로고를 마칩니다. -->
+      <div> <!-- 제목 글자 묶음입니다. -->
+        <h1>경기 버스 도착 정보</h1> <!-- 페이지 큰 제목입니다. -->
+        <p>정류소를 찾으면 곧 도착하는 버스를 실시간으로 보여 드려요.</p> <!-- 페이지 설명입니다. -->
+      </div> <!-- 제목 글자 묶음을 마칩니다. -->
+    </div> <!-- 내용 폭 상자를 마칩니다. -->
+  </header> <!-- 제목 영역을 마칩니다. -->
+
+  <main class="layout"> <!-- 본문입니다. PC는 왼쪽(정류소 찾기)·오른쪽(도착 정보) 2칸, 폰은 1칸입니다. -->
+    <section class="panel picker" aria-labelledby="pickerTitle"> <!-- 정류소 찾기 카드입니다. -->
+      <h2 id="pickerTitle" class="panel-title">정류소 찾기</h2> <!-- 카드 제목입니다. -->
+
+      <form class="search-form" id="searchForm" role="search" novalidate> <!-- 정류소 검색 폼입니다. -->
+        <label for="searchInput" class="sr-only">정류소 이름, 번호 또는 ID</label> <!-- 화면 읽기 프로그램용 입력칸 이름표입니다. (화면에는 안 보임) -->
+        <div class="search-box"> <!-- 돋보기·입력칸·버튼을 한 줄로 묶습니다. -->
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> <!-- 돋보기 그림입니다. -->
+          <input id="searchInput" type="search" placeholder="정류소 이름·번호 (예: 수원역)" autocomplete="off" enterkeyhint="search"> <!-- 정류소 이름, 5자리 번호, 9자리 ID를 넣는 칸입니다. -->
+          <button type="submit" class="search-button">검색</button> <!-- 누르면 검색합니다. -->
+        </div> <!-- 한 줄 묶음을 마칩니다. -->
+        <p class="form-message" id="formMessage" role="alert"></p> <!-- 입력이 잘못되었을 때 안내 문구가 나오는 자리입니다. -->
+      </form> <!-- 검색 폼을 마칩니다. -->
+
+      <button type="button" class="nearby-button" id="nearbyButton"> <!-- 내 위치 근처 정류소를 찾는 버튼입니다. -->
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.6-6-11a6 6 0 0 1 12 0c0 5.4-6 11-6 11Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.2" fill="currentColor"/></svg> <!-- 위치 핀 그림입니다. -->
+        내 주변 정류소 찾기 <!-- 버튼 글자입니다. -->
+      </button> <!-- 내 주변 버튼을 마칩니다. -->
+
+      <div class="search-area" id="searchArea" hidden> <!-- 검색 결과가 나오는 자리입니다. (처음엔 숨김) -->
+        <div class="area-head"> <!-- 결과 제목 줄입니다. -->
+          <p class="panel-desc" id="searchTitle">검색 결과</p> <!-- "수원역 검색 결과 12곳" 같은 제목입니다. -->
+          <button type="button" class="text-button" id="clearSearch">닫기</button> <!-- 누르면 검색 결과를 닫습니다. -->
+        </div> <!-- 결과 제목 줄을 마칩니다. -->
+        <p class="notice" id="searchNotice" hidden></p> <!-- 검색 결과 없음·안내 문구 자리입니다. -->
+        <div class="stop-list" id="searchResults"></div> <!-- 검색된 정류소 버튼이 JS로 들어갈 자리입니다. -->
+      </div> <!-- 검색 결과 자리를 마칩니다. -->
+
+      <p class="panel-desc list-label">자주 쓰는 정류소</p> <!-- 자주 쓰는 정류소 목록 제목입니다. -->
+      <div class="stop-list" id="stopList"></div> <!-- 자주 쓰는 정류소 버튼이 JS로 들어갈 자리입니다. -->
+    </section> <!-- 정류소 찾기 카드를 마칩니다. -->
+
+    <section class="panel board" id="board" aria-labelledby="stationName"> <!-- 도착 정보 카드입니다. -->
+      <div class="board-sticky"> <!-- 스크롤해도 위에 붙어 있는 머리 부분입니다. -->
+        <div class="board-head"> <!-- 정류소 이름과 새로고침 버튼 줄입니다. -->
+          <div class="board-title"> <!-- 정류소 이름 묶음입니다. -->
+            <h2 id="stationName" class="station-name">정류소를 골라 주세요</h2> <!-- 고른 정류소 이름입니다. -->
+            <p id="stationInfo" class="station-info">정류소를 찾으면 도착 정보가 나와요.</p> <!-- 정류소 번호·방면 설명입니다. -->
+          </div> <!-- 정류소 이름 묶음을 마칩니다. -->
+          <button type="button" class="refresh-button" id="refreshButton" disabled aria-label="지금 새로고침"> <!-- 누르면 바로 새로 불러오는 버튼입니다. -->
+            <svg class="refresh-ring" viewBox="0 0 36 36" aria-hidden="true"> <!-- 다음 자동 새로고침까지 남은 시간을 보여 주는 원입니다. -->
+              <circle class="ring-track" cx="18" cy="18" r="16"/> <!-- 원의 바탕(옅은 색)입니다. -->
+              <circle class="ring-bar" id="ringBar" cx="18" cy="18" r="16"/> <!-- 시간이 지날수록 줄어드는 원 테두리입니다. -->
+            </svg> <!-- 원을 마칩니다. -->
+            <svg class="refresh-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> <!-- 가운데 새로고침 화살표 그림입니다. -->
+          </button> <!-- 새로고침 버튼을 마칩니다. -->
+        </div> <!-- 정류소 이름 줄을 마칩니다. -->
+
+        <div class="route-filter" id="routeFilter" hidden> <!-- 이 정류소의 노선 번호 찾기 칸입니다. (목록이 있을 때만 보임) -->
+          <label for="routeInput" class="sr-only">노선 번호 찾기</label> <!-- 화면 읽기 프로그램용 이름표입니다. -->
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> <!-- 돋보기 그림입니다. -->
+          <input id="routeInput" type="search" inputmode="search" placeholder="노선 번호 찾기 (예: 8155)" autocomplete="off"> <!-- 쓰는 대로 목록을 걸러 줍니다. -->
+        </div> <!-- 노선 찾기 칸을 마칩니다. -->
+
+        <div class="board-meta"> <!-- 요약과 갱신 시각 줄입니다. -->
+          <p class="summary" id="summary"></p> <!-- "노선 15개 · 5분 안에 3대" 같은 요약이 들어갑니다. -->
+          <p class="updated" id="updatedTime"></p> <!-- "12초 전 갱신" 같은 갱신 시각이 들어갑니다. -->
+        </div> <!-- 요약 줄을 마칩니다. -->
+      </div> <!-- 위에 붙는 머리 부분을 마칩니다. -->
+
+      <div class="status-box" id="statusBox" aria-live="polite"> <!-- 불러오는 중·오류·결과 없음 안내가 나오는 자리입니다. -->
+        <span class="status-emoji">🚏</span> <!-- 안내 그림입니다. -->
+        <p>정류소를 고르면 도착 정보가 여기에 나와요.</p> <!-- 처음 안내 문구입니다. -->
+      </div> <!-- 안내 자리를 마칩니다. -->
+
+      <ul class="bus-list" id="busList"></ul> <!-- 버스 도착 목록이 JS로 들어갈 자리입니다. -->
+    </section> <!-- 도착 정보 카드를 마칩니다. -->
+  </main> <!-- 본문을 마칩니다. -->
+
+  <footer class="footer"> <!-- 아래 출처 영역입니다. -->
+    <p>정보 제공: <a href="https://www.data.go.kr/data/15080346/openapi.do" target="_blank" rel="noopener">경기도 버스도착정보 조회</a> · <a href="https://www.data.go.kr/data/15080666/openapi.do" target="_blank" rel="noopener">경기도 정류소 조회</a> (공공데이터포털)</p> <!-- 데이터 출처입니다. -->
+    <p>도착 정보는 30초마다 자동으로 새로고침돼요.</p> <!-- 자동 새로고침 안내입니다. -->
+  </footer> <!-- 출처 영역을 마칩니다. -->
+
+  <script src="js/config.js"></script> <!-- API 키 파일을 먼저 불러옵니다. (GitHub에는 올라가지 않는 파일) -->
+  <script src="js/bus.js"></script> <!-- 이 페이지의 기능(JS) 파일을 불러옵니다. -->
+</body> <!-- 화면 내용을 마칩니다. -->
+</html> <!-- HTML 문서를 마칩니다. -->
